@@ -71,6 +71,27 @@ Developed for **SF221 Software Process**, Thammasat University.
 
 ---
 
+## Sprint Plan
+
+| Week | Goal |
+| --- | --- |
+| 1 | Project setup — repo structure, React + Express scaffolding, DB schema design |
+| 2 | Authentication (Register/Login, JWT) |
+| 3 | Table/Lobby system — create & join table (REST CRUD) |
+| 4 | Poker engine — deck, shuffle, hand-evaluator |
+| 5 | Poker engine — betting logic (call/raise/fold, side pot) |
+| 6 | Rule-based Bot logic + Auto-add Bot for empty seats |
+| 7 | WebSocket integration — connect engine to real-time gameplay |
+| 8 | Testing, bug fixing, **Midterm demo** |
+| 9 | Frontend UI — full game table (cards, pot, action buttons) |
+| 10 | In-game Chat |
+| 11 | Reconnect support (rejoin ongoing hand after disconnect) |
+| 12 | Leaderboard / Stats tracking |
+| 13 | Bot upgrade — adjustable AI difficulty |
+| 14 | Card/Table skins |
+| 15 | Testing, bug fixing, polish |
+| 16 | Final testing, deployment, **Final demo** |
+
 ## Team
 
 | Role | Name |
