@@ -75,8 +75,8 @@ Developed for **SF221 Software Process**, Thammasat University.
 
 | Role | Name |
 | --- | --- |
-| **Frontend** | Gorge |
-| **Frontend** | Name |
+| **Frontend** | Chafaaut Kholoasae |
+| **Frontend** | Pornpipat Saekor |
 | **Backend / Infra** | Natcha Jaisean |
 | **Backend / Game Logic** | Salawin Samut |
 
