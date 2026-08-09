@@ -35,7 +35,7 @@ Developed for **SF221 Software Process**, Thammasat University.
 
 | Layer | Technology |
 | --- | --- |
-| **Frontend** | React.js + Tailwind CSS |
+| **Frontend** | React.js + Tailwind CSS + axios |
 | **Backend** | Express.js |
 | **Real-time** | Socket.io |
 | **Database** | PostgreSQL (game data) + Firebase (user data) |
