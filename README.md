@@ -1,5 +1,3 @@
-# README.md
-
 # Poker.io
 
 Web application for playing a **real-time multiplayer poker game** with 4–10 players and an auto-filling poker bot.
@@ -27,9 +25,9 @@ Real-time multiplayer systems are hard to get right — synchronizing state acro
 
 | Risk | Mitigation |
 | --- | --- |
-| Poker engine (hand evaluation, side pots) is more complex than estimated | Isolated into its own sprint with WebSocket integration validated early via a real end-to-end hand |
+| Poker engine (hand evaluation, side pots) is more complex than estimated | Given a dedicated 3-week sprint (Sprint 3) with WebSocket integration validated early via a real end-to-end hand, instead of building the engine in isolation |
 | Real-time state gets out of sync across clients | Server is the single source of truth — client only renders state pushed to it, never computes game logic locally |
-| Sprint before demo has no slack | Dedicated Hardening sprint (Week 9) with zero new features — bug fixing and rehearsal only |
+| Sprint before demo has no slack | Dedicated Hardening sprint (Week 8) with zero new features — bug fixing and rehearsal only |
 
 ---
 
@@ -67,7 +65,8 @@ Real-time multiplayer systems are hard to get right — synchronizing state acro
 
 ## Architecture
 
-Client (React)
+```
+            Client (React)
                   │
       ┌───────────┴───────────┐
     REST                  WebSocket
@@ -76,13 +75,14 @@ Client (React)
     Server (Express.js + Socket.io)
                   │
                   ▼
-            Poker Engine
-    (deck, betting logic, bot)
+             Poker Engine
+      (deck, betting logic, bot)
                   │
       ┌───────────┴───────────┐
       ▼                       ▼
-PostgreSQL              Firebase
-(game data)            (user data)
+  PostgreSQL               Firebase
+  (game data)             (user data)
+```
 
 - **Client → Server (REST)**: login, table list, history
 - **Client → Server (WebSocket)**: real-time game actions (bet, fold, deal)
@@ -92,19 +92,19 @@ PostgreSQL              Firebase
 
 ---
 
-## Sprint Plan (Scrum, 2-week sprints)
+## Sprint Plan (Scrum)
 
 | Sprint | Week | Sprint Goal |
 | --- | --- | --- |
-| **1** | 1–2 | Repo, infra, and data layer are ready to build on |
-| **2** | 3–4 | A user can register, log in, and create or join a table |
-| **3** | 5–6 | Two players can play a full hand live over WebSocket |
-| **4** | 7–8 | A full 4–10 player table plays correctly, bots included |
-| **Hardening** | 9 | Build is stable and demo-ready — **Midterm demo** |
-| **5** | 10–11 | Table feels alive and works on mobile |
-| **6** | 12–13 | Players can drop and rejoin, progress is tracked |
-| **7** | 14–15 | Bot difficulty is adjustable |
-| **8** | 16 | Product is polished and deployed — **Final demo** |
+| **1** | 1 | Repo, infra, and data layer are ready to build on |
+| **2** | 2 | A user can register, log in, and create or join a table |
+| **3** | 3–5 | Two players can play a full hand live over WebSocket |
+| **4** | 6–7 | A full 4–10 player table plays correctly, bots included |
+| **Hardening** | 8 | Build is stable and demo-ready — **Midterm demo** |
+| **5** | 9–10 | Table feels alive and works on mobile |
+| **6** | 11–12 | Players can drop and rejoin, progress is tracked |
+| **7** | 13–14 | Bot difficulty is adjustable |
+| **8** | 15–16 | Product is polished and deployed — **Final demo** |
 
 Each sprint includes Sprint Planning, standups on Mon/Wed/Fri, a Sprint Review (working demo with feedback collected), and a Sprint Retrospective.
 
@@ -114,10 +114,10 @@ Each sprint includes Sprint Planning, standups on Mon/Wed/Fri, a Sprint Review (
 
 | Role | Name | Responsibility |
 | --- | --- | --- |
-| **Frontend** | Chafaaut Kholoasae | Game table UI, lobby, responsive layout |
-| **Frontend** | Pornpipat Saekor | Auth UI, chat, leaderboard UI |
-| **Backend / Infra** | Natcha Jaisean | Auth, DB schema, deployment, CI/CD |
-| **Backend / Game Engine** | Salawin Samut | Poker engine, betting logic, bot, WebSocket integration |
+| **Frontend** | Chafaaut Kholoasae 
+| **Frontend** | Pornpipat Saekor 
+| **Backend / Infra** | Natcha Jaisean 
+| **Backend / Game Engine** | Salawin Samut 
 
 ---
 
