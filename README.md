@@ -62,6 +62,47 @@ Real-time multiplayer systems are hard to get right — synchronizing state acro
 | **Backend** | Express.js |
 | **Real-time** | Socket.io |
 | **Database** | PostgreSQL (game data) + Firebase (user data) |
+## Database Design
+
+The database is designed around the idea that an active poker hand is fast-moving and should be controlled by the server, while important long-term records should be persisted for history, statistics, and reconnect support.
+
+See the full visual diagram here: [ERD](ERD.svg)
+
+### Data Storage Responsibilities
+
+| Storage | Responsibility |
+| --- | --- |
+| **Firebase** | User authentication, login provider data, and account identity. |
+| **PostgreSQL** | Poker-specific data such as tables, room members, game results, player statistics, and cosmetic selections. |
+| **Server memory** | Current hand state, deck order, turn state, community cards, current bets, and temporary bot decisions during an active hand. |
+
+### Main Entities
+
+| Entity | Purpose | Important fields |
+| --- | --- | --- |
+| **Users** | Stores the application profile linked to Firebase auth. | `uid`, `email`, `username`, `current_stack`, `created_at` |
+| **Tables** | Represents a poker table/lobby that players can join before a game starts. | `table_id`, `name`, `asset_url` |
+| **Games** | Stores one playable poker session created from a table. | `game_id`, `host_id`, `status`, `max_player`, `current_player`, `created_at` |
+| **Room_Player** | Join table between users and games; tracks each seat in a room. | `PK_id`, `uid`, `seat_number`, `is_bot`, `chip_stack`, `joined_at` |
+| **Game_Result** | Stores the final outcome of a completed game for history and stats. | `game_id`, `winner_id`, `status`, `max_player`, `current_player`, `created_at` |
+| **Card_Skins** | Stores card theme choices available to players. | `skin_id`, `name`, `asset_url` |
+| **Table_Skins** | Stores table/background theme choices available to players. | `skin_id`, `name`, `asset_url` |
+
+### Relationships
+
+- One **User** can host many **Games** through `Games.host_id`.
+- One **Game** can have many **Room_Player** records, one for each human player or bot seat.
+- One **User** can appear in many **Room_Player** records across different games.
+- One **Game_Result** belongs to one completed **Game** and references the winning **User** through `winner_id`.
+- Skin tables are separated from game history so cosmetic assets can be reused without duplicating image URLs in every game record.
+
+### Design Notes
+
+- The server is the single source of truth for live gameplay. Clients send actions such as call, raise, fold, or all-in; the server validates them and broadcasts the updated state through Socket.io.
+- PostgreSQL stores only durable data. This keeps the schema clean and avoids writing every small in-hand change, such as each card dealt or each temporary bet, unless it is needed for final history.
+- `Room_Player.is_bot` allows the same seat model to support both real players and auto-filled bots, which keeps game setup logic simple.
+- `chip_stack` in `Room_Player` represents chips inside a specific game, while `Users.current_stack` can be used for the player's longer-term balance.
+- `status` fields make it possible to separate waiting, active, completed, and cancelled games without deleting records.
 
 ## Architecture
 
@@ -112,12 +153,12 @@ Each sprint includes Sprint Planning, standups on Mon/Wed/Fri, a Sprint Review (
 
 ## Team
 
-| Role | Name | Responsibility |
-| --- | --- | --- |
-| **Frontend** | Chafaaut Kholoasae 
-| **Frontend** | Pornpipat Saekor 
-| **Backend / Infra** | Natcha Jaisean 
-| **Backend / Game Engine** | Salawin Samut 
+| Role                      | Name               | Responsibility |
+| ------------------------- | ------------------ | -------------- |
+| **Frontend**              | Chafaaut Kholoasae |                |
+| **Frontend**              | Pornpipat Saekor   |                |
+| **Backend / Infra**       | Natcha Jaisean     |                |
+| **Backend / Game Engine** | Salawin Samut      |                |
 
 ---
 
@@ -126,7 +167,3 @@ Each sprint includes Sprint Planning, standups on Mon/Wed/Fri, a Sprint Review (
 See [SETUP.md](SETUP.md) for local development setup instructions.
 
 ---
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
