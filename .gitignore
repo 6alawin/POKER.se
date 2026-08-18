@@ -144,3 +144,6 @@ vite.config.ts.timestamp-*
 
 # Turborepo
 .turbo
+
+# Unit test
+*.test.ts

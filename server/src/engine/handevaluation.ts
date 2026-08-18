@@ -1,7 +1,7 @@
 import { Card, Rank, Suit } from "./deck";
 import { HandRank } from "./hand";
 
-function evaluateHand(cards: Card[]): {
+export function evaluateHand(cards: Card[]): {
   rank: HandRank;
   tiebreakers: number[];
 } {
@@ -29,7 +29,7 @@ function evaluateHand(cards: Card[]): {
   if (groups.fours.length > 0) {
     return {
       rank: HandRank.FourOfAKind,
-      tiebreakers: [...groups.fours, ...groups.kickers],
+      tiebreakers: [...groups.fours, ...groups.kickers].slice(0, 2),
     };
   }
 
@@ -52,21 +52,21 @@ function evaluateHand(cards: Card[]): {
   if (groups.threes.length > 0) {
     return {
       rank: HandRank.ThreeOfAKind,
-      tiebreakers: [...groups.threes, ...groups.kickers],
+      tiebreakers: [...groups.threes, ...groups.kickers].slice(0, 3),
     };
   }
 
   if (groups.pairs.length >= 2) {
     return {
       rank: HandRank.TwoPair,
-      tiebreakers: [...groups.pairs, ...groups.kickers],
+      tiebreakers: [...groups.pairs, ...groups.kickers].slice(0, 3),
     };
   }
 
   if (groups.pairs.length === 1) {
     return {
       rank: HandRank.Pair,
-      tiebreakers: [...groups.pairs, ...groups.kickers],
+      tiebreakers: [...groups.pairs, ...groups.kickers].slice(0, 4),
     };
   }
 

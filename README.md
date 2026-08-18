@@ -1,4 +1,4 @@
-# Poker.io
+# POKER.se
 
 Web application for playing a **real-time multiplayer poker game** with 4–10 players and an auto-filling poker bot.
 
@@ -153,12 +153,12 @@ Each sprint includes Sprint Planning, standups on Mon/Wed/Fri, a Sprint Review (
 
 ## Team
 
-| Role                      | Name               | Responsibility |
-| ------------------------- | ------------------ | -------------- |
-| **Frontend**              | Chafaaut Kholoasae |                |
-| **Frontend**              | Pornpipat Saekor   |                |
-| **Backend / Infra**       | Natcha Jaisean     |                |
-| **Backend / Game Engine** | Salawin Samut      |                |
+| Role                      | Name               |
+| ------------------------- | ------------------ | 
+| **Frontend**              | Chafaaut Kholoasae | 
+| **Frontend**              | Pornpipat Saekor   |
+| **Backend / Infra**       | Natcha Jaisean     |
+| **Full Stack** | Salawin Samut      |
 
 ---
 

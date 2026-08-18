@@ -15,14 +15,16 @@ export interface Card {
   suit: Suit;
 }
 
-export class deck {
+export class Deck {
     private cards: Card[];
 
     constructor() {
-        this.cards = this.Buildfulldeck();
+        this.cards = this.buildFullDeck();
+        this.shuffle();
+
     }
   
-    private Buildfulldeck(): Card[] {
+    private buildFullDeck(): Card[] {
         const deck: Card[] = [];
         for (const suit of Object.values(Suit)){
             for (const rank of [2,3,4,5,6,7,8,9,10,11,12,13,14] as Rank[]){
