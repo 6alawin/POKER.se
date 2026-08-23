@@ -1,0 +1,99 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { cert, getApps, initializeApp } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
+import pool from './db';
+import userRoutes from './routes/users';
+
+dotenv.config();
+
+const firebaseProjectId = process.env.FIREBASE_PROJECT_ID;
+const firebaseClientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+const firebasePrivateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+const firebaseAdminReady = Boolean(firebaseProjectId && firebaseClientEmail && firebasePrivateKey);
+
+if (firebaseAdminReady && getApps().length === 0) {
+  initializeApp({ credential: cert({ projectId: firebaseProjectId, clientEmail: firebaseClientEmail, privateKey: firebasePrivateKey }) });
+}
+
+const app = express();
+const clientOrigin = process.env.CLIENT_ORIGIN ?? 'http://localhost:5173';
+const allowedOrigins = new Set([clientOrigin, 'http://localhost:5173', 'http://localhost:5174']);
+
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+    return callback(new Error(`Origin ${origin} is not allowed by CORS.`));
+  },
+}));
+app.use(express.json());
+app.use('/api/users', userRoutes);
+
+app.get('/', (_req, res) => {
+  res.json({ message: 'Poker.io server is running' });
+});
+
+app.post('/auth/verify', async (req, res) => {
+  const { idToken } = req.body as { idToken?: unknown };
+  if (typeof idToken !== 'string' || !idToken) return res.status(400).json({ message: 'A Firebase ID token is required.' });
+  if (!firebaseAdminReady) return res.status(503).json({ message: 'Firebase Admin is not configured on this server.' });
+
+  try {
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+    const profile = await pool.query('SELECT * FROM "user" WHERE uid = $1', [decodedToken.uid]);
+    const user = profile.rows[0];
+
+    return res.status(200).json({
+      uid: decodedToken.uid,
+      email: decodedToken.email ?? null,
+      name: decodedToken.name ?? null,
+      picture: decodedToken.picture ?? null,
+      username: user?.username ?? null,
+      user: user ?? null,
+      needsUsername: profile.rowCount === 0,
+    });
+  } catch (error) {
+    console.error('AUTH VERIFY ERROR:', error);
+    return res.status(401).json({ message: 'Invalid token or database lookup failed.' });
+  }
+});
+
+app.post('/auth/profile', async (req, res) => {
+  const { idToken, username } = req.body as { idToken?: unknown; username?: unknown };
+  if (typeof idToken !== 'string' || typeof username !== 'string') return res.status(400).json({ message: 'ID token and username are required.' });
+  const cleanUsername = username.trim();
+  if (!/^[a-zA-Z0-9_]{3,16}$/.test(cleanUsername)) return res.status(400).json({ message: 'Username must be 3–16 letters, numbers, or underscores.' });
+  if (!firebaseAdminReady) return res.status(503).json({ message: 'Firebase Admin is not configured on this server.' });
+
+  try {
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+    const result = await pool.query(
+      `INSERT INTO "user" (uid, email, username, current_card_skin, current_table_skin)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (uid)
+       DO UPDATE SET email = EXCLUDED.email, username = EXCLUDED.username
+       RETURNING *`,
+      [decodedToken.uid, decodedToken.email ?? null, cleanUsername, 'default_card', 'default_table'],
+    );
+
+    return res.status(201).json({ uid: decodedToken.uid, username: cleanUsername, user: result.rows[0] });
+  } catch (error) {
+    console.error('AUTH PROFILE ERROR:', error);
+    return res.status(401).json({ message: 'Invalid token or profile save failed.' });
+  }
+});
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, { cors: { origin: [...allowedOrigins] } });
+
+io.on('connection', (socket) => {
+  console.log('Client connected:', socket.id);
+});
+
+const PORT = process.env.PORT || 3000;
+httpServer.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
