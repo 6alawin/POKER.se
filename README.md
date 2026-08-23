@@ -116,7 +116,7 @@ Each sprint includes Sprint Planning, standups on Mon/Wed/Fri, a Sprint Review (
 | --- | --- | --- |
 | **Frontend** | Chafaaut Kholoasae 
 | **Frontend** | Pornpipat Saekor 
-| **Backend / Infra** | Natcha Jaisean 
+| **Backend / Infra** | Natcha Jaisaen 
 | **Backend / Game Engine** | Salawin Samut 
 
 ---
