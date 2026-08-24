@@ -1,3 +1,3 @@
 export default function Logo() {
-  return <div className="logo" aria-label="POKER.se"><span className="spade">♠</span><span>POKER.se</span></div>
+  return <img className="logo-image" src="/images/poker-se-logo.png" alt="POKER.se" />
 }

@@ -20,12 +20,46 @@ CREATE TABLE table_skin (
 
 -- user
 
+CREATE TABLE picture_profile (
+    picture_id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255),
+    asset_url VARCHAR(500)
+);
+
+INSERT INTO card_skin (skin_id, name, asset_url)
+VALUES ('default_card', 'Default Card', '');
+
+INSERT INTO table_skin (skin_id, name, asset_url)
+VALUES ('default_table', 'Default Table', '');
+
+INSERT INTO picture_profile (picture_id, name, asset_url) VALUES
+    ('cowboy', 'Cowboy', '/src/assets/picture_profile/cowboy.png'),
+    ('pine-tree', 'Pine Tree', '/src/assets/picture_profile/pine-tree.webp'),
+    ('cherry-tree', 'Cherry Tree', '/src/assets/picture_profile/cherry-tree.webp'),
+    ('ice-fishing', 'Ice Fishing', '/src/assets/picture_profile/ice-fishing.png'),
+    ('wizard', 'Wizard', '/src/assets/picture_profile/wizard.png'),
+    ('undertaker', 'Undertaker', '/src/assets/picture_profile/undertaker.png'),
+    ('plague-doctor', 'Plague Doctor', '/src/assets/picture_profile/plague-doctor.png');
+
 CREATE TABLE "user" (
     uid VARCHAR(50) PRIMARY KEY,
     email VARCHAR(255),
     username VARCHAR(30),
     current_card_skin VARCHAR(255),
-    current_table_skin VARCHAR(255)
+    current_table_skin VARCHAR(255),
+    picture_id VARCHAR(255),
+
+    CONSTRAINT fk_user_card_skin
+        FOREIGN KEY (current_card_skin)
+        REFERENCES card_skin(skin_id),
+
+    CONSTRAINT fk_user_table_skin
+        FOREIGN KEY (current_table_skin)
+        REFERENCES table_skin(skin_id),
+
+    CONSTRAINT fk_user_picture
+        FOREIGN KEY (picture_id)
+        REFERENCES picture_profile(picture_id)
 );
 
 -- game Room

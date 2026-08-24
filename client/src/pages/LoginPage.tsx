@@ -6,6 +6,7 @@ import { verifyUser } from '../features/auth/api/auth'
 import type { AuthenticatedUser } from '../features/auth/types/auth'
 import Logo from '../components/ui/Logo'
 import { firebaseAuth, firebaseConfigError, googleProvider } from '../lib/firebase'
+import { saveAuthToken, clearAuthToken } from '../lib/auth-token'
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -23,6 +24,7 @@ export default function LoginPage() {
     try {
       const result = await signInWithPopup(firebaseAuth, googleProvider)
       const idToken = await result.user.getIdToken(true)
+      saveAuthToken(idToken)
       const { needsUsername } = await verifyUser(idToken)
 
       if (needsUsername) {
@@ -31,6 +33,7 @@ export default function LoginPage() {
         navigate('/lobby')
       }
     } catch (loginError) {
+      clearAuthToken()
       await signOut(firebaseAuth).catch(() => undefined)
       setError(loginError instanceof Error ? loginError.message : 'Unable to sign in. Please try again.')
     } finally {
