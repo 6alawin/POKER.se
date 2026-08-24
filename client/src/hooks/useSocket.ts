@@ -1,15 +1,18 @@
-import { useEffect, useRef } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { useEffect, useState } from 'react'
+import { io, type Socket } from 'socket.io-client'
+
+const socketUrl = import.meta.env.VITE_SOCKET_URL ?? import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
 
 export function useSocket() {
-  const socketRef = useRef<Socket | null>(null);
+  const [socket] = useState<Socket>(() => io(socketUrl, { autoConnect: false }))
 
   useEffect(() => {
-    socketRef.current = io('http://localhost:3000'); // ตรงกับ port ของ server
-    return () => {
-      socketRef.current?.disconnect();
-    };
-  }, []);
+    socket.connect()
 
-  return socketRef.current;
+    return () => {
+      socket.disconnect()
+    }
+  }, [socket])
+
+  return socket
 }
