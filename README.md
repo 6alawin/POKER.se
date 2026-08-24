@@ -78,31 +78,35 @@ See the full visual diagram here: [ERD](ERD.svg)
 
 ### Main Entities
 
-| Entity | Purpose | Important fields |
+| Table | Purpose | Important fields |
 | --- | --- | --- |
-| **Users** | Stores the application profile linked to Firebase auth. | `uid`, `email`, `username`, `current_stack`, `created_at` |
-| **Tables** | Represents a poker table/lobby that players can join before a game starts. | `table_id`, `name`, `asset_url` |
-| **Games** | Stores one playable poker session created from a table. | `game_id`, `host_id`, `status`, `max_player`, `current_player`, `created_at` |
-| **Room_Player** | Join table between users and games; tracks each seat in a room. | `PK_id`, `uid`, `seat_number`, `is_bot`, `chip_stack`, `joined_at` |
-| **Game_Result** | Stores the final outcome of a completed game for history and stats. | `game_id`, `winner_id`, `status`, `max_player`, `current_player`, `created_at` |
-| **Card_Skins** | Stores card theme choices available to players. | `skin_id`, `name`, `asset_url` |
-| **Table_Skins** | Stores table/background theme choices available to players. | `skin_id`, `name`, `asset_url` |
+| **`card_skin`** | Stores available card skins. | `skin_id` (PK), `name`, `asset_url` |
+| **`table_skin`** | Stores available table skins. | `skin_id` (PK), `name`, `asset_url` |
+| **`picture_profile`** | Stores available profile pictures. | `picture_id` (PK), `name`, `asset_url` |
+| **`user`** | Stores the player profile linked to Firebase Authentication. | `uid` (PK), `email`, `username`, `current_card_skin`, `current_table_skin`, `picture_id` |
+| **`game_room`** | Stores a poker room and its host/status. | `table_id` (PK), `host_id`, `status`, `max_player`, `current_player`, `created_at` |
+| **`roomplayer`** | Join table between users and game rooms; tracks seats and chips. | `table_id`, `pk_fk`, `uid`, `seat_number`, `is_bot`, `chip_stack`, `joined_at` |
+| **`match_history`** | Stores each user's result and chip change for a completed match. | `history_id` (PK), `uid`, `table_id`, `result`, `pot_amount`, `chip_change`, `played_at` |
 
 ### Relationships
 
-- One **User** can host many **Games** through `Games.host_id`.
-- One **Game** can have many **Room_Player** records, one for each human player or bot seat.
-- One **User** can appear in many **Room_Player** records across different games.
-- One **Game_Result** belongs to one completed **Game** and references the winning **User** through `winner_id`.
-- Skin tables are separated from game history so cosmetic assets can be reused without duplicating image URLs in every game record.
+- One **`user`** can host many **`game_room`** records through `game_room.host_id`.
+- One **`game_room`** can have many **`roomplayer`** records, one for each human player or bot seat.
+- One **`user`** can appear in many **`roomplayer`** records through `roomplayer.uid`.
+- One **`user`** can have many **`match_history`** records through `match_history.uid`.
+- One **`game_room`** can have many **`match_history`** records through `match_history.table_id`.
+- `user.current_card_skin` references `card_skin.skin_id`.
+- `user.current_table_skin` references `table_skin.skin_id`.
+- `user.picture_id` references `picture_profile.picture_id`.
 
 ### Design Notes
 
 - The server is the single source of truth for live gameplay. Clients send actions such as call, raise, fold, or all-in; the server validates them and broadcasts the updated state through Socket.io.
 - PostgreSQL stores only durable data. This keeps the schema clean and avoids writing every small in-hand change, such as each card dealt or each temporary bet, unless it is needed for final history.
-- `Room_Player.is_bot` allows the same seat model to support both real players and auto-filled bots, which keeps game setup logic simple.
-- `chip_stack` in `Room_Player` represents chips inside a specific game, while `Users.current_stack` can be used for the player's longer-term balance.
-- `status` fields make it possible to separate waiting, active, completed, and cancelled games without deleting records.
+- `roomplayer.is_bot` allows the same seat model to support both real players and auto-filled bots.
+- `roomplayer.chip_stack` represents chips held by a player in a specific room.
+- `status` in `game_room` can separate waiting, active, completed, and cancelled rooms without deleting records.
+- `default_card`, `default_table`, and `cowboy` are seeded by `InitDB` as the initial cosmetic records.
 
 ## Architecture
 
