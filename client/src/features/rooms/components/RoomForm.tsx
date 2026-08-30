@@ -1,107 +1,82 @@
 import { useState } from 'react'
+import axios from 'axios'
+import { getAuthToken } from '../../../lib/auth-token'
+import { verifyUser } from '../../auth/api/auth'
+import { createRoom, joinRoom } from '../api'
 
 type RoomTab = 'join' | 'create'
-type RoomFormProps = {
-  onComplete?: () => void
-}
 
-export default function RoomForm({ onComplete }: RoomFormProps) {
+export default function RoomForm({ onComplete }: { onComplete: (tableId: string) => void }) {
   const [tab, setTab] = useState<RoomTab>('join')
   const [pin, setPin] = useState(['', '', '', ''])
   const [players, setPlayers] = useState(2)
-  const [privateRoom, setPrivateRoom] = useState(true)
-  const [blinds, setBlinds] = useState('10 / 20')
-  const appendPin = (digit: string) => {
-    setPin((value) => {
-      const nextPin = [...value]
-      const emptyIndex = nextPin.findIndex((item) => !item)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
-      if (emptyIndex !== -1) nextPin[emptyIndex] = digit
-      return nextPin
-    })
+  const appendPin = (digit: string) => setPin(current => {
+    const next = [...current]
+    const index = next.findIndex(value => !value)
+    if (index >= 0) next[index] = digit
+    return next
+  })
+  const erasePin = () => setPin(current => {
+    const next = [...current]
+    const index = next.map(Boolean).lastIndexOf(true)
+    if (index >= 0) next[index] = ''
+    return next
+  })
+
+  async function getUid() {
+    const token = getAuthToken()
+    if (!token) throw new Error('Your session has expired. Please sign in again.')
+    const verification = await verifyUser(token)
+    if (!verification.uid) throw new Error('Your session has expired. Please sign in again.')
+    return verification.uid
   }
 
-  const resetPin = () => setPin(['', '', '', ''])
+  async function submit() {
+    setError('')
+    setIsSubmitting(true)
+    try {
+      const uid = await getUid()
+      const room = tab === 'create'
+        ? await createRoom(uid, players)
+        : await joinRoom(uid, pin.join(''))
+      onComplete(room.tableId)
+    } catch (cause) {
+      const message = axios.isAxiosError(cause) ? cause.response?.data?.message : undefined
+      setError(message || (cause instanceof Error ? cause.message : 'Unable to enter the room. Please try again.'))
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
-  return (
-    <section className="room-modal" aria-label="Room settings">
-      <div className="tabs">
-        <button className={tab === 'join' ? 'selected' : ''} onClick={() => setTab('join')}>
-          JOIN ROOM
-        </button>
-        <button className={tab === 'create' ? 'selected' : ''} onClick={() => setTab('create')}>
-          CREATE ROOM
-        </button>
+  function changeTab(nextTab: RoomTab) {
+    setTab(nextTab)
+    setError('')
+  }
+
+  const completePin = pin.every(Boolean)
+  return <section className="room-modal" aria-label="Room settings">
+    <div className="tabs">
+      <button className={tab === 'join' ? 'selected' : ''} onClick={() => changeTab('join')}>JOIN ROOM</button>
+      <button className={tab === 'create' ? 'selected' : ''} onClick={() => changeTab('create')}>CREATE ROOM</button>
+    </div>
+    <div className={`room-content ${tab}`}>
+      <div className="pin-panel">
+        <h2>{tab === 'join' ? 'Enter 4-Digit Room PIN' : 'Create a room for your friends'}</h2>
+        {tab === 'join' ? <>
+          <div className="pin-boxes">{pin.map((digit, index) => <span key={index}>{digit}</span>)}</div>
+          <div className="keypad">{[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(number => <button key={number} onClick={() => appendPin(String(number))}>{number}</button>)}<button className="erase-key" onClick={erasePin} aria-label="Delete last digit">←</button></div>
+        </> : <p className="room-copy">A unique 4-digit room PIN will be generated when you create the room.</p>}
       </div>
-
-      <div className={`room-content ${tab}`}>
-        <div className="pin-panel">
-          <h2>{tab === 'join' ? 'Enter 4-Digit Room PIN' : ''}</h2>
-          <div className="pin-boxes">
-            {pin.map((digit, index) => <span key={index}>{digit}</span>)}
-          </div>
-
-          {tab === 'create' && (
-            <>
-              <div className="generated-pin">
-                1234 <button onClick={resetPin} aria-label="Generate new code">↻</button>
-              </div>
-              <u>Room PIN</u>
-            </>
-          )}
-
-          {tab === 'join' && (
-            <div className="keypad">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((number) => (
-                <button key={number} onClick={() => appendPin(String(number))}>{number}</button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="settings-panel">
-          <h2>{tab === 'join' ? 'Room Settings' : 'Blinds:'}</h2>
-          <label className="select-row">
-            {tab === 'join' && 'Blinds:'}
-            <select value={blinds} onChange={(event) => setBlinds(event.target.value)}>
-              <option>10 / 20</option>
-              <option>25 / 50</option>
-              <option>50 / 100</option>
-            </select>
-          </label>
-
-          {tab === 'create' && (
-            <label className="buy-in">
-              Buy-in:<input inputMode="numeric" />
-            </label>
-          )}
-
-          <div className="players">
-            <strong>Max Players:</strong>
-            <div>
-              {[2, 6, 9].map((value) => (
-                <label key={value}>
-                  <input type="radio" checked={players === value} onChange={() => setPlayers(value)} /> {value}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {tab === 'create' && (
-            <label className="private">
-              <input type="checkbox" checked={privateRoom} onChange={() => setPrivateRoom(!privateRoom)} /> Private Room
-            </label>
-          )}
-        </div>
-
-        {tab === 'join' && (
-          <button className="join-button" disabled={pin.some((value) => !value)} onClick={onComplete}>
-            JOIN
-          </button>
-        )}
+      <div className="settings-panel">
+        <h2>{tab === 'join' ? 'Ready to play?' : 'Room Settings'}</h2>
+        {tab === 'join' ? <p className="room-copy">Enter the PIN shared by the host to take an available seat.</p> : <div className="players"><strong>Max Players:</strong><div>{[2, 6, 9].map(value => <label key={value}><input type="radio" checked={players === value} onChange={() => setPlayers(value)} /> {value}</label>)}</div></div>}
       </div>
-
-      <button className="create-button" onClick={onComplete}>CREATE</button>
-    </section>
-  )
+      {tab === 'join' && <button className="join-button" disabled={!completePin || isSubmitting} onClick={() => void submit()}>{isSubmitting ? 'JOINING...' : 'JOIN'}</button>}
+    </div>
+    {error && <p className="room-error" role="alert">{error}</p>}
+    {tab === 'create' && <button className="create-button" disabled={isSubmitting} onClick={() => void submit()}>{isSubmitting ? 'CREATING...' : 'CREATE'}</button>}
+  </section>
 }

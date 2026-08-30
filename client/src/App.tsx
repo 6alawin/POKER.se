@@ -73,6 +73,7 @@ function App() {
     <Route path="/login" element={<LoginRoute />} />
     <Route path="/lobby" element={<ProtectedRoute><LobbyPage /></ProtectedRoute>} />
     <Route path="/room" element={<ProtectedRoute><RoomPage /></ProtectedRoute>} />
+    <Route path="/room/:tableId" element={<ProtectedRoute><RoomPage /></ProtectedRoute>} />
     <Route path="*" element={<EntryRoute />} />
   </Routes>
 }

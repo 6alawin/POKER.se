@@ -8,6 +8,8 @@ import { getAuth } from 'firebase-admin/auth';
 import pool from './db';
 import { InitDB } from './db/initdb';
 import userRoutes from './routes/users';
+import { createRoomsRouter } from "./routes/rooms";
+
 
 dotenv.config();
 
@@ -32,6 +34,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use('/api/users', userRoutes);
+
 
 app.get('/', (_req, res) => {
   res.json({ message: 'Poker.io server is running' });
@@ -100,8 +103,13 @@ app.post('/auth/profile', async (req, res) => {
 const httpServer = createServer(app);
 const io = new Server(httpServer, { cors: { origin: [...allowedOrigins] } });
 
+app.use("/api/rooms", createRoomsRouter(io));
+
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
+  socket.on('room:subscribe', (tableId: unknown) => {
+    if (typeof tableId === 'string' && /^\d{4}$/.test(tableId)) socket.join(`room:${tableId}`);
+  });
 });
 
 const PORT = process.env.PORT || 3000;
