@@ -8,6 +8,11 @@ import { getAuthToken } from '../lib/auth-token'
 import { verifyUser } from '../features/auth/api/auth'
 import PlayroomPage from './PlayroomPage'
 
+type RoomUpdatedEvent = {
+  tableId?: string
+  reason?: 'player-joined' | 'game-started'
+}
+
 function WaitingRoom({ tableId }: { tableId: string }) {
   const navigate = useNavigate()
   const socket = useSocket()
@@ -25,10 +30,27 @@ function WaitingRoom({ tableId }: { tableId: string }) {
     return () => window.clearTimeout(request)
   }, [loadRoom])
   useEffect(() => {
-    const subscribe = () => socket.emit('room:subscribe', tableId)
-    socket.on('connect', subscribe); socket.on('room:updated', loadRoom)
+    const subscribe = () => {
+      socket.emit('room:subscribe', { tableId })
+      void loadRoom()
+    }
+    const refreshRoom = (event?: RoomUpdatedEvent) => {
+      if (event?.tableId && event.tableId !== tableId) return
+
+      if (event?.reason === 'game-started') {
+        setRoom((currentRoom) => currentRoom ? { ...currentRoom, status: 'active' } : currentRoom)
+      }
+
+      void loadRoom()
+    }
+
+    socket.on('connect', subscribe)
+    socket.on('room:updated', refreshRoom)
     if (socket.connected) subscribe()
-    return () => { socket.off('connect', subscribe); socket.off('room:updated', loadRoom) }
+    return () => {
+      socket.off('connect', subscribe)
+      socket.off('room:updated', refreshRoom)
+    }
   }, [socket, tableId, loadRoom])
   useEffect(() => {
     const request = window.setTimeout(() => {
@@ -58,9 +80,12 @@ function WaitingRoom({ tableId }: { tableId: string }) {
       const seat = room.players.find(player => player.seatNumber === index + 1)
       return <div className={seat ? 'seat occupied' : 'seat'} key={index}>{seat ? `${index + 1}. ${seat.username || 'Player'}` : `${index + 1}. Empty seat`}</div>
     })}</div>
-    {currentUid === room.hostId && room.status === 'waiting' && <button className="start-game-button" onClick={() => void startGame()} disabled={isStarting}>{isStarting ? 'STARTING...' : 'START GAME'}</button>}
-    {startError && <p className="start-error" role="alert">{startError}</p>}
-    <p className="room-copy">{room.status === 'waiting' ? 'Only the host can start the game.' : 'Game has started. Connecting to the table...'}</p><button onClick={() => navigate('/lobby')}>BACK TO LOBBY</button>
+    <div className="flex flex-col items-center gap-6 py-6">
+      {currentUid === room.hostId && room.status === 'waiting' && <button className="start-game-button !m-0 !self-center" onClick={() => void startGame()} disabled={isStarting}>{isStarting ? 'STARTING...' : 'START GAME'}</button>}
+      {startError && <p className="start-error !m-0" role="alert">{startError}</p>}
+      <p className="room-copy !m-0">{room.status === 'waiting' ? 'Only the host can start the game.' : 'Game has started. Connecting to the table...'}</p>
+      <button className="!m-0 !mx-auto !block" onClick={() => navigate('/lobby')}>BACK TO LOBBY</button>
+    </div>
   </section></main>
 }
 

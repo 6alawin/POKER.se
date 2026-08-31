@@ -107,8 +107,16 @@ app.use("/api/rooms", createRoomsRouter(io));
 
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
-  socket.on('room:subscribe', (tableId: unknown) => {
-    if (typeof tableId === 'string' && /^\d{4}$/.test(tableId)) socket.join(`room:${tableId}`);
+  socket.on('room:subscribe', (payload: unknown) => {
+    const tableId = typeof payload === 'string'
+      ? payload
+      : payload && typeof payload === 'object' && 'tableId' in payload
+        ? (payload as { tableId?: unknown }).tableId
+        : undefined;
+
+    if (typeof tableId === 'string' && /^\d{4}$/.test(tableId)) {
+      void socket.join(`room:${tableId}`);
+    }
   });
 });
 
@@ -128,5 +136,3 @@ async function startServer(): Promise<void> {
 }
 
 void startServer();
-
-console.log('DB URL:', process.env.DATABASE_URL);

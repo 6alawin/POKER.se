@@ -67,14 +67,39 @@ export default function RoomForm({ onComplete }: { onComplete: (tableId: string)
         <h2>{tab === 'join' ? 'Enter 4-Digit Room PIN' : 'Create a room for your friends'}</h2>
         {tab === 'join' ? <>
           <div className="pin-boxes">{pin.map((digit, index) => <span key={index}>{digit}</span>)}</div>
-          <div className="keypad">{[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(number => <button key={number} onClick={() => appendPin(String(number))}>{number}</button>)}<button className="erase-key" onClick={erasePin} aria-label="Delete last digit">←</button></div>
+          <div className="keypad">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(number => (
+              <button
+                className="!cursor-pointer !border-[#131313] !bg-[#dedee4] !text-[#121212] transition duration-150 hover:!scale-105 hover:!border-[#ffc23d] hover:!bg-[#ffc23d] hover:!text-[#171717]"
+                key={number}
+                onClick={() => appendPin(String(number))}
+              >
+                {number}
+              </button>
+            ))}
+            <button
+              className="erase-key !cursor-pointer !border-[#131313] !bg-[#dedee4] !text-[#121212] transition duration-150 hover:!scale-105 hover:!border-[#ffc23d] hover:!bg-[#ffc23d] hover:!text-[#171717]"
+              onClick={erasePin}
+              aria-label="Delete last digit"
+            >
+              ←
+            </button>
+          </div>
         </> : <p className="room-copy">A unique 4-digit room PIN will be generated when you create the room.</p>}
       </div>
       <div className="settings-panel">
         <h2>{tab === 'join' ? 'Ready to play?' : 'Room Settings'}</h2>
         {tab === 'join' ? <p className="room-copy">Enter the PIN shared by the host to take an available seat.</p> : <div className="players"><strong>Max Players:</strong><div>{[2, 6, 9].map(value => <label key={value}><input type="radio" checked={players === value} onChange={() => setPlayers(value)} /> {value}</label>)}</div></div>}
       </div>
-      {tab === 'join' && <button className="join-button" disabled={!completePin || isSubmitting} onClick={() => void submit()}>{isSubmitting ? 'JOINING...' : 'JOIN'}</button>}
+      {tab === 'join' && (
+        <button
+          className="join-button !cursor-pointer !bg-[#4caf50] !text-white transition duration-150 enabled:hover:!scale-110 enabled:hover:!bg-[#2e9b4b] enabled:hover:!border-[#9cffad] enabled:hover:shadow-[0_0_18px_rgba(76,175,80,0.55)] disabled:!cursor-not-allowed disabled:!bg-[#a8a8b1] disabled:!text-white"
+          disabled={!completePin || isSubmitting}
+          onClick={() => void submit()}
+        >
+          {isSubmitting ? 'JOINING...' : 'JOIN'}
+        </button>
+      )}
     </div>
     {error && <p className="room-error" role="alert">{error}</p>}
     {tab === 'create' && <button className="create-button" disabled={isSubmitting} onClick={() => void submit()}>{isSubmitting ? 'CREATING...' : 'CREATE'}</button>}

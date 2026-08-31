@@ -6,6 +6,11 @@ import pool from "../db";
 const VALID_MAX_PLAYERS = new Set([2, 6, 9]);
 const createRoomCode = () => crypto.randomInt(1000, 10000).toString();
 
+type RoomUpdatedEvent = {
+  tableId: string;
+  reason: "player-joined" | "game-started";
+};
+
 export function createRoomsRouter(io: Server) {
   const router = Router();
 
@@ -36,13 +41,8 @@ router.post('/:tableId/start', async (req, res) => {
 
     const room = result.rows[0]
 
-    io.to(`room:${tableId}`).emit('room:updated', {
-      tableId: room.table_id,
-      hostId: room.host_id,
-      status: room.status,
-      maxPlayer: room.max_player,
-      currentPlayer: room.current_player,
-    })
+    const event: RoomUpdatedEvent = { tableId, reason: "game-started" };
+    io.to(`room:${tableId}`).emit("room:updated", event);
 
     return res.json({ message: 'Game started', room })
   } catch (error) {
@@ -113,7 +113,8 @@ router.post('/:tableId/start', async (req, res) => {
       await client.query("UPDATE game_room SET current_player = $1 WHERE table_id = $2", [currentPlayer, tableId]);
       await client.query("COMMIT");
       const updatedRoom = { tableId, hostId: room.host_id, status: room.status, currentPlayer, maxPlayer: room.max_player };
-      io.to(`room:${tableId}`).emit("room:updated", updatedRoom);
+      const event: RoomUpdatedEvent = { tableId, reason: "player-joined" };
+      io.to(`room:${tableId}`).emit("room:updated", event);
       return res.json({ message: "Joined room successfully", room: { ...updatedRoom, seatNumber } });
     } catch (error) {
       await client.query("ROLLBACK").catch(() => undefined);
