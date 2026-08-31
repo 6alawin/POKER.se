@@ -3,7 +3,7 @@ import type { MouseEvent } from 'react'
 import { signOut } from 'firebase/auth'
 import Avatar from '../ui/Avatar'
 import Logo from '../ui/Logo'
-import { onIdTokenChanged } from 'firebase/auth'
+import { onIdTokenChanged, type User } from 'firebase/auth'
 import { firebaseAuth } from '../../lib/firebase'
 import { saveUsername, verifyUser } from '../../features/auth/api/auth'
 import { clearAuthToken, saveAuthToken } from '../../lib/auth-token'
@@ -30,28 +30,55 @@ export default function PageHeader() {
   const [profileError, setProfileError] = useState('')
 
   useEffect(() => {
-    if (!firebaseAuth) return
+    if (!firebaseAuth) {
+      setUsername('Guest')
+      return
+    }
 
-    return onIdTokenChanged(firebaseAuth, async (firebaseUser) => {
+    let isMounted = true
+    let hasReceivedAuthEvent = false
+
+    const syncProfile = async (firebaseUser: User | null) => {
       if (!firebaseUser) {
-        setUsername('Guest')
-        setUid('')
-        setIdToken('')
+        if (isMounted) {
+          setUsername('Guest')
+          setUid('')
+          setIdToken('')
+        }
         clearAuthToken()
         return
       }
 
-      setUid(firebaseUser.uid)
+      if (isMounted) setUid(firebaseUser.uid)
       try {
         const token = await firebaseUser.getIdToken()
         saveAuthToken(token)
-        setIdToken(token)
+        if (isMounted) setIdToken(token)
         const verification = await verifyUser(token)
-        setUsername(verification.user?.username ?? verification.username ?? 'Guest')
+        if (isMounted) setUsername(verification.user?.username ?? verification.username ?? 'Guest')
       } catch {
-        setUsername(firebaseUser.displayName ?? 'Guest')
+        if (isMounted) setUsername(firebaseUser.displayName ?? 'Guest')
       }
+    }
+
+    const unsubscribe = onIdTokenChanged(firebaseAuth, (firebaseUser) => {
+      hasReceivedAuthEvent = true
+      void syncProfile(firebaseUser)
     })
+
+    // Firebase may already have restored the session before this component mounts.
+    if (firebaseAuth.currentUser) void syncProfile(firebaseAuth.currentUser)
+
+    // Never leave the header stuck on Loading if Firebase has no signed-in user.
+    const fallback = window.setTimeout(() => {
+      if (isMounted && !hasReceivedAuthEvent) setUsername('Guest')
+    }, 3000)
+
+    return () => {
+      isMounted = false
+      window.clearTimeout(fallback)
+      unsubscribe()
+    }
   }, [])
 
   const startEditingUsername = () => {
@@ -110,13 +137,13 @@ export default function PageHeader() {
         <button className="user" onClick={() => setIsProfileOpen((open) => !open)} aria-expanded={isProfileOpen}>
           <Avatar className={styles.headerAvatar} />
           <span>
-            <b>{username}</b>
-            <small>{uid}</small>
+            <b className="!font-['VT323'] !text-[clamp(22px,2vw,30px)] !leading-none">{username}</b>
+            <small className="!font-['VT323'] !text-[clamp(16px,1.4vw,22px)]">{uid}</small>
           </span>
         </button>
         {isProfileOpen && (
           <section className={styles.modal} aria-label="User profile" onClick={(event) => event.stopPropagation()}>
-            <h2 className="mb-[18px] text-[15px] text-[#ffc23d] underline">USER PROFILE</h2>
+            <h2 className="mb-[18px] !font-['VT323'] !text-[22px] font-bold text-[#ffc23d] underline">USER PROFILE</h2>
             <div className={styles.profileGrid}>
               <div className="group relative size-[128px] cursor-default max-[700px]:size-[92px]" title="Profile image editing coming soon">
                 <Avatar className={styles.modalAvatar} />
@@ -141,18 +168,14 @@ export default function PageHeader() {
                 ) : (
                   <>
                     <strong className="overflow-hidden text-ellipsis whitespace-nowrap font-['VT323'] text-[24px] text-white">{username}</strong>
-                    <button type="button" className={`mt-2 ${styles.actionButton}`} onClick={startEditingUsername}>EDIT USERNAME</button>
+                    <button type="button" className={`mt-2 !text-[12px] ${styles.actionButton}`} onClick={startEditingUsername}>EDIT USERNAME</button>
                   </>
                 )}
                 {profileError && <small className="block font-['VT323'] text-[15px] text-[#ff9d95]">{profileError}</small>}
                 </div>
-                <div className="w-full">
-                  <label className="mb-1 block text-[12px] text-[#d8c79e] underline">UID</label>
-                  <strong className="block overflow-hidden text-ellipsis whitespace-nowrap font-['VT323'] text-[24px] text-white">{uid || 'No UID'}</strong>
-                </div>
               </div>
             </div>
-            <button type="button" className={styles.logoutButton} onClick={logout}>LOG OUT</button>
+            <button type="button" className={`${styles.logoutButton} !font-['VT323'] !text-[20px]`} onClick={logout}>LOG OUT</button>
           </section>
         )}
       </div>

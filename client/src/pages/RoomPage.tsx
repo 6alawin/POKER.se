@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
-import RoomForm from '../features/rooms/components/RoomForm'
 import { getRoom, startRoom, type RoomDetails } from '../features/rooms/api'
 import { useSocket } from '../hooks/useSocket'
 import { getAuthToken } from '../lib/auth-token'
 import { verifyUser } from '../features/auth/api/auth'
-import PlayroomPage from './PlayroomPage'
+
+const PlayroomPage = lazy(() => import('./PlayroomPage'))
+const RoomForm = lazy(() => import('../features/rooms/components/RoomForm'))
 
 type RoomUpdatedEvent = {
   tableId?: string
@@ -73,7 +74,7 @@ function WaitingRoom({ tableId }: { tableId: string }) {
   }
   if (loadError) return <main className="room-page"><div className="waiting-room"><h1>ROOM UNAVAILABLE</h1><p>{loadError}</p><button onClick={() => navigate('/room')}>BACK</button></div></main>
   if (!room) return <main className="room-page"><div className="waiting-room"><p>LOADING ROOM...</p></div></main>
-  if (room.status === 'active') return <PlayroomPage room={room} />
+  if (room.status === 'active') return <Suspense fallback={<main className="room-page"><div className="waiting-room"><p>LOADING TABLE...</p></div></main>}><PlayroomPage room={room} /></Suspense>
   return <main className="room-page"><section className="waiting-room">
     <p className="waiting-label">SHARE THIS PIN WITH FRIENDS</p><h1>{room.tableId}</h1><p className="waiting-status">WAITING FOR PLAYERS · {room.currentPlayer}/{room.maxPlayer}</p>
     <div className="seat-list">{Array.from({ length: room.maxPlayer }, (_, index) => {
@@ -93,5 +94,5 @@ export default function RoomPage() {
   const navigate = useNavigate()
   const { tableId } = useParams()
   if (tableId) return <WaitingRoom tableId={tableId} />
-  return <main className="room-page"><div className="overlay"><RoomForm onComplete={(id) => navigate(`/room/${id}`)} /></div></main>
+  return <main className="room-page"><div className="overlay"><Suspense fallback={<div className="room-modal grid min-h-[355px] place-items-center">LOADING ROOM OPTIONS...</div>}><RoomForm onComplete={(id) => navigate(`/room/${id}`)} /></Suspense></div></main>
 }

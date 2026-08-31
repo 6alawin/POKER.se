@@ -21,3 +21,12 @@
   .table-area{padding:16px 4px}
   .poker-table{width:min(112vw,calc((100dvh - 130px) * 1.1));max-width:none}
 }
+
+/* Keep game labels readable on high-resolution screens. */
+.playroom-header>div:nth-child(2){font-size:clamp(14px,1.5vw,20px)}
+.playroom-header small{font-size:clamp(18px,1.6vw,24px)}
+.table-felt{font-size:clamp(22px,3vw,40px)}
+.table-felt small{font-size:clamp(18px,1.5vw,24px)}
+.table-seat strong{font-size:clamp(11px,1.15vw,16px)}
+.table-seat small{font-size:clamp(16px,1.3vw,21px)}
+.mode small{font-size:clamp(12px,1.1vw,18px)}

@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PageHeader from '../components/layout/PageHeader'
 import TrophyIcon from '../components/ui/TrophyIcon'
-import RoomForm from '../features/rooms/components/RoomForm'
+
+const RoomForm = lazy(() => import('../features/rooms/components/RoomForm'))
 
 export default function LobbyPage() {
   const navigate = useNavigate()
@@ -42,7 +43,9 @@ export default function LobbyPage() {
             >
               ×
             </button>
-            <RoomForm onComplete={(tableId) => navigate(`/room/${tableId}`)} />
+            <Suspense fallback={<div className="room-modal grid min-h-[355px] place-items-center">LOADING ROOM OPTIONS...</div>}>
+              <RoomForm onComplete={(tableId) => navigate(`/room/${tableId}`)} />
+            </Suspense>
           </div>
         </div>
       )}
