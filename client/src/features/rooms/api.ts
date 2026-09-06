@@ -10,7 +10,14 @@ export type RoomSummary = {
 }
 
 export type RoomDetails = RoomSummary & {
-  players: Array<{ uid: string; username: string | null; pictureId: string | null; seatNumber: number }>
+  players: Array<{ uid: string; username: string | null; pictureId: string | null; seatNumber: number; connected?: boolean; folded?: boolean }>
+}
+
+export type TableState = RoomDetails & {
+  currentTurnUid: string | null
+  turnStartedAt: number | null
+  turnDeadline: number | null
+  turnDurationMs: number
 }
 
 export async function createRoom(uid: string, maxPlayers: number) {

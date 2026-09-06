@@ -1,8 +1,9 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
-import { getRoom, startRoom, type RoomDetails } from '../features/rooms/api'
+import { getRoom, startRoom, type RoomDetails, type TableState } from '../features/rooms/api'
 import { useSocket } from '../hooks/useSocket'
+import type { Socket } from 'socket.io-client'
 import { getAuthToken } from '../lib/auth-token'
 import { verifyUser } from '../features/auth/api/auth'
 
@@ -14,10 +15,10 @@ type RoomUpdatedEvent = {
   reason?: 'player-joined' | 'game-started'
 }
 
-function WaitingRoom({ tableId }: { tableId: string }) {
+function WaitingRoom({ tableId, socket }: { tableId: string; socket: Socket }) {
   const navigate = useNavigate()
-  const socket = useSocket()
   const [room, setRoom] = useState<RoomDetails | null>(null)
+  const [tableState, setTableState] = useState<TableState | null>(null)
   const [loadError, setLoadError] = useState('')
   const [startError, setStartError] = useState('')
   const [currentUid, setCurrentUid] = useState<string | null>(null)
@@ -32,7 +33,7 @@ function WaitingRoom({ tableId }: { tableId: string }) {
   }, [loadRoom])
   useEffect(() => {
     const subscribe = () => {
-      socket.emit('room:subscribe', { tableId })
+      socket.emit('room:subscribe', { tableId, uid: currentUid })
       void loadRoom()
     }
     const refreshRoom = (event?: RoomUpdatedEvent) => {
@@ -47,12 +48,18 @@ function WaitingRoom({ tableId }: { tableId: string }) {
 
     socket.on('connect', subscribe)
     socket.on('room:updated', refreshRoom)
+    socket.on('table:state', (state: TableState) => {
+      if (state.tableId !== tableId) return
+      setTableState(state)
+      setRoom(state)
+    })
     if (socket.connected) subscribe()
     return () => {
       socket.off('connect', subscribe)
       socket.off('room:updated', refreshRoom)
+      socket.off('table:state')
     }
-  }, [socket, tableId, loadRoom])
+  }, [socket, tableId, loadRoom, currentUid])
   useEffect(() => {
     const request = window.setTimeout(() => {
       const token = getAuthToken()
@@ -74,7 +81,7 @@ function WaitingRoom({ tableId }: { tableId: string }) {
   }
   if (loadError) return <main className="room-page"><div className="waiting-room"><h1>ROOM UNAVAILABLE</h1><p>{loadError}</p><button onClick={() => navigate('/room')}>BACK</button></div></main>
   if (!room) return <main className="room-page"><div className="waiting-room"><p>LOADING ROOM...</p></div></main>
-  if (room.status === 'active') return <Suspense fallback={<main className="room-page"><div className="waiting-room"><p>LOADING TABLE...</p></div></main>}><PlayroomPage room={room} /></Suspense>
+  if (room.status === 'active') return <Suspense fallback={<main className="room-page"><div className="waiting-room"><p>LOADING TABLE...</p></div></main>}><PlayroomPage room={room} tableState={tableState} currentUid={currentUid} /></Suspense>
   return <main className="room-page"><section className="waiting-room">
     <p className="waiting-label">SHARE THIS PIN WITH FRIENDS</p><h1>{room.tableId}</h1><p className="waiting-status">WAITING FOR PLAYERS · {room.currentPlayer}/{room.maxPlayer}</p>
     <div className="seat-list">{Array.from({ length: room.maxPlayer }, (_, index) => {
@@ -93,6 +100,11 @@ function WaitingRoom({ tableId }: { tableId: string }) {
 export default function RoomPage() {
   const navigate = useNavigate()
   const { tableId } = useParams()
-  if (tableId) return <WaitingRoom tableId={tableId} />
+  if (tableId) return <RoomSession tableId={tableId} />
   return <main className="room-page"><div className="overlay"><Suspense fallback={<div className="room-modal grid min-h-[355px] place-items-center">LOADING ROOM OPTIONS...</div>}><RoomForm onComplete={(id) => navigate(`/room/${id}`)} /></Suspense></div></main>
+}
+
+function RoomSession({ tableId }: { tableId: string }) {
+  const socket = useSocket()
+  return <WaitingRoom tableId={tableId} socket={socket} />
 }

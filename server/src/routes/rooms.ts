@@ -2,8 +2,10 @@ import { Router } from "express";
 import crypto from "crypto";
 import type { Server } from "socket.io";
 import pool from "../db";
+import { broadcastTableState, startTable } from '../table_state';
 
-const VALID_MAX_PLAYERS = new Set([2, 6, 9]);
+const MIN_PLAYERS = 4;
+const MAX_PLAYERS = 10;
 const createRoomCode = () => crypto.randomInt(1000, 10000).toString();
 
 type RoomUpdatedEvent = {
@@ -43,6 +45,7 @@ router.post('/:tableId/start', async (req, res) => {
 
     const event: RoomUpdatedEvent = { tableId, reason: "game-started" };
     io.to(`room:${tableId}`).emit("room:updated", event);
+    await startTable(io, tableId);
 
     return res.json({ message: 'Game started', room })
   } catch (error) {
@@ -63,7 +66,7 @@ router.post('/:tableId/start', async (req, res) => {
     try {
       const { uid, maxPlayers = 2 } = req.body as { uid?: unknown; maxPlayers?: unknown };
       if (typeof uid !== "string" || !uid) return res.status(400).json({ message: "uid is required" });
-      if (typeof maxPlayers !== "number" || !VALID_MAX_PLAYERS.has(maxPlayers)) return res.status(400).json({ message: "maxPlayers must be 2, 6, or 9" });
+      if (typeof maxPlayers !== 'number' || !Number.isInteger(maxPlayers) || maxPlayers < MIN_PLAYERS || maxPlayers > MAX_PLAYERS) return res.status(400).json({ message: "maxPlayers must be between 4 and 10" });
       const user = await client.query('SELECT uid FROM "user" WHERE uid = $1', [uid]);
       if (user.rowCount === 0) return res.status(404).json({ message: "User not found" });
 
@@ -115,6 +118,7 @@ router.post('/:tableId/start', async (req, res) => {
       const updatedRoom = { tableId, hostId: room.host_id, status: room.status, currentPlayer, maxPlayer: room.max_player };
       const event: RoomUpdatedEvent = { tableId, reason: "player-joined" };
       io.to(`room:${tableId}`).emit("room:updated", event);
+      await broadcastTableState(io, tableId);
       return res.json({ message: "Joined room successfully", room: { ...updatedRoom, seatNumber } });
     } catch (error) {
       await client.query("ROLLBACK").catch(() => undefined);

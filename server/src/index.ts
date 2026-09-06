@@ -9,6 +9,7 @@ import pool from './db';
 import { InitDB } from './db/initdb';
 import userRoutes from './routes/users';
 import { createRoomsRouter } from "./routes/rooms";
+import { disconnectPlayer, subscribePlayer } from './table_state';
 
 
 dotenv.config();
@@ -114,10 +115,15 @@ io.on('connection', (socket) => {
         ? (payload as { tableId?: unknown }).tableId
         : undefined;
 
+    const uid = payload && typeof payload === 'object' && 'uid' in payload
+      ? (payload as { uid?: unknown }).uid
+      : undefined;
     if (typeof tableId === 'string' && /^\d{4}$/.test(tableId)) {
-      void socket.join(`room:${tableId}`);
+      void subscribePlayer(io, socket, tableId, typeof uid === 'string' ? uid : undefined);
     }
   });
+  socket.on('room:leave', () => void disconnectPlayer(io, socket));
+  socket.on('disconnect', () => void disconnectPlayer(io, socket));
 });
 
 const PORT = process.env.PORT || 3000;
