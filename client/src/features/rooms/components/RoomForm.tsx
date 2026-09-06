@@ -9,7 +9,7 @@ type RoomTab = 'join' | 'create'
 export default function RoomForm({ onComplete }: { onComplete: (tableId: string) => void }) {
   const [tab, setTab] = useState<RoomTab>('join')
   const [pin, setPin] = useState(['', '', '', ''])
-  const [players, setPlayers] = useState(4)
+  const [players, setPlayers] = useState(2)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -89,7 +89,7 @@ export default function RoomForm({ onComplete }: { onComplete: (tableId: string)
       </div>
       <div className="settings-panel">
         <h2>{tab === 'join' ? 'Ready to play?' : 'Room Settings'}</h2>
-        {tab === 'join' ? <p className="room-copy">Enter the PIN shared by the host to take an available seat.</p> : <div className="players"><strong>Max Players:</strong><div>{[4, 5, 6, 7, 8, 9, 10].map(value => <label key={value}><input type="radio" checked={players === value} onChange={() => setPlayers(value)} /> {value}</label>)}</div></div>}
+        {tab === 'join' ? <p className="room-copy">Enter the PIN shared by the host to take an available seat.</p> : <div className="players"><strong>Max Players:</strong><div>{[2, 3, 4, 5, 6, 7, 8, 9].map(value => <label key={value}><input type="radio" checked={players === value} onChange={() => setPlayers(value)} /> {value}</label>)}</div></div>}
       </div>
       {tab === 'join' && (
         <button

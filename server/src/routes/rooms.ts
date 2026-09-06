@@ -4,8 +4,8 @@ import type { Server } from "socket.io";
 import pool from "../db";
 import { broadcastTableState, startTable } from '../table_state';
 
-const MIN_PLAYERS = 4;
-const MAX_PLAYERS = 10;
+const MIN_PLAYERS = 2;
+const MAX_PLAYERS = 9;
 const createRoomCode = () => crypto.randomInt(1000, 10000).toString();
 
 type RoomUpdatedEvent = {
@@ -66,7 +66,7 @@ router.post('/:tableId/start', async (req, res) => {
     try {
       const { uid, maxPlayers = 2 } = req.body as { uid?: unknown; maxPlayers?: unknown };
       if (typeof uid !== "string" || !uid) return res.status(400).json({ message: "uid is required" });
-      if (typeof maxPlayers !== 'number' || !Number.isInteger(maxPlayers) || maxPlayers < MIN_PLAYERS || maxPlayers > MAX_PLAYERS) return res.status(400).json({ message: "maxPlayers must be between 4 and 10" });
+      if (typeof maxPlayers !== 'number' || !Number.isInteger(maxPlayers) || maxPlayers < MIN_PLAYERS || maxPlayers > MAX_PLAYERS) return res.status(400).json({ message: "maxPlayers must be between 2 and 9" });
       const user = await client.query('SELECT uid FROM "user" WHERE uid = $1', [uid]);
       if (user.rowCount === 0) return res.status(404).json({ message: "User not found" });
 
