@@ -2,6 +2,12 @@
   "name": "poker-io",
   "private": true,
   "packageManager": "npm@11.12.1",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "build:client": "turbo run build --filter=client",
+    "build:server": "turbo run build --filter=server"
+  },
   "workspaces": [
     "client",
     "server"

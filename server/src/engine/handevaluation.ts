@@ -1,10 +1,21 @@
 import { Card, Rank, Suit } from "./deck";
 import { HandRank } from "./hand";
 
-export function evaluateHand(cards: Card[]): {
+type EvaluationResult = {
   rank: HandRank;
   tiebreakers: number[];
-} {
+};
+
+type PlayerHand = {
+  holeCards: Card[];
+};
+
+export function evaluateHand(cards: Card[]): EvaluationResult;
+export function evaluateHand(hand: PlayerHand, communityCards: Card[]): EvaluationResult;
+export function evaluateHand(cardsOrHand: Card[] | PlayerHand, communityCards: Card[] = []): EvaluationResult {
+  const cards = Array.isArray(cardsOrHand)
+    ? cardsOrHand
+    : [...cardsOrHand.holeCards, ...communityCards];
   const rankCounts = countByRank(cards); // { 14: 2, 5: 3, 9: 1, ... }
   const suitCounts = countBySuit(cards); // { spades: 5, hearts: 2, ... }
 
@@ -30,6 +41,13 @@ export function evaluateHand(cards: Card[]): {
     return {
       rank: HandRank.FourOfAKind,
       tiebreakers: [...groups.fours, ...groups.kickers].slice(0, 2),
+    };
+  }
+
+  if (groups.threes.length >= 2) {
+    return {
+      rank: HandRank.FullHouse,
+      tiebreakers: [groups.threes[0], groups.threes[1]],
     };
   }
 
