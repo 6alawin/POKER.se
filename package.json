@@ -3,10 +3,10 @@
   "private": true,
   "packageManager": "npm@11.12.1",
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "build:client": "turbo run build --filter=client",
-    "build:server": "turbo run build --filter=server"
+    "dev": "npx --yes turbo@2.10.9 run dev",
+    "build": "npx --yes turbo@2.10.9 run build",
+    "build:client": "npx --yes turbo@2.10.9 run build --filter=client",
+    "build:server": "npx --yes turbo@2.10.9 run build --filter=server"
   },
   "workspaces": [
     "client",
