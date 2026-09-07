@@ -1,107 +1,87 @@
-import { useState } from 'react'
-import axios from 'axios'
-import { getAuthToken } from '../../../lib/auth-token'
-import { verifyUser } from '../../auth/api/auth'
-import { createRoom, joinRoom } from '../api'
+import { useEffect, useRef, useState } from 'react'
 
-type RoomTab = 'join' | 'create'
+export type RoomTab = 'join' | 'create'
 
-export default function RoomForm({ onComplete }: { onComplete: (tableId: string) => void }) {
-  const [tab, setTab] = useState<RoomTab>('join')
-  const [pin, setPin] = useState(['', '', '', ''])
+type RoomFormProps = {
+  initialTab?: RoomTab
+  busy?: boolean
+  error?: string
+  onClose: () => void
+  onCreate: (maxPlayers: number) => void
+  onJoin: (pin: string) => void
+}
+
+export default function RoomForm({ initialTab = 'join', busy = false, error, onClose, onCreate, onJoin }: RoomFormProps) {
+  const [tab, setTab] = useState<RoomTab>(initialTab)
+  const [pin, setPin] = useState<string[]>([])
   const [players, setPlayers] = useState(2)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState('')
+  const modalRef = useRef<HTMLElement>(null)
 
-  const appendPin = (digit: string) => setPin(current => {
-    const next = [...current]
-    const index = next.findIndex(value => !value)
-    if (index >= 0) next[index] = digit
-    return next
-  })
-  const erasePin = () => setPin(current => {
-    const next = [...current]
-    const index = next.map(Boolean).lastIndexOf(true)
-    if (index >= 0) next[index] = ''
-    return next
-  })
+  useEffect(() => {
+    modalRef.current?.focus()
+  }, [])
 
-  async function getUid() {
-    const token = getAuthToken()
-    if (!token) throw new Error('Your session has expired. Please sign in again.')
-    const verification = await verifyUser(token)
-    if (!verification.uid) throw new Error('Your session has expired. Please sign in again.')
-    return verification.uid
+  const appendPin = (digit: string) => setPin((value) => value.length < 4 ? [...value, digit] : value)
+  const erasePin = () => setPin((value) => value.slice(0, -1))
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (tab !== 'join') return
+    if (/^\d$/.test(event.key)) appendPin(event.key)
+    if (event.key === 'Backspace') erasePin()
+    if (event.key === 'Enter' && pin.length === 4 && !busy) onJoin(pin.join(''))
+    if (event.key === 'Escape') onClose()
   }
 
-  async function submit() {
-    setError('')
-    setIsSubmitting(true)
-    try {
-      const uid = await getUid()
-      const room = tab === 'create'
-        ? await createRoom(uid, players)
-        : await joinRoom(uid, pin.join(''))
-      onComplete(room.tableId)
-    } catch (cause) {
-      const message = axios.isAxiosError(cause) ? cause.response?.data?.message : undefined
-      setError(message || (cause instanceof Error ? cause.message : 'Unable to enter the room. Please try again.'))
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  function changeTab(nextTab: RoomTab) {
+  const changeTab = (nextTab: RoomTab) => {
     setTab(nextTab)
-    setError('')
+    setPin([])
   }
 
-  const completePin = pin.every(Boolean)
-  return <section className="room-modal" aria-label="Room settings">
-    <div className="tabs">
-      <button className={tab === 'join' ? 'selected' : ''} onClick={() => changeTab('join')}>JOIN ROOM</button>
-      <button className={tab === 'create' ? 'selected' : ''} onClick={() => changeTab('create')}>CREATE ROOM</button>
-    </div>
-    <div className={`room-content ${tab}`}>
-      <div className="pin-panel">
-        <h2>{tab === 'join' ? 'Enter 4-Digit Room PIN' : 'Create a room for your friends'}</h2>
-        {tab === 'join' ? <>
-          <div className="pin-boxes">{pin.map((digit, index) => <span key={index}>{digit}</span>)}</div>
-          <div className="keypad">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(number => (
-              <button
-                className="!cursor-pointer !border-[#131313] !bg-[#dedee4] !text-[#121212] transition duration-150 hover:!scale-105 hover:!border-[#ffc23d] hover:!bg-[#ffc23d] hover:!text-[#171717]"
-                key={number}
-                onClick={() => appendPin(String(number))}
-              >
-                {number}
-              </button>
-            ))}
-            <button
-              className="erase-key !cursor-pointer !border-[#131313] !bg-[#dedee4] !text-[#121212] transition duration-150 hover:!scale-105 hover:!border-[#ffc23d] hover:!bg-[#ffc23d] hover:!text-[#171717]"
-              onClick={erasePin}
-              aria-label="Delete last digit"
-            >
-              ←
+  return (
+    <section ref={modalRef} className="room-modal" aria-label="Play with friends" tabIndex={-1} onKeyDown={handleKeyDown}>
+      <button className="room-close" type="button" onClick={onClose} aria-label="Close room dialog">×</button>
+      <div className="room-tabs" role="tablist" aria-label="Room action">
+        <button role="tab" aria-selected={tab === 'join'} className={tab === 'join' ? 'selected' : ''} onClick={() => changeTab('join')}>JOIN ROOM</button>
+        <button role="tab" aria-selected={tab === 'create'} className={tab === 'create' ? 'selected' : ''} onClick={() => changeTab('create')}>CREATE ROOM</button>
+      </div>
+
+      {tab === 'join' ? (
+        <div className="join-room-content">
+          <h2>ENTER 4-DIGIT ROOM PIN</h2>
+          <div className="pin-entry" aria-label={`${pin.length} of 4 digits entered`}>
+            {Array.from({ length: 4 }, (_, index) => <span key={index}>{pin[index] ?? ''}</span>)}
+          </div>
+          <div className="join-controls">
+            <div className="keypad" aria-label="Number pad">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((number) => (
+                <button type="button" key={number} onClick={() => appendPin(String(number))}>{number}</button>
+              ))}
+              <button className="key-delete" type="button" onClick={erasePin} aria-label="Delete last digit">⌫</button>
+              <button type="button" onClick={() => appendPin('0')}>0</button>
+            </div>
+            <button className="join-room-button" type="button" disabled={pin.length !== 4 || busy} onClick={() => onJoin(pin.join(''))}>
+              {busy ? 'WAIT...' : 'JOIN'}
             </button>
           </div>
-        </> : <p className="room-copy">A unique 4-digit room PIN will be generated when you create the room.</p>}
-      </div>
-      <div className="settings-panel">
-        <h2>{tab === 'join' ? 'Ready to play?' : 'Room Settings'}</h2>
-        {tab === 'join' ? <p className="room-copy">Enter the PIN shared by the host to take an available seat.</p> : <div className="players"><strong>Max Players:</strong><div>{[2, 3, 4, 5, 6, 7, 8, 9].map(value => <label key={value}><input type="radio" checked={players === value} onChange={() => setPlayers(value)} /> {value}</label>)}</div></div>}
-      </div>
-      {tab === 'join' && (
-        <button
-          className="join-button !cursor-pointer !bg-[#4caf50] !text-white transition duration-150 enabled:hover:!scale-110 enabled:hover:!bg-[#2e9b4b] enabled:hover:!border-[#9cffad] enabled:hover:shadow-[0_0_18px_rgba(76,175,80,0.55)] disabled:!cursor-not-allowed disabled:!bg-[#a8a8b1] disabled:!text-white"
-          disabled={!completePin || isSubmitting}
-          onClick={() => void submit()}
-        >
-          {isSubmitting ? 'JOINING...' : 'JOIN'}
-        </button>
+        </div>
+      ) : (
+        <div className="create-room-content">
+          <p>CHOOSE YOUR TABLE SIZE</p>
+          <div className="max-player-options" role="radiogroup" aria-label="Maximum players">
+            {[2, 6, 9].map((value) => (
+              <button type="button" role="radio" aria-checked={players === value} className={players === value ? 'selected' : ''} key={value} onClick={() => setPlayers(value)}>
+                <span aria-hidden="true" /> {value}
+              </button>
+            ))}
+          </div>
+          <small>MAX PLAYERS</small>
+          <button className="create-room-button" type="button" disabled={busy} onClick={() => onCreate(players)}>
+            {busy ? 'CREATING...' : 'CREATE'}
+          </button>
+        </div>
       )}
-    </div>
-    {error && <p className="room-error" role="alert">{error}</p>}
-    {tab === 'create' && <button className="create-button" disabled={isSubmitting} onClick={() => void submit()}>{isSubmitting ? 'CREATING...' : 'CREATE'}</button>}
-  </section>
+
+      {error && <p className="room-error" role="alert">{error}</p>}
+    </section>
+  )
 }
