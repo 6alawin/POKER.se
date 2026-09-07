@@ -6,10 +6,17 @@ import { resolve } from 'path';
 // from the repository root (for example: `node server/dist/index.js`).
 dotenv.config({ path: resolve(__dirname, '../.env') });
 
+const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
+const connectionString = isProduction
+  ? process.env.DATABASE_URL
+  : process.env.DATABASE_TEST_URL ?? process.env.DATABASE_URL;
+
+if (isProduction && !connectionString) {
+  throw new Error('DATABASE_URL must be configured in production.');
+}
+
 const pool = new Pool({
-  // DATABASE_URL is the application setting documented in .env.example.
-  // Keep DATABASE_TEST_URL as an optional override for automated tests.
-  connectionString: process.env.DATABASE_TEST_URL ?? process.env.DATABASE_URL,
+  connectionString,
 });
 
 export default pool;
