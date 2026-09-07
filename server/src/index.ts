@@ -22,12 +22,22 @@ if (firebaseAdminReady && getApps().length === 0) {
 }
 
 const app = express();
-const clientOrigin = process.env.CLIENT_ORIGIN ?? 'http://localhost:5173';
-const allowedOrigins = new Set([clientOrigin, 'http://localhost:5173', 'http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174']);
+const normalizeOrigin = (origin: string): string => origin.trim().replace(/\/$/, '');
+const configuredOrigins = (process.env.CLIENT_ORIGIN ?? '')
+  .split(',')
+  .map(normalizeOrigin)
+  .filter(Boolean);
+const allowedOrigins = new Set([
+  ...configuredOrigins,
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174',
+]);
 
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+    if (!origin || allowedOrigins.has(normalizeOrigin(origin))) return callback(null, true);
     return callback(new Error(`Origin ${origin} is not allowed by CORS.`));
   },
 }));
