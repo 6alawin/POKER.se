@@ -177,6 +177,11 @@ export async function InitDB(): Promise<void> {
         )
     `);
 
+    // Membership and seats are authoritative room invariants, including for
+    // concurrent join requests.
+    await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS roomplayer_table_uid_unique ON roomplayer (table_id, uid)`);
+    await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS roomplayer_table_seat_unique ON roomplayer (table_id, seat_number)`);
+
     await client.query(`
         CREATE TABLE IF NOT EXISTS match_history (
             history_id VARCHAR(255) PRIMARY KEY,

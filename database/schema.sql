@@ -97,6 +97,9 @@ CREATE TABLE roomplayer (
         REFERENCES "user"(uid)
 );
 
+CREATE UNIQUE INDEX roomplayer_table_uid_unique ON roomplayer (table_id, uid);
+CREATE UNIQUE INDEX roomplayer_table_seat_unique ON roomplayer (table_id, seat_number);
+
 -- match History
 
 CREATE TABLE match_history (

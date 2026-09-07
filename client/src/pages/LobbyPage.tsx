@@ -1,109 +1,54 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PageHeader from '../components/layout/PageHeader'
 import TrophyIcon from '../components/ui/TrophyIcon'
-import RoomForm from '../features/rooms/components/RoomForm'
-import type { RoomTab } from '../features/rooms/components/RoomForm'
-import WaitingRoom from '../features/rooms/components/WaitingRoom'
-import type { LobbyRoom } from '../features/rooms/components/WaitingRoom'
-import QuickMatchModal from '../features/game/components/QuickMatchModal'
-import { useSocket } from '../hooks/useSocket'
 
-type RoomReply = { ok: boolean; room?: LobbyRoom; error?: string }
+const RoomForm = lazy(() => import('../features/rooms/components/RoomForm'))
 
 export default function LobbyPage() {
   const navigate = useNavigate()
-  const socket = useSocket()
-  const [roomTab, setRoomTab] = useState<RoomTab | null>(null)
-  const [showQuick, setShowQuick] = useState(false)
-  const [room, setRoom] = useState<LobbyRoom | null>(null)
-  const [busy, setBusy] = useState(false)
-  const [roomError, setRoomError] = useState('')
-  const username = localStorage.getItem('poker-username') || 'Player'
-
-  useEffect(() => {
-    const updateRoom = (nextRoom: LobbyRoom) => setRoom(nextRoom)
-    const gameStarted = (startedRoom: LobbyRoom) => navigate('/play', { state: { mode: 'friends', room: startedRoom, playerId: socket.id } })
-    const closed = () => {
-      setRoom(null)
-      setRoomError('THE HOST CLOSED THIS ROOM.')
-    }
-    socket.on('room:updated', updateRoom)
-    socket.on('room:started', gameStarted)
-    socket.on('room:closed', closed)
-    return () => {
-      socket.off('room:updated', updateRoom)
-      socket.off('room:started', gameStarted)
-      socket.off('room:closed', closed)
-    }
-  }, [navigate, socket])
-
-  const createRoom = (maxPlayers: number) => {
-    setBusy(true); setRoomError('')
-    socket.timeout(4000).emit('room:create', { name: username, maxPlayers }, (timeoutError: Error | null, reply?: RoomReply) => {
-      setBusy(false)
-      if (timeoutError || !reply?.ok || !reply.room) return setRoomError(reply?.error || 'ROOM SERVER IS OFFLINE. PLEASE TRY AGAIN.')
-      setRoom(reply.room); setRoomTab(null)
-    })
-  }
-
-  const joinRoom = (pin: string) => {
-    setBusy(true); setRoomError('')
-    socket.timeout(4000).emit('room:join', { name: username, pin }, (timeoutError: Error | null, reply?: RoomReply) => {
-      setBusy(false)
-      if (timeoutError || !reply?.ok || !reply.room) return setRoomError(reply?.error || 'ROOM NOT FOUND OR SERVER IS OFFLINE.')
-      setRoom(reply.room); setRoomTab(null)
-    })
-  }
-
-  const refreshPin = () => {
-    if (!room) return
-    setBusy(true)
-    socket.emit('room:repin', { pin: room.pin }, (reply: RoomReply) => {
-      setBusy(false)
-      if (reply.ok && reply.room) setRoom(reply.room)
-      else setRoomError(reply.error || 'COULD NOT CHANGE THE PIN.')
-    })
-  }
-
-  const startGame = () => {
-    if (!room) return
-    setBusy(true)
-    socket.emit('room:start', { pin: room.pin }, (reply: RoomReply) => {
-      setBusy(false)
-      if (!reply.ok) setRoomError(reply.error || 'COULD NOT START THE GAME.')
-    })
-  }
-
-  const leaveRoom = () => {
-    if (room) socket.emit('room:leave', { pin: room.pin })
-    setRoom(null); setRoomError('')
-  }
+  const [isRoomModalOpen, setIsRoomModalOpen] = useState(false)
 
   return (
-    <main className="lobby-page">
+    <main className="lobby-page !flex !h-dvh !min-h-screen !flex-col !overflow-hidden !font-['VT323',monospace]">
       <PageHeader />
-      <section className="lobby-content">
-        <p className="lobby-kicker">CHOOSE YOUR TABLE</p>
-        <h1>SELECT MODE</h1>
-        <div className="modes">
-          <button className="mode friend" onClick={() => { setRoomTab('join'); setRoomError('') }}>
-            <span className="mode-icon"><img src="/images/player_icon.png" alt="" /></span>
-            <b>PLAY WITH FRIENDS</b><small>CREATE OR JOIN WITH A PIN</small>
+      <section className="lobby-content !relative !z-10 !min-h-0 !flex-1 !justify-center !px-6 !py-[clamp(10px,3vh,32px)]">
+        <h1 className="!mb-[clamp(22px,6vh,68px)] !mt-0 !text-[clamp(20px,3vw,34px)] max-[700px]:!mb-[clamp(12px,3vh,35px)]">SELECT MODE</h1>
+        <div className="modes !min-h-0 !w-[min(900px,100%)] !gap-[clamp(16px,3vw,32px)] max-[700px]:!w-[min(430px,100%)]">
+          <button className="mode friend !aspect-square !min-h-0 !gap-[clamp(12px,3vh,27px)] max-[700px]:!aspect-auto max-[700px]:basis-0" onClick={() => setIsRoomModalOpen(true)}>
+            <span className="mode-icon"><img className="size-[60%] object-contain [image-rendering:pixelated]" src="/images/player_icon.png" alt="" /></span>
+            <b>Play with Friend</b>
+            <small>INVITE VIA CODE</small>
           </button>
-          <button className="mode bot" onClick={() => setShowQuick(true)}>
-            <span className="mode-icon"><img src="/images/bot_icon.png" alt="" /></span>
-            <b>PLAY WITH BOTS</b><small>PRACTICE TEXAS HOLD'EM</small>
+          <button className="mode bot !aspect-square !min-h-0 !gap-[clamp(12px,3vh,27px)] max-[700px]:!aspect-auto max-[700px]:basis-0" onClick={() => alert('Practice mode is coming soon.')}>
+            <span className="mode-icon"><img className="size-[60%] object-contain [image-rendering:pixelated]" src="/images/bot_icon.png" alt="" /></span>
+            <b>Play with Bot</b>
+            <small>PRACTICE OFFLINE</small>
           </button>
         </div>
       </section>
-      <footer><button onClick={() => alert('Leaderboard is coming soon.')}><TrophyIcon /><span>LEADERBOARD</span></button></footer>
-
-      {roomTab && <div className="overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setRoomTab(null) }}>
-        <RoomForm initialTab={roomTab} busy={busy} error={roomError} onClose={() => setRoomTab(null)} onCreate={createRoom} onJoin={joinRoom} />
-      </div>}
-      {room && <div className="room-lobby-overlay"><WaitingRoom room={room} currentSocketId={socket.id} busy={busy} error={roomError} onRefreshPin={refreshPin} onStart={startGame} onLeave={leaveRoom} /></div>}
-      {showQuick && <QuickMatchModal onClose={() => setShowQuick(false)} />}
+      <footer className="!min-h-0 !basis-[clamp(72px,12vh,110px)] !px-[clamp(16px,7vw,72px)] !py-[clamp(12px,3vh,28px)]">
+        <button className="flex items-center gap-3" onClick={() => alert('Leaderboard is coming soon.')}>
+          <TrophyIcon />
+          <span>LEADERBOARD</span>
+        </button>
+      </footer>
+      {isRoomModalOpen && (
+        <div className="overlay !z-[60]" role="dialog" aria-modal="true" aria-label="Room settings">
+          <div className="relative w-[min(900px,100%)]">
+            <button
+              className="absolute right-3 top-3 z-[70] cursor-pointer border-2 border-[#ffc23d] bg-[#232526] px-3 py-1 font-['VT323',monospace] text-2xl font-bold leading-none text-[#ffd18a]"
+              onClick={() => setIsRoomModalOpen(false)}
+              aria-label="Close room settings"
+            >
+              ×
+            </button>
+            <Suspense fallback={<div className="room-modal grid min-h-[355px] place-items-center">LOADING ROOM OPTIONS...</div>}>
+              <RoomForm onComplete={(tableId) => navigate(`/room/${tableId}`)} />
+            </Suspense>
+          </div>
+        </div>
+      )}
     </main>
   )
 }

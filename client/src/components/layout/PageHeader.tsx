@@ -3,16 +3,16 @@ import type { MouseEvent } from 'react'
 import { signOut } from 'firebase/auth'
 import Avatar from '../ui/Avatar'
 import Logo from '../ui/Logo'
-import { onIdTokenChanged } from 'firebase/auth'
+import { onIdTokenChanged, type User } from 'firebase/auth'
 import { firebaseAuth } from '../../lib/firebase'
-import { verifyUser } from '../../features/auth/api/auth'
+import { saveUsername, verifyUser } from '../../features/auth/api/auth'
 import { clearAuthToken, saveAuthToken } from '../../lib/auth-token'
 
 const styles = {
   header: '!z-30 !min-h-0 !basis-[clamp(76px,12vh,112px)] !px-[clamp(16px,6vw,64px)] !py-[clamp(10px,2vh,20px)]',
   trigger: 'relative z-40',
   headerAvatar: '!h-[clamp(64px,7vw,96px)] !w-[clamp(64px,7vw,96px)] !shrink-0',
-  modal: 'relative z-50 w-[min(520px,calc(100vw-32px))] border-4 border-[#ffc23d] bg-[#292b2c] p-8 text-white shadow-[-7px_7px_#151515] max-[700px]:w-[min(360px,calc(100vw-32px))] max-[700px]:p-5',
+  modal: 'absolute left-0 top-[calc(100%+12px)] z-50 w-[min(420px,calc(100vw-32px))] border-4 border-[#ffc23d] bg-[#292b2c] p-5 text-white shadow-[-6px_6px_#151515] max-[700px]:w-[min(320px,calc(100vw-32px))] max-[700px]:p-4',
   profileGrid: '!grid grid-cols-[128px_minmax(0,1fr)] items-center gap-5 max-[700px]:grid-cols-[92px_minmax(0,1fr)] max-[700px]:gap-3',
   modalAvatar: '!h-[128px] !w-[128px] !shrink-0 !text-[48px] max-[700px]:!h-[92px] max-[700px]:!w-[92px] max-[700px]:!text-[34px]',
   actionButton: 'cursor-pointer border-2 border-[#6f5d39] bg-[#232526] px-1 py-1 text-[8px] text-[#ffd18a]',
@@ -23,32 +23,62 @@ export default function PageHeader() {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [username, setUsername] = useState('Loading...')
   const [uid, setUid] = useState('')
+  const [idToken, setIdToken] = useState('')
   const [isEditingUsername, setIsEditingUsername] = useState(false)
   const [editedUsername, setEditedUsername] = useState('')
   const [isSavingUsername, setIsSavingUsername] = useState(false)
   const [profileError, setProfileError] = useState('')
 
   useEffect(() => {
-    if (!firebaseAuth) return
+    if (!firebaseAuth) {
+      setUsername('Guest')
+      return
+    }
 
-    return onIdTokenChanged(firebaseAuth, async (firebaseUser) => {
+    let isMounted = true
+    let hasReceivedAuthEvent = false
+
+    const syncProfile = async (firebaseUser: User | null) => {
       if (!firebaseUser) {
-        setUsername('Guest')
-        setUid('')
+        if (isMounted) {
+          setUsername('Guest')
+          setUid('')
+          setIdToken('')
+        }
         clearAuthToken()
         return
       }
 
-      setUid(firebaseUser.uid)
+      if (isMounted) setUid(firebaseUser.uid)
       try {
         const token = await firebaseUser.getIdToken()
         saveAuthToken(token)
+        if (isMounted) setIdToken(token)
         const verification = await verifyUser(token)
-        setUsername(localStorage.getItem('poker-username') ?? verification.user?.username ?? verification.username ?? 'Guest')
+        if (isMounted) setUsername(verification.user?.username ?? verification.username ?? 'Guest')
       } catch {
-        setUsername(localStorage.getItem('poker-username') ?? firebaseUser.displayName ?? 'Guest')
+        if (isMounted) setUsername(firebaseUser.displayName ?? 'Guest')
       }
+    }
+
+    const unsubscribe = onIdTokenChanged(firebaseAuth, (firebaseUser) => {
+      hasReceivedAuthEvent = true
+      void syncProfile(firebaseUser)
     })
+
+    // Firebase may already have restored the session before this component mounts.
+    if (firebaseAuth.currentUser) void syncProfile(firebaseAuth.currentUser)
+
+    // Never leave the header stuck on Loading if Firebase has no signed-in user.
+    const fallback = window.setTimeout(() => {
+      if (isMounted && !hasReceivedAuthEvent) setUsername('Guest')
+    }, 3000)
+
+    return () => {
+      isMounted = false
+      window.clearTimeout(fallback)
+      unsubscribe()
+    }
   }, [])
 
   const startEditingUsername = () => {
@@ -57,19 +87,34 @@ export default function PageHeader() {
     setIsEditingUsername(true)
   }
 
-  const updateUsername = () => {
+  const updateUsername = async () => {
     const nextUsername = editedUsername.trim()
     if (!/^[a-zA-Z0-9_]{3,16}$/.test(nextUsername)) {
       setProfileError('Username must be 3-16 letters, numbers, or _.')
       return
     }
 
+    const currentToken = firebaseAuth?.currentUser
+      ? await firebaseAuth.currentUser.getIdToken(true)
+      : idToken
+    if (!currentToken) {
+      setProfileError('Please login again before editing username.')
+      return
+    }
+
     setIsSavingUsername(true)
-    localStorage.setItem('poker-username', nextUsername)
-    setUsername(nextUsername)
-    setIsEditingUsername(false)
-    setProfileError('')
-    setIsSavingUsername(false)
+    try {
+      saveAuthToken(currentToken)
+      setIdToken(currentToken)
+      await saveUsername({ idToken: currentToken }, nextUsername)
+      setUsername(nextUsername)
+      setIsEditingUsername(false)
+      setProfileError('')
+    } catch {
+      setProfileError('Unable to save username.')
+    } finally {
+      setIsSavingUsername(false)
+    }
   }
 
   const logout = (event: MouseEvent<HTMLButtonElement>) => {
@@ -92,15 +137,13 @@ export default function PageHeader() {
         <button className="user" onClick={() => setIsProfileOpen((open) => !open)} aria-expanded={isProfileOpen}>
           <Avatar className={styles.headerAvatar} />
           <span>
-            <b>{username}</b>
-            <small>{uid}</small>
+            <b className="!font-['VT323'] !text-[clamp(22px,2vw,30px)] !leading-none">{username}</b>
+            <small className="!font-['VT323'] !text-[clamp(16px,1.4vw,22px)]">{uid}</small>
           </span>
         </button>
         {isProfileOpen && (
-          <div className="profile-backdrop" onClick={() => setIsProfileOpen(false)}>
           <section className={styles.modal} aria-label="User profile" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="profile-close" aria-label="Close profile" onClick={() => setIsProfileOpen(false)}>×</button>
-            <h2 className="mb-[28px] text-center text-[clamp(19px,3vw,30px)] text-white underline">USER PROFILE</h2>
+            <h2 className="mb-[18px] !font-['VT323'] !text-[22px] font-bold text-[#ffc23d] underline">USER PROFILE</h2>
             <div className={styles.profileGrid}>
               <div className="group relative size-[128px] cursor-default max-[700px]:size-[92px]" title="Profile image editing coming soon">
                 <Avatar className={styles.modalAvatar} />
@@ -125,20 +168,15 @@ export default function PageHeader() {
                 ) : (
                   <>
                     <strong className="overflow-hidden text-ellipsis whitespace-nowrap font-['VT323'] text-[24px] text-white">{username}</strong>
-                    <button type="button" className={`mt-2 ${styles.actionButton}`} onClick={startEditingUsername}>EDIT USERNAME</button>
+                    <button type="button" className={`mt-2 !text-[12px] ${styles.actionButton}`} onClick={startEditingUsername}>EDIT USERNAME</button>
                   </>
                 )}
                 {profileError && <small className="block font-['VT323'] text-[15px] text-[#ff9d95]">{profileError}</small>}
                 </div>
-                <div className="w-full">
-                  <label className="mb-1 block text-[12px] text-[#d8c79e] underline">UID</label>
-                  <strong className="block overflow-hidden text-ellipsis whitespace-nowrap font-['VT323'] text-[24px] text-white">{uid || 'No UID'}</strong>
-                </div>
               </div>
             </div>
-            <button type="button" className={styles.logoutButton} onClick={logout}>LOG OUT</button>
+            <button type="button" className={`${styles.logoutButton} !font-['VT323'] !text-[20px]`} onClick={logout}>LOG OUT</button>
           </section>
-          </div>
         )}
       </div>
       <Logo showWordmark />
