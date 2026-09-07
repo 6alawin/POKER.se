@@ -4,6 +4,7 @@ import { signOut } from 'firebase/auth'
 import LoginPage from './pages/LoginPage'
 import LobbyPage from './pages/LobbyPage'
 import RoomPage from './pages/RoomPage'
+import PlayroomPage from './pages/PlayroomPage'
 import './App.css'
 import { getAuthToken } from './lib/auth-token'
 import { clearAuthToken } from './lib/auth-token'
@@ -19,6 +20,10 @@ function hasAuthToken(): boolean {
   return Boolean(getAuthToken())
 }
 
+function isFrontendPreview(): boolean {
+  return import.meta.env.DEV && new URLSearchParams(window.location.search).has('preview')
+}
+
 function EntryRoute() {
   return <Navigate to={hasAuthToken() ? '/lobby' : '/login'} replace />
 }
@@ -28,10 +33,13 @@ function LoginRoute() {
 }
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
-  const [isChecking, setIsChecking] = useState(true)
-  const [isValid, setIsValid] = useState(false)
+  const preview = isFrontendPreview()
+  const [isChecking, setIsChecking] = useState(!preview)
+  const [isValid, setIsValid] = useState(preview)
 
   useEffect(() => {
+    if (preview) return
+
     let isMounted = true
 
     const validateSession = async () => {
@@ -61,7 +69,7 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [preview])
 
   if (isChecking) return <div className="grid min-h-screen place-items-center bg-[#126137] text-[#ffc23d]">LOADING...</div>
   return isValid ? <>{children}</> : <Navigate to="/login" replace />
@@ -73,6 +81,7 @@ function App() {
     <Route path="/login" element={<LoginRoute />} />
     <Route path="/lobby" element={<ProtectedRoute><LobbyPage /></ProtectedRoute>} />
     <Route path="/room" element={<ProtectedRoute><RoomPage /></ProtectedRoute>} />
+    <Route path="/play" element={<ProtectedRoute><PlayroomPage /></ProtectedRoute>} />
     <Route path="*" element={<EntryRoute />} />
   </Routes>
 }

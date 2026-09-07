@@ -5,14 +5,14 @@ import Avatar from '../ui/Avatar'
 import Logo from '../ui/Logo'
 import { onIdTokenChanged } from 'firebase/auth'
 import { firebaseAuth } from '../../lib/firebase'
-import { saveUsername, verifyUser } from '../../features/auth/api/auth'
+import { verifyUser } from '../../features/auth/api/auth'
 import { clearAuthToken, saveAuthToken } from '../../lib/auth-token'
 
 const styles = {
   header: '!z-30 !min-h-0 !basis-[clamp(76px,12vh,112px)] !px-[clamp(16px,6vw,64px)] !py-[clamp(10px,2vh,20px)]',
   trigger: 'relative z-40',
   headerAvatar: '!h-[clamp(64px,7vw,96px)] !w-[clamp(64px,7vw,96px)] !shrink-0',
-  modal: 'absolute left-0 top-[calc(100%+12px)] z-50 w-[min(420px,calc(100vw-32px))] border-4 border-[#ffc23d] bg-[#292b2c] p-5 text-white shadow-[-6px_6px_#151515] max-[700px]:w-[min(320px,calc(100vw-32px))] max-[700px]:p-4',
+  modal: 'relative z-50 w-[min(520px,calc(100vw-32px))] border-4 border-[#ffc23d] bg-[#292b2c] p-8 text-white shadow-[-7px_7px_#151515] max-[700px]:w-[min(360px,calc(100vw-32px))] max-[700px]:p-5',
   profileGrid: '!grid grid-cols-[128px_minmax(0,1fr)] items-center gap-5 max-[700px]:grid-cols-[92px_minmax(0,1fr)] max-[700px]:gap-3',
   modalAvatar: '!h-[128px] !w-[128px] !shrink-0 !text-[48px] max-[700px]:!h-[92px] max-[700px]:!w-[92px] max-[700px]:!text-[34px]',
   actionButton: 'cursor-pointer border-2 border-[#6f5d39] bg-[#232526] px-1 py-1 text-[8px] text-[#ffd18a]',
@@ -23,7 +23,6 @@ export default function PageHeader() {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [username, setUsername] = useState('Loading...')
   const [uid, setUid] = useState('')
-  const [idToken, setIdToken] = useState('')
   const [isEditingUsername, setIsEditingUsername] = useState(false)
   const [editedUsername, setEditedUsername] = useState('')
   const [isSavingUsername, setIsSavingUsername] = useState(false)
@@ -36,7 +35,6 @@ export default function PageHeader() {
       if (!firebaseUser) {
         setUsername('Guest')
         setUid('')
-        setIdToken('')
         clearAuthToken()
         return
       }
@@ -45,11 +43,10 @@ export default function PageHeader() {
       try {
         const token = await firebaseUser.getIdToken()
         saveAuthToken(token)
-        setIdToken(token)
         const verification = await verifyUser(token)
-        setUsername(verification.user?.username ?? verification.username ?? 'Guest')
+        setUsername(localStorage.getItem('poker-username') ?? verification.user?.username ?? verification.username ?? 'Guest')
       } catch {
-        setUsername(firebaseUser.displayName ?? 'Guest')
+        setUsername(localStorage.getItem('poker-username') ?? firebaseUser.displayName ?? 'Guest')
       }
     })
   }, [])
@@ -60,34 +57,19 @@ export default function PageHeader() {
     setIsEditingUsername(true)
   }
 
-  const updateUsername = async () => {
+  const updateUsername = () => {
     const nextUsername = editedUsername.trim()
     if (!/^[a-zA-Z0-9_]{3,16}$/.test(nextUsername)) {
       setProfileError('Username must be 3-16 letters, numbers, or _.')
       return
     }
 
-    const currentToken = firebaseAuth?.currentUser
-      ? await firebaseAuth.currentUser.getIdToken(true)
-      : idToken
-    if (!currentToken) {
-      setProfileError('Please login again before editing username.')
-      return
-    }
-
     setIsSavingUsername(true)
-    try {
-      saveAuthToken(currentToken)
-      setIdToken(currentToken)
-      await saveUsername({ idToken: currentToken }, nextUsername)
-      setUsername(nextUsername)
-      setIsEditingUsername(false)
-      setProfileError('')
-    } catch {
-      setProfileError('Unable to save username.')
-    } finally {
-      setIsSavingUsername(false)
-    }
+    localStorage.setItem('poker-username', nextUsername)
+    setUsername(nextUsername)
+    setIsEditingUsername(false)
+    setProfileError('')
+    setIsSavingUsername(false)
   }
 
   const logout = (event: MouseEvent<HTMLButtonElement>) => {
@@ -115,8 +97,10 @@ export default function PageHeader() {
           </span>
         </button>
         {isProfileOpen && (
+          <div className="profile-backdrop" onClick={() => setIsProfileOpen(false)}>
           <section className={styles.modal} aria-label="User profile" onClick={(event) => event.stopPropagation()}>
-            <h2 className="mb-[18px] text-[15px] text-[#ffc23d] underline">USER PROFILE</h2>
+            <button type="button" className="profile-close" aria-label="Close profile" onClick={() => setIsProfileOpen(false)}>×</button>
+            <h2 className="mb-[28px] text-center text-[clamp(19px,3vw,30px)] text-white underline">USER PROFILE</h2>
             <div className={styles.profileGrid}>
               <div className="group relative size-[128px] cursor-default max-[700px]:size-[92px]" title="Profile image editing coming soon">
                 <Avatar className={styles.modalAvatar} />
@@ -154,6 +138,7 @@ export default function PageHeader() {
             </div>
             <button type="button" className={styles.logoutButton} onClick={logout}>LOG OUT</button>
           </section>
+          </div>
         )}
       </div>
       <Logo showWordmark />

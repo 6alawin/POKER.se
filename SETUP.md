@@ -40,6 +40,7 @@ Turborepo จะรัน `dev` script ของทุก package พร้อ�
 
 ## Troubleshooting
 
+- **Login shows `Network Error` after Google sign-in**: the frontend can reach Firebase, but it cannot reach the local backend. Ensure PostgreSQL is listening on port `5432`, confirm `DATABASE_URL` in `server/.env`, then start both apps from the project root with `npx turbo dev`. The terminal must show `Server running on port 3000` before trying again.
 - **`Could not resolve workspace` / `Missing packageManager field`**: เช็คว่า root `package.json` มี field `"packageManager": "npm@<version>"` (เช็คเวอร์ชันตัวเองด้วย `npm -v`)
 - **`turbo_json_parse_error`**: เช็คว่า `turbo.json` มีแค่ `$schema` และ `tasks` เท่านั้น — field อื่น ๆ (name, workspaces, devDependencies) ต้องอยู่ใน root `package.json` ไม่ใช่ `turbo.json`
 - **server พังตอนรัน `dev`**: ถ้าเจอ error จาก `ts-node-dev` ให้เปลี่ยนไปใช้ `tsx watch src/index.ts` แทนใน `server/package.json`
