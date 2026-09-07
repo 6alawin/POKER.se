@@ -1,14 +1,5 @@
-import { useNavigate } from 'react-router-dom'
-import RoomForm from '../features/rooms/components/RoomForm'
+import { Navigate } from 'react-router-dom'
 
 export default function RoomPage() {
-  const navigate = useNavigate()
-
-  return (
-    <main className="room-page">
-      <div className="overlay">
-        <RoomForm onComplete={() => navigate('/lobby')} />
-      </div>
-    </main>
-  )
+  return <Navigate to="/lobby" replace />
 }

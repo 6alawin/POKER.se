@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import axios from 'axios'
 import { signInWithPopup, signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import UsernameModal from '../features/auth/components/UsernameModal'
@@ -35,7 +36,11 @@ export default function LoginPage() {
     } catch (loginError) {
       clearAuthToken()
       await signOut(firebaseAuth).catch(() => undefined)
-      setError(loginError instanceof Error ? loginError.message : 'Unable to sign in. Please try again.')
+      if (axios.isAxiosError(loginError) && !loginError.response) {
+        setError('Cannot reach the game server. Start the backend and PostgreSQL, then try again.')
+      } else {
+        setError(loginError instanceof Error ? loginError.message : 'Unable to sign in. Please try again.')
+      }
     } finally {
       setIsLoading(false)
     }

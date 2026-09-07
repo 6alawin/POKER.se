@@ -1,107 +1,87 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-type RoomTab = 'join' | 'create'
+export type RoomTab = 'join' | 'create'
+
 type RoomFormProps = {
-  onComplete?: () => void
+  initialTab?: RoomTab
+  busy?: boolean
+  error?: string
+  onClose: () => void
+  onCreate: (maxPlayers: number) => void
+  onJoin: (pin: string) => void
 }
 
-export default function RoomForm({ onComplete }: RoomFormProps) {
-  const [tab, setTab] = useState<RoomTab>('join')
-  const [pin, setPin] = useState(['', '', '', ''])
+export default function RoomForm({ initialTab = 'join', busy = false, error, onClose, onCreate, onJoin }: RoomFormProps) {
+  const [tab, setTab] = useState<RoomTab>(initialTab)
+  const [pin, setPin] = useState<string[]>([])
   const [players, setPlayers] = useState(2)
-  const [privateRoom, setPrivateRoom] = useState(true)
-  const [blinds, setBlinds] = useState('10 / 20')
-  const appendPin = (digit: string) => {
-    setPin((value) => {
-      const nextPin = [...value]
-      const emptyIndex = nextPin.findIndex((item) => !item)
+  const modalRef = useRef<HTMLElement>(null)
 
-      if (emptyIndex !== -1) nextPin[emptyIndex] = digit
-      return nextPin
-    })
+  useEffect(() => {
+    modalRef.current?.focus()
+  }, [])
+
+  const appendPin = (digit: string) => setPin((value) => value.length < 4 ? [...value, digit] : value)
+  const erasePin = () => setPin((value) => value.slice(0, -1))
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (tab !== 'join') return
+    if (/^\d$/.test(event.key)) appendPin(event.key)
+    if (event.key === 'Backspace') erasePin()
+    if (event.key === 'Enter' && pin.length === 4 && !busy) onJoin(pin.join(''))
+    if (event.key === 'Escape') onClose()
   }
 
-  const resetPin = () => setPin(['', '', '', ''])
+  const changeTab = (nextTab: RoomTab) => {
+    setTab(nextTab)
+    setPin([])
+  }
 
   return (
-    <section className="room-modal" aria-label="Room settings">
-      <div className="tabs">
-        <button className={tab === 'join' ? 'selected' : ''} onClick={() => setTab('join')}>
-          JOIN ROOM
-        </button>
-        <button className={tab === 'create' ? 'selected' : ''} onClick={() => setTab('create')}>
-          CREATE ROOM
-        </button>
+    <section ref={modalRef} className="room-modal" aria-label="Play with friends" tabIndex={-1} onKeyDown={handleKeyDown}>
+      <button className="room-close" type="button" onClick={onClose} aria-label="Close room dialog">×</button>
+      <div className="room-tabs" role="tablist" aria-label="Room action">
+        <button role="tab" aria-selected={tab === 'join'} className={tab === 'join' ? 'selected' : ''} onClick={() => changeTab('join')}>JOIN ROOM</button>
+        <button role="tab" aria-selected={tab === 'create'} className={tab === 'create' ? 'selected' : ''} onClick={() => changeTab('create')}>CREATE ROOM</button>
       </div>
 
-      <div className={`room-content ${tab}`}>
-        <div className="pin-panel">
-          <h2>{tab === 'join' ? 'Enter 4-Digit Room PIN' : ''}</h2>
-          <div className="pin-boxes">
-            {pin.map((digit, index) => <span key={index}>{digit}</span>)}
+      {tab === 'join' ? (
+        <div className="join-room-content">
+          <h2>ENTER 4-DIGIT ROOM PIN</h2>
+          <div className="pin-entry" aria-label={`${pin.length} of 4 digits entered`}>
+            {Array.from({ length: 4 }, (_, index) => <span key={index}>{pin[index] ?? ''}</span>)}
           </div>
-
-          {tab === 'create' && (
-            <>
-              <div className="generated-pin">
-                1234 <button onClick={resetPin} aria-label="Generate new code">↻</button>
-              </div>
-              <u>Room PIN</u>
-            </>
-          )}
-
-          {tab === 'join' && (
-            <div className="keypad">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((number) => (
-                <button key={number} onClick={() => appendPin(String(number))}>{number}</button>
+          <div className="join-controls">
+            <div className="keypad" aria-label="Number pad">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((number) => (
+                <button type="button" key={number} onClick={() => appendPin(String(number))}>{number}</button>
               ))}
+              <button className="key-delete" type="button" onClick={erasePin} aria-label="Delete last digit">⌫</button>
+              <button type="button" onClick={() => appendPin('0')}>0</button>
             </div>
-          )}
-        </div>
-
-        <div className="settings-panel">
-          <h2>{tab === 'join' ? 'Room Settings' : 'Blinds:'}</h2>
-          <label className="select-row">
-            {tab === 'join' && 'Blinds:'}
-            <select value={blinds} onChange={(event) => setBlinds(event.target.value)}>
-              <option>10 / 20</option>
-              <option>25 / 50</option>
-              <option>50 / 100</option>
-            </select>
-          </label>
-
-          {tab === 'create' && (
-            <label className="buy-in">
-              Buy-in:<input inputMode="numeric" />
-            </label>
-          )}
-
-          <div className="players">
-            <strong>Max Players:</strong>
-            <div>
-              {[2, 6, 9].map((value) => (
-                <label key={value}>
-                  <input type="radio" checked={players === value} onChange={() => setPlayers(value)} /> {value}
-                </label>
-              ))}
-            </div>
+            <button className="join-room-button" type="button" disabled={pin.length !== 4 || busy} onClick={() => onJoin(pin.join(''))}>
+              {busy ? 'WAIT...' : 'JOIN'}
+            </button>
           </div>
-
-          {tab === 'create' && (
-            <label className="private">
-              <input type="checkbox" checked={privateRoom} onChange={() => setPrivateRoom(!privateRoom)} /> Private Room
-            </label>
-          )}
         </div>
-
-        {tab === 'join' && (
-          <button className="join-button" disabled={pin.some((value) => !value)} onClick={onComplete}>
-            JOIN
+      ) : (
+        <div className="create-room-content">
+          <p>CHOOSE YOUR TABLE SIZE</p>
+          <div className="max-player-options" role="radiogroup" aria-label="Maximum players">
+            {[2, 6, 9].map((value) => (
+              <button type="button" role="radio" aria-checked={players === value} className={players === value ? 'selected' : ''} key={value} onClick={() => setPlayers(value)}>
+                <span aria-hidden="true" /> {value}
+              </button>
+            ))}
+          </div>
+          <small>MAX PLAYERS</small>
+          <button className="create-room-button" type="button" disabled={busy} onClick={() => onCreate(players)}>
+            {busy ? 'CREATING...' : 'CREATE'}
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
-      <button className="create-button" onClick={onComplete}>CREATE</button>
+      {error && <p className="room-error" role="alert">{error}</p>}
     </section>
   )
 }
