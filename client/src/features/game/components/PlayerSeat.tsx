@@ -1,6 +1,7 @@
 import React from 'react';
 import PlayingCard from './PlayingCard';
 import type { Card } from './PlayingCard';
+import fallbackAvatar from '../../../assets/picture_profile/cowboy.png';
 
 interface Player {
   id: string;
@@ -39,7 +40,7 @@ const PlayerSeat: React.FC<PlayerSeatProps> = ({ player, isActive, isFolded, sea
       style={positionStyle as React.CSSProperties}
     >
       <div className="seat-avatar">
-        <img src={player.avatar} alt="" />
+        <img src={player.avatar || fallbackAvatar} alt="" onError={(event) => { event.currentTarget.src = fallbackAvatar }} />
         {isDealer && <span className="dealer-chip">D</span>}
       </div>
       <div className="seat-info">
