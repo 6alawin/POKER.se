@@ -5,7 +5,7 @@ import Avatar from '../ui/Avatar'
 import Logo from '../ui/Logo'
 import { onIdTokenChanged } from 'firebase/auth'
 import { firebaseAuth } from '../../lib/firebase'
-import { verifyUser } from '../../features/auth/api/auth'
+import { saveUsername, verifyUser } from '../../features/auth/api/auth'
 import { clearAuthToken, saveAuthToken } from '../../lib/auth-token'
 
 const styles = {
@@ -44,7 +44,10 @@ export default function PageHeader() {
         const token = await firebaseUser.getIdToken()
         saveAuthToken(token)
         const verification = await verifyUser(token)
-        setUsername(localStorage.getItem('poker-username') ?? verification.user?.username ?? verification.username ?? 'Guest')
+        const storedUsername = localStorage.getItem('poker-username')
+        const resolvedUsername = (storedUsername && storedUsername !== 'Player' ? storedUsername : null) ?? verification.user?.username ?? verification.username ?? 'Guest'
+        if (resolvedUsername !== 'Guest') localStorage.setItem('poker-username', resolvedUsername)
+        setUsername(resolvedUsername)
       } catch {
         setUsername(localStorage.getItem('poker-username') ?? firebaseUser.displayName ?? 'Guest')
       }
@@ -57,7 +60,7 @@ export default function PageHeader() {
     setIsEditingUsername(true)
   }
 
-  const updateUsername = () => {
+  const updateUsername = async () => {
     const nextUsername = editedUsername.trim()
     if (!/^[a-zA-Z0-9_]{3,16}$/.test(nextUsername)) {
       setProfileError('Username must be 3-16 letters, numbers, or _.')
@@ -65,11 +68,20 @@ export default function PageHeader() {
     }
 
     setIsSavingUsername(true)
-    localStorage.setItem('poker-username', nextUsername)
-    setUsername(nextUsername)
-    setIsEditingUsername(false)
-    setProfileError('')
-    setIsSavingUsername(false)
+    try {
+      if (firebaseAuth?.currentUser) {
+        const token = await firebaseAuth.currentUser.getIdToken()
+        await saveUsername({ idToken: token }, nextUsername)
+      }
+      localStorage.setItem('poker-username', nextUsername)
+      setUsername(nextUsername)
+      setIsEditingUsername(false)
+      setProfileError('')
+    } catch {
+      setProfileError('Unable to save username.')
+    } finally {
+      setIsSavingUsername(false)
+    }
   }
 
   const logout = (event: MouseEvent<HTMLButtonElement>) => {

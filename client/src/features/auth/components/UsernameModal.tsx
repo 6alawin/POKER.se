@@ -29,6 +29,7 @@ export default function UsernameModal({ user, onSaved }: UsernameModalProps) {
     setIsSaving(true)
     try {
       await saveUsername(user, value)
+      localStorage.setItem('poker-username', value)
       onSaved()
     } catch {
       setError('Unable to save username.')

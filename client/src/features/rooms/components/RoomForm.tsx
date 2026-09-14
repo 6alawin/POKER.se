@@ -5,13 +5,14 @@ export type RoomTab = 'join' | 'create'
 type RoomFormProps = {
   initialTab?: RoomTab
   busy?: boolean
+  ready?: boolean
   error?: string
   onClose: () => void
   onCreate: (maxPlayers: number) => void
   onJoin: (pin: string) => void
 }
 
-export default function RoomForm({ initialTab = 'join', busy = false, error, onClose, onCreate, onJoin }: RoomFormProps) {
+export default function RoomForm({ initialTab = 'join', busy = false, ready = true, error, onClose, onCreate, onJoin }: RoomFormProps) {
   const [tab, setTab] = useState<RoomTab>(initialTab)
   const [pin, setPin] = useState<string[]>([])
   const [players, setPlayers] = useState(2)
@@ -59,8 +60,8 @@ export default function RoomForm({ initialTab = 'join', busy = false, error, onC
               <button className="key-delete" type="button" onClick={erasePin} aria-label="Delete last digit">⌫</button>
               <button type="button" onClick={() => appendPin('0')}>0</button>
             </div>
-            <button className="join-room-button" type="button" disabled={pin.length !== 4 || busy} onClick={() => onJoin(pin.join(''))}>
-              {busy ? 'WAIT...' : 'JOIN'}
+            <button className="join-room-button" type="button" disabled={pin.length !== 4 || busy || !ready} onClick={() => onJoin(pin.join(''))}>
+              {!ready ? 'LOADING...' : busy ? 'WAIT...' : 'JOIN'}
             </button>
           </div>
         </div>
@@ -75,8 +76,8 @@ export default function RoomForm({ initialTab = 'join', busy = false, error, onC
             ))}
           </div>
           <small>MAX PLAYERS</small>
-          <button className="create-room-button" type="button" disabled={busy} onClick={() => onCreate(players)}>
-            {busy ? 'CREATING...' : 'CREATE'}
+          <button className="create-room-button" type="button" disabled={busy || !ready} onClick={() => onCreate(players)}>
+            {!ready ? 'LOADING...' : busy ? 'CREATING...' : 'CREATE'}
           </button>
         </div>
       )}

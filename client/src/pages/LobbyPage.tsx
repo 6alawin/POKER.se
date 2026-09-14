@@ -8,6 +8,8 @@ import WaitingRoom from '../features/rooms/components/WaitingRoom'
 import type { LobbyRoom } from '../features/rooms/components/WaitingRoom'
 import QuickMatchModal from '../features/game/components/QuickMatchModal'
 import { useSocket } from '../hooks/useSocket'
+import { firebaseAuth } from '../lib/firebase'
+import { verifyUser } from '../features/auth/api/auth'
 
 type RoomReply = { ok: boolean; room?: LobbyRoom; error?: string }
 
@@ -19,7 +21,30 @@ export default function LobbyPage() {
   const [room, setRoom] = useState<LobbyRoom | null>(null)
   const [busy, setBusy] = useState(false)
   const [roomError, setRoomError] = useState('')
-  const username = localStorage.getItem('poker-username') || 'Player'
+  const [username, setUsername] = useState<string | null>(() => {
+    const storedUsername = localStorage.getItem('poker-username')
+    return storedUsername && storedUsername !== 'Player' ? storedUsername : null
+  })
+
+  useEffect(() => {
+    if (!firebaseAuth) return
+    return firebaseAuth.onIdTokenChanged(async (user) => {
+      if (!user) {
+        setUsername(null)
+        return
+      }
+      const token = await user.getIdToken()
+      const verification = await verifyUser(token).catch(() => null)
+      const storedUsername = localStorage.getItem('poker-username')
+      const resolvedUsername = (storedUsername && storedUsername !== 'Player' ? storedUsername : null)
+        || verification?.user?.username
+        || verification?.username
+        || user.displayName
+        || null
+      if (resolvedUsername) localStorage.setItem('poker-username', resolvedUsername)
+      setUsername(resolvedUsername)
+    })
+  }, [])
 
   useEffect(() => {
     const updateRoom = (nextRoom: LobbyRoom) => setRoom(nextRoom)
@@ -39,6 +64,7 @@ export default function LobbyPage() {
   }, [navigate, socket])
 
   const createRoom = (maxPlayers: number) => {
+    if (!username) return setRoomError('YOUR USERNAME IS STILL LOADING. PLEASE TRY AGAIN.')
     setBusy(true); setRoomError('')
     socket.timeout(4000).emit('room:create', { name: username, maxPlayers }, (timeoutError: Error | null, reply?: RoomReply) => {
       setBusy(false)
@@ -48,6 +74,7 @@ export default function LobbyPage() {
   }
 
   const joinRoom = (pin: string) => {
+    if (!username) return setRoomError('YOUR USERNAME IS STILL LOADING. PLEASE TRY AGAIN.')
     setBusy(true); setRoomError('')
     socket.timeout(4000).emit('room:join', { name: username, pin }, (timeoutError: Error | null, reply?: RoomReply) => {
       setBusy(false)
@@ -100,7 +127,7 @@ export default function LobbyPage() {
       <footer><button onClick={() => alert('Leaderboard is coming soon.')}><TrophyIcon /><span>LEADERBOARD</span></button></footer>
 
       {roomTab && <div className="overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setRoomTab(null) }}>
-        <RoomForm initialTab={roomTab} busy={busy} error={roomError} onClose={() => setRoomTab(null)} onCreate={createRoom} onJoin={joinRoom} />
+        <RoomForm initialTab={roomTab} busy={busy} ready={Boolean(username)} error={roomError} onClose={() => setRoomTab(null)} onCreate={createRoom} onJoin={joinRoom} />
       </div>}
       {room && <div className="room-lobby-overlay"><WaitingRoom room={room} currentSocketId={socket.id} busy={busy} error={roomError} onRefreshPin={refreshPin} onStart={startGame} onLeave={leaveRoom} /></div>}
       {showQuick && <QuickMatchModal onClose={() => setShowQuick(false)} />}

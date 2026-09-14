@@ -9,6 +9,7 @@ import { getAuth } from 'firebase-admin/auth';
 import pool from './db';
 import { InitDB } from './db/initdb';
 import userRoutes from './routes/users';
+import { ServerPokerGame, type GameState } from './game/poker_game';
 
 dotenv.config({ path: resolve(__dirname, '../.env') });
 
@@ -112,9 +113,13 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, { cors: { origin: [...allowedOrigins] } });
 
 type RoomMember = { id: string; name: string; isHost: boolean };
-type PokerRoom = { pin: string; maxPlayers: number; members: RoomMember[]; started: boolean; gameState?: unknown };
+type PokerRoom = { pin: string; maxPlayers: number; members: RoomMember[]; started: boolean; game?: ServerPokerGame };
 type RoomReply = (reply: { ok: boolean; room?: PokerRoom; error?: string }) => void;
 const pokerRooms = new Map<string, PokerRoom>();
+
+function publicRoom(room: PokerRoom): Omit<PokerRoom, 'game'> {
+  return { pin: room.pin, maxPlayers: room.maxPlayers, members: room.members, started: room.started };
+}
 
 function createPin(): string {
   let pin = '';
@@ -127,13 +132,15 @@ function cleanName(value: unknown): string {
   return value.trim().replace(/[^a-zA-Z0-9_\-ก-๙]/g, '').slice(0, 16) || 'Player';
 }
 
-function visibleGameState(state: unknown, viewerId: string): unknown {
-  if (!state || typeof state !== 'object') return state;
-  const snapshot = structuredClone(state) as { phase?: unknown; players?: Array<{ id?: unknown; holeCards?: unknown[] }> };
-  if (snapshot.phase !== 'showdown' && Array.isArray(snapshot.players)) {
-    snapshot.players = snapshot.players.map((player) => player.id === viewerId ? player : { ...player, holeCards: [] });
-  }
+function visibleGameState(state: GameState, viewerId: string): GameState {
+  const snapshot = structuredClone(state);
+  if (snapshot.phase !== 'showdown') snapshot.players = snapshot.players.map((player) => player.id === viewerId ? player : { ...player, holeCards: [] });
   return snapshot;
+}
+
+function broadcastGameState(room: PokerRoom): void {
+  if (!room.game) return;
+  for (const member of room.members) io.to(member.id).emit('game:state', visibleGameState(room.game.getState(), member.id));
 }
 
 function removeSocketFromRoom(socketId: string, requestedPin?: string): void {
@@ -201,18 +208,11 @@ io.on('connection', (socket) => {
     if (!room || !room.members.some((member) => member.id === socket.id && member.isHost)) return reply({ ok: false, error: 'ONLY THE HOST CAN START THE GAME.' });
     if (room.members.length < 2) return reply({ ok: false, error: 'WAIT FOR AT LEAST ONE FRIEND.' });
     room.started = true;
-    io.to(pin).emit('room:started', room);
+    room.game = new ServerPokerGame(room.members.map((member, index) => ({ id: member.id, name: member.name, avatar: '', chips: 1000, isBot: false })));
+    room.game.startHand();
+    io.to(pin).emit('room:started', publicRoom(room));
+    broadcastGameState(room);
     reply({ ok: true, room });
-  });
-
-  socket.on('game:state', (payload: { pin?: unknown; state?: unknown }) => {
-    const pin = typeof payload?.pin === 'string' ? payload.pin : '';
-    const room = pokerRooms.get(pin);
-    if (!room?.members.some((member) => member.id === socket.id && member.isHost)) return;
-    room.gameState = payload.state;
-    for (const member of room.members) {
-      if (member.id !== socket.id) io.to(member.id).emit('game:state', visibleGameState(payload.state, member.id));
-    }
   });
 
   socket.on('game:action', (payload: { pin?: unknown; action?: unknown; amount?: unknown }) => {
@@ -220,15 +220,17 @@ io.on('connection', (socket) => {
     const room = pokerRooms.get(pin);
     const member = room?.members.find((item) => item.id === socket.id);
     const host = room?.members.find((item) => item.isHost);
-    if (!room?.started || !member || !host) return;
-    io.to(host.id).emit('game:action', { playerId: socket.id, action: payload.action, amount: payload.amount });
+    if (!room?.started || !member || !host || !room.game) return;
+    if (payload.action !== 'fold' && payload.action !== 'check' && payload.action !== 'raise') return;
+    room.game.act(socket.id, payload.action, typeof payload.amount === 'number' ? payload.amount : undefined);
+    broadcastGameState(room);
   });
 
   socket.on('game:sync', (payload: { pin?: unknown }, reply: (state: unknown) => void) => {
     const pin = typeof payload?.pin === 'string' ? payload.pin : '';
     const room = pokerRooms.get(pin);
     if (!room?.members.some((member) => member.id === socket.id)) return reply(null);
-    reply(visibleGameState(room.gameState ?? null, socket.id));
+    reply(room.game ? visibleGameState(room.game.getState(), socket.id) : null);
   });
 
   socket.on('room:leave', (payload: { pin?: unknown }) => removeSocketFromRoom(socket.id, typeof payload?.pin === 'string' ? payload.pin : undefined));

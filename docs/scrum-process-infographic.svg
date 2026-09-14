@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-labelledby="title desc">
+  <title id="title">POKER.se Scrum Process</title>
+  <desc id="desc">Scrum process and eight-sprint roadmap for the POKER.se real-time multiplayer poker project.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071d19"/><stop offset="1" stop-color="#0d3a2b"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd66b"/><stop offset="1" stop-color="#e49d2e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000" flood-opacity=".35"/></filter>
+    <pattern id="felt" width="80" height="80" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <path d="M40 8l7 20 21 1-16 13 5 21-17-12-18 12 6-21-17-13 21-1z" fill="#fff" opacity=".025"/>
+    </pattern>
+    <style>
+      .title{font:700 48px Arial,sans-serif;letter-spacing:3px;fill:#fff7df}.subtitle{font:400 20px Arial,sans-serif;fill:#b8d5c7;letter-spacing:1px}
+      .section{font:700 20px Arial,sans-serif;letter-spacing:2px;fill:#ffd66b}.body{font:400 17px Arial,sans-serif;fill:#e7f0e9}.small{font:400 14px Arial,sans-serif;fill:#b8d5c7}
+      .cardtitle{font:700 18px Arial,sans-serif;fill:#102b22}.cardbody{font:400 15px Arial,sans-serif;fill:#244438}.badge{font:700 15px Arial,sans-serif;fill:#102b22}
+    </style>
+  </defs>
+
+  <rect width="1600" height="1100" fill="url(#bg)"/>
+  <rect width="1600" height="1100" fill="url(#felt)"/>
+  <rect x="42" y="38" width="1516" height="1024" rx="24" fill="none" stroke="#d89d3b" stroke-width="2" opacity=".7"/>
+
+  <text x="90" y="105" class="title">POKER.se • SCRUM PROCESS</text>
+  <text x="92" y="140" class="subtitle">8 sprints from foundation to final demo — a real-time multiplayer poker platform</text>
+  <path d="M90 168H1510" stroke="#d89d3b" stroke-width="2" opacity=".45"/>
+
+  <!-- Scrum loop -->
+  <text x="90" y="215" class="section">THE REPEATABLE SPRINT LOOP</text>
+  <g filter="url(#shadow)">
+    <circle cx="800" cy="430" r="178" fill="#0b2b22" stroke="#d89d3b" stroke-width="3"/>
+    <circle cx="800" cy="430" r="115" fill="#123c2d" stroke="#ffd66b" stroke-width="2" stroke-dasharray="4 8"/>
+    <text x="800" y="416" text-anchor="middle" class="section" font-size="22">SPRINT</text>
+    <text x="800" y="448" text-anchor="middle" class="body" font-size="18">Build • Inspect • Adapt</text>
+  </g>
+  <!-- arrows -->
+  <path d="M800 252 A178 178 0 0 1 970 380" fill="none" stroke="#ffd66b" stroke-width="5"/>
+  <path d="M970 380l-22-2 11 19z" fill="#ffd66b"/>
+  <path d="M950 535 A178 178 0 0 1 800 608" fill="none" stroke="#ffd66b" stroke-width="5"/>
+  <path d="M800 608l14-17-21-2z" fill="#ffd66b"/>
+  <path d="M650 535 A178 178 0 0 1 630 365" fill="none" stroke="#ffd66b" stroke-width="5"/>
+  <path d="M630 365l-4 22 20-10z" fill="#ffd66b"/>
+  <path d="M648 325 A178 178 0 0 1 800 252" fill="none" stroke="#ffd66b" stroke-width="5"/>
+  <path d="M800 252l-14 17 21 2z" fill="#ffd66b"/>
+
+  <!-- Four event cards -->
+  <g filter="url(#shadow)">
+    <rect x="110" y="280" width="330" height="150" rx="16" fill="#f6e7bf"/>
+    <rect x="116" y="286" width="8" height="138" rx="4" fill="#d89d3b"/>
+    <text x="145" y="325" class="cardtitle">01  SPRINT PLANNING</text>
+    <text x="145" y="356" class="cardbody">Choose a sprint goal and</text><text x="145" y="380" class="cardbody">prioritize work to build.</text>
+    <text x="145" y="407" class="small">Start with a clear, testable outcome.</text>
+
+    <rect x="1160" y="280" width="330" height="150" rx="16" fill="#f6e7bf"/>
+    <rect x="1166" y="286" width="8" height="138" rx="4" fill="#d89d3b"/>
+    <text x="1195" y="325" class="cardtitle">02  DAILY STANDUP</text>
+    <text x="1195" y="356" class="cardbody">Mon / Wed / Fri check-in:</text><text x="1195" y="380" class="cardbody">progress, plan, and blockers.</text>
+    <text x="1195" y="407" class="small">Keep the team synchronized.</text>
+
+    <rect x="110" y="495" width="330" height="150" rx="16" fill="#f6e7bf"/>
+    <rect x="116" y="501" width="8" height="138" rx="4" fill="#d89d3b"/>
+    <text x="145" y="540" class="cardtitle">04  RETROSPECTIVE</text>
+    <text x="145" y="571" class="cardbody">Reflect on what worked,</text><text x="145" y="595" class="cardbody">then improve the next sprint.</text>
+    <text x="145" y="622" class="small">Inspect • learn • adapt.</text>
+
+    <rect x="1160" y="495" width="330" height="150" rx="16" fill="#f6e7bf"/>
+    <rect x="1166" y="501" width="8" height="138" rx="4" fill="#d89d3b"/>
+    <text x="1195" y="540" class="cardtitle">03  SPRINT REVIEW</text>
+    <text x="1195" y="571" class="cardbody">Demo working software and</text><text x="1195" y="595" class="cardbody">collect feedback.</text>
+    <text x="1195" y="622" class="small">A working increment every sprint.</text>
+  </g>
+
+  <!-- Roadmap -->
+  <text x="90" y="710" class="section">SPRINT ROADMAP</text>
+  <text x="90" y="738" class="small">Every sprint moves POKER.se closer to a stable, polished multiplayer experience.</text>
+  <line x1="125" y1="875" x2="1475" y2="875" stroke="#ffd66b" stroke-width="4" opacity=".75"/>
+
+  <g filter="url(#shadow)">
+    <g transform="translate(90,770)"><rect width="170" height="150" rx="14" fill="#e9f1e7"/><rect width="170" height="10" rx="5" fill="#4fb477"/><text x="18" y="40" class="badge">SPRINT 1 · W1</text><text x="18" y="72" class="cardbody">Repo, infra, and</text><text x="18" y="95" class="cardbody">data layer ready.</text><circle cx="85" cy="150" r="10" fill="#ffd66b"/></g>
+    <g transform="translate(275,770)"><rect width="170" height="150" rx="14" fill="#e9f1e7"/><rect width="170" height="10" rx="5" fill="#4fb477"/><text x="18" y="40" class="badge">SPRINT 2 · W2</text><text x="18" y="72" class="cardbody">Register, log in,</text><text x="18" y="95" class="cardbody">create / join table.</text><circle cx="85" cy="150" r="10" fill="#ffd66b"/></g>
+    <g transform="translate(460,770)"><rect width="170" height="150" rx="14" fill="#e9f1e7"/><rect width="170" height="10" rx="5" fill="#4fb477"/><text x="18" y="40" class="badge">SPRINT 3 · W3–5</text><text x="18" y="72" class="cardbody">Two players play</text><text x="18" y="95" class="cardbody">a full hand live.</text><circle cx="85" cy="150" r="10" fill="#ffd66b"/></g>
+    <g transform="translate(645,770)"><rect width="170" height="150" rx="14" fill="#e9f1e7"/><rect width="170" height="10" rx="5" fill="#4fb477"/><text x="18" y="40" class="badge">SPRINT 4 · W6–7</text><text x="18" y="72" class="cardbody">4–10 players;</text><text x="18" y="95" class="cardbody">bots included.</text><circle cx="85" cy="150" r="10" fill="#ffd66b"/></g>
+    <g transform="translate(830,770)"><rect width="170" height="150" rx="14" fill="#ffe4a8"/><rect width="170" height="10" rx="5" fill="#e49d2e"/><text x="18" y="40" class="badge">HARDENING · W8</text><text x="18" y="72" class="cardbody">Stable, tested,</text><text x="18" y="95" class="cardbody">midterm demo.</text><circle cx="85" cy="150" r="10" fill="#fff"/></g>
+    <g transform="translate(1015,770)"><rect width="170" height="150" rx="14" fill="#e9f1e7"/><rect width="170" height="10" rx="5" fill="#4fb477"/><text x="18" y="40" class="badge">SPRINT 5 · W9–10</text><text x="18" y="72" class="cardbody">Alive table and</text><text x="18" y="95" class="cardbody">mobile experience.</text><circle cx="85" cy="150" r="10" fill="#ffd66b"/></g>
+    <g transform="translate(1200,770)"><rect width="170" height="150" rx="14" fill="#e9f1e7"/><rect width="170" height="10" rx="5" fill="#4fb477"/><text x="18" y="40" class="badge">SPRINT 6 · W11–12</text><text x="18" y="72" class="cardbody">Reconnect and</text><text x="18" y="95" class="cardbody">track progress.</text><circle cx="85" cy="150" r="10" fill="#ffd66b"/></g>
+    <g transform="translate(1385,770)"><rect width="125" height="150" rx="14" fill="#e9f1e7"/><rect width="125" height="10" rx="5" fill="#4fb477"/><text x="14" y="40" class="badge">S7–8</text><text x="14" y="72" class="cardbody">Bot levels,</text><text x="14" y="95" class="cardbody">polish,</text><text x="14" y="118" class="cardbody">final demo.</text><circle cx="62" cy="150" r="10" fill="#ffd66b"/></g>
+  </g>
+
+  <rect x="90" y="965" width="1420" height="60" rx="14" fill="#08241d" stroke="#d89d3b" stroke-width="1"/>
+  <text x="115" y="1002" class="body">Definition of Done: a working increment, feedback collected, and one concrete improvement carried into the next sprint.</text>
+  <text x="1490" y="1002" text-anchor="end" class="small">Source: README.md • SF221 Software Process</text>
+</svg>
