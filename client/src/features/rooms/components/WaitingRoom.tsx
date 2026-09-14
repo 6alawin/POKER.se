@@ -1,4 +1,4 @@
-export type LobbyMember = { id: string; name: string; isHost: boolean }
+export type LobbyMember = { id: string; name: string; isHost: boolean; isBot?: boolean }
 export type LobbyRoom = { pin: string; maxPlayers: number; members: LobbyMember[] }
 
 type WaitingRoomProps = {
@@ -33,7 +33,7 @@ export default function WaitingRoom({ room, currentSocketId, busy, error, onRefr
           ) : <div className="member-slot" key={`empty-${index}`}><span>{index + 1}.</span><b>OPEN SEAT</b></div>
         })}
       </div>
-      <p className="host-hint">{isHost ? 'YOU ARE THE HOST. START WHEN EVERYONE IS READY.' : 'ONLY THE HOST CAN START THE GAME.'}</p>
+      <p className="host-hint">{isHost ? 'START GAME WILL AUTO-FILL EMPTY SEATS WITH BOTS.' : 'ONLY THE HOST CAN START THE GAME.'}</p>
       {error && <p className="room-error" role="alert">{error}</p>}
       <div className="waiting-actions">
         <button className="back-lobby-button" type="button" onClick={onLeave}>BACK TO LOBBY</button>

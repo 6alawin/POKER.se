@@ -112,7 +112,7 @@ app.post('/auth/profile', async (req, res) => {
 const httpServer = createServer(app);
 const io = new Server(httpServer, { cors: { origin: [...allowedOrigins] } });
 
-type RoomMember = { id: string; name: string; isHost: boolean };
+type RoomMember = { id: string; name: string; isHost: boolean; isBot?: boolean };
 type PokerRoom = { pin: string; maxPlayers: number; members: RoomMember[]; started: boolean; game?: ServerPokerGame };
 type RoomReply = (reply: { ok: boolean; room?: PokerRoom; error?: string }) => void;
 const pokerRooms = new Map<string, PokerRoom>();
@@ -138,9 +138,30 @@ function visibleGameState(state: GameState, viewerId: string): GameState {
   return snapshot;
 }
 
+const BOT_NAMES = ['NeonJack', 'RetroMike', 'PixelQueen', 'VaporJim', 'SynthNeo', 'LuckyByte', 'RiverRat', 'AcePilot'];
+
+function fillRoomWithBots(room: PokerRoom): void {
+  let botIndex = 0;
+  while (room.members.length < room.maxPlayers) {
+    const id = `bot-${room.pin}-${botIndex + 1}`;
+    room.members.push({ id, name: BOT_NAMES[botIndex % BOT_NAMES.length], isHost: false, isBot: true });
+    botIndex += 1;
+  }
+}
+
 function broadcastGameState(room: PokerRoom): void {
   if (!room.game) return;
   for (const member of room.members) io.to(member.id).emit('game:state', visibleGameState(room.game.getState(), member.id));
+}
+
+function playBotTurns(room: PokerRoom): void {
+  if (!room.game) return;
+  for (let turn = 0; turn < room.maxPlayers * 2; turn += 1) {
+    const state = room.game.getState();
+    const player = state.players[state.currentPlayerIndex];
+    if (state.phase === 'showdown' || !player?.isBot) return;
+    room.game.act(player.id, 'check');
+  }
 }
 
 function removeSocketFromRoom(socketId: string, requestedPin?: string): void {
@@ -207,9 +228,11 @@ io.on('connection', (socket) => {
     const room = pokerRooms.get(pin);
     if (!room || !room.members.some((member) => member.id === socket.id && member.isHost)) return reply({ ok: false, error: 'ONLY THE HOST CAN START THE GAME.' });
     if (room.members.length < 2) return reply({ ok: false, error: 'WAIT FOR AT LEAST ONE FRIEND.' });
+    fillRoomWithBots(room);
     room.started = true;
     room.game = new ServerPokerGame(room.members.map((member, index) => ({ id: member.id, name: member.name, avatar: '', chips: 1000, isBot: false })));
     room.game.startHand();
+    playBotTurns(room);
     io.to(pin).emit('room:started', publicRoom(room));
     broadcastGameState(room);
     reply({ ok: true, room });
@@ -223,6 +246,7 @@ io.on('connection', (socket) => {
     if (!room?.started || !member || !host || !room.game) return;
     if (payload.action !== 'fold' && payload.action !== 'check' && payload.action !== 'raise') return;
     room.game.act(socket.id, payload.action, typeof payload.amount === 'number' ? payload.amount : undefined);
+    playBotTurns(room);
     broadcastGameState(room);
   });
 

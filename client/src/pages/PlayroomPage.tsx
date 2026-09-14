@@ -66,6 +66,11 @@ export default function PlayroomPage() {
   const availableRaise = Math.max(0, (myPlayer?.chips || 0) - callAmount)
   const isMyTurn = activePlayer?.id === myPlayer?.id && gameState.phase !== 'showdown'
   const displayPlayers = [myPlayer, ...gameState.players.filter((player) => player.id !== myPlayer.id)]
+  const avatarForPlayer = (avatar: string, id: string, name: string) => {
+    if (avatar) return avatar
+    if (id === options.playerId || id === 'player1') return playerAvatar
+    return BOT_PROFILES.find((profile) => profile.id === id || profile.name === name)?.avatar || cowboyAvatar
+  }
 
   return (
     <div className="playroom-page">
@@ -89,7 +94,7 @@ export default function PlayroomPage() {
 
           {displayPlayers.map((player, index) => <PlayerSeat
             key={player.id}
-            player={{ id: player.id, name: player.name, avatar: player.avatar, chips: player.chips }}
+            player={{ id: player.id, name: player.name, avatar: avatarForPlayer(player.avatar, player.id, player.name), chips: player.chips }}
             isActive={player.id === activePlayer?.id && gameState.phase !== 'showdown'}
             isFolded={player.isFolded}
             seatIndex={index}
