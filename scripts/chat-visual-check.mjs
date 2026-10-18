@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises'
 process.env.PLAYWRIGHT_BROWSERS_PATH ??= '0'
 const { chromium } = await import('@playwright/test')
 
-const baseUrl = process.env.CHAT_URL ?? 'http://127.0.0.1:5174'
+const baseUrl = process.env.CHAT_URL ?? 'http://127.0.0.1:5173'
 const browser = await chromium.launch()
 const page = await browser.newPage({ viewport: { width: 1366, height: 768 }, deviceScaleFactor: 1 })
 const errors = []
