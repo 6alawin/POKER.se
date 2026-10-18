@@ -7,6 +7,7 @@ import Logo from '../components/ui/Logo'
 import PlayingCard from '../features/game/components/PlayingCard'
 import PlayerSeat from '../features/game/components/PlayerSeat'
 import ActionBar from '../features/game/components/ActionBar'
+import TableChat from '../features/chat/TableChat'
 import type { LobbyRoom } from '../features/rooms/components/WaitingRoom'
 import cowboyAvatar from '../assets/picture_profile/cowboy.png'
 import pineAvatar from '../assets/picture_profile/pine-tree.webp'
@@ -66,6 +67,7 @@ export default function PlayroomPage() {
   const availableRaise = Math.max(0, (myPlayer?.chips || 0) - callAmount)
   const isMyTurn = activePlayer?.id === myPlayer?.id && gameState.phase !== 'showdown'
   const displayPlayers = [myPlayer, ...gameState.players.filter((player) => player.id !== myPlayer.id)]
+  const chatDemo = import.meta.env.DEV ? new URLSearchParams(window.location.search).get('chatDemo') : null
   const avatarForPlayer = (avatar: string, id: string, name: string) => {
     if (avatar) return avatar
     if (id === options.playerId || id === 'player1') return playerAvatar
@@ -118,6 +120,18 @@ export default function PlayroomPage() {
         onFold={fold}
         onCheck={check}
         onRaise={raise}
+      />
+      <TableChat
+        tableId={options.room?.pin || 'BOT'}
+        myId={myPlayer.id}
+        socket={online?.socket}
+        demo={chatDemo === 'expanded' || chatDemo === 'collapsed' ? chatDemo : undefined}
+        participants={gameState.players.map((player) => ({
+          id: player.id,
+          name: player.name,
+          avatar: avatarForPlayer(player.avatar, player.id, player.name),
+          isBot: player.isBot,
+        }))}
       />
     </div>
   )

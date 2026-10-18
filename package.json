@@ -6,7 +6,9 @@
     "dev": "npx --yes turbo@2.10.9 run dev",
     "build": "npx --yes turbo@2.10.9 run build",
     "build:client": "npx --yes turbo@2.10.9 run build --filter=client",
-    "build:server": "npx --yes turbo@2.10.9 run build --filter=server"
+    "build:server": "npx --yes turbo@2.10.9 run build --filter=server",
+    "test": "npm --workspace server test",
+    "visual:chat": "node scripts/chat-visual-check.mjs"
   },
   "workspaces": [
     "client",
@@ -16,6 +18,7 @@
     "turbo": "^2.10.9"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "vitest": "^4.1.10"
   }
 }

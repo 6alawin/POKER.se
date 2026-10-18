@@ -8,5 +8,5 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "exclude": ["vitest.config.mts", "dist", "node_modules"]
+  "exclude": ["vitest.config.mts", "dist", "node_modules", "src/**/*.test.ts"]
 }
