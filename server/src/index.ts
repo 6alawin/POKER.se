@@ -314,14 +314,15 @@ const PORT = process.env.PORT || 3000;
 async function startServer(): Promise<void> {
   try {
     await InitDB();
-    httpServer.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
   } catch (error) {
-    console.error('DATABASE INITIALIZATION ERROR:', error);
-    await pool.end();
-    process.exitCode = 1;
+    // Keep the realtime game server available in local development when
+    // PostgreSQL is temporarily stopped. Profile persistence remains
+    // unavailable until the database is brought back up.
+    console.warn('DATABASE INITIALIZATION WARNING: starting without PostgreSQL.', error);
   }
+  httpServer.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 }
 
 void startServer();
