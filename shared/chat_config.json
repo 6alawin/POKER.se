@@ -1,0 +1,4 @@
+{
+  "CHAT_TABLE_LOCK_MS": 10000,
+  "CHAT_BOTS_USE_TABLE_LOCK": false
+}

@@ -1,4 +1,32 @@
+import chatConfig from '../../shared/chat_config.json';
+
 export const CHAT_MAX_LENGTH = 120;
+// Shorter lock durations are reserved for test processes.
+export const CHAT_TABLE_LOCK_MS = process.env.NODE_ENV === 'test' && Number(process.env.CHAT_TABLE_LOCK_MS) > 0
+  ? Number(process.env.CHAT_TABLE_LOCK_MS) : chatConfig.CHAT_TABLE_LOCK_MS;
+export const CHAT_BOTS_USE_TABLE_LOCK = chatConfig.CHAT_BOTS_USE_TABLE_LOCK;
+
+export class ChatTableLock {
+  private lockedUntil = 0;
+
+  constructor(private readonly durationMs = CHAT_TABLE_LOCK_MS, private readonly now = () => performance.now(), private readonly botsUseLock = CHAT_BOTS_USE_TABLE_LOCK) {}
+
+  remainingMs(): number {
+    return Math.max(0, Math.ceil(this.lockedUntil - this.now()));
+  }
+
+  check(isBot: boolean): { ok: true } | { ok: false; retryAfterMs: number } {
+    if (isBot && !this.botsUseLock) return { ok: true };
+    const retryAfterMs = this.remainingMs();
+    return retryAfterMs > 0 ? { ok: false, retryAfterMs } : { ok: true };
+  }
+
+  accept(isBot: boolean): number {
+    if (isBot && !this.botsUseLock) return 0;
+    this.lockedUntil = this.now() + this.durationMs;
+    return this.remainingMs();
+  }
+}
 
 export type ChatValidation = { ok: true; text: string } | { ok: false };
 
@@ -22,4 +50,14 @@ export class ChatRateLimiter {
     this.sentAt.set(senderId, [...recent, now]);
     return { ok: true };
   }
+}
+
+export function acceptChat(lock: ChatTableLock, limiter: ChatRateLimiter, senderId: string, isBot: boolean, now = Date.now()):
+  | { ok: true; remainingMs: number }
+  | { ok: false; reason: 'table_lock' | 'rate_limit'; retryAfterMs: number } {
+  const table = lock.check(isBot);
+  if (!table.ok) return { ok: false, reason: 'table_lock', retryAfterMs: table.retryAfterMs };
+  const player = limiter.check(senderId, now);
+  if (!player.ok) return { ok: false, reason: 'rate_limit', retryAfterMs: player.retryAfterMs };
+  return { ok: true, remainingMs: lock.accept(isBot) };
 }

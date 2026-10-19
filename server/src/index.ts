@@ -10,7 +10,7 @@ import pool from './db';
 import { InitDB } from './db/initdb';
 import userRoutes from './routes/users';
 import { ServerPokerGame, type GameState } from './game/poker_game';
-import { ChatRateLimiter, validateChatText } from './chat';
+import { CHAT_TABLE_LOCK_MS, ChatRateLimiter, ChatTableLock, acceptChat, validateChatText } from './chat';
 import { BOT_CHAT_LINES, type BotChatTrigger } from './chat_bot_lines';
 
 dotenv.config({ path: resolve(__dirname, '../.env') });
@@ -116,7 +116,7 @@ const io = new Server(httpServer, { cors: { origin: [...allowedOrigins] } });
 
 type RoomMember = { id: string; name: string; isHost: boolean; isBot?: boolean };
 type ChatMessage = { id: string; tableId: string; senderId: string; senderName: string; avatarId: string; text: string; ts: number; type: 'chat' };
-type PokerRoom = { pin: string; maxPlayers: number; members: RoomMember[]; started: boolean; game?: ServerPokerGame; chatHistory: ChatMessage[]; chatLimiter: ChatRateLimiter };
+type PokerRoom = { pin: string; maxPlayers: number; members: RoomMember[]; started: boolean; game?: ServerPokerGame; chatHistory: ChatMessage[]; chatLimiter: ChatRateLimiter; chatLock: ChatTableLock };
 type PublicPokerRoom = Pick<PokerRoom, 'pin' | 'maxPlayers' | 'members' | 'started'>;
 type RoomReply = (reply: { ok: boolean; room?: PokerRoom; error?: string }) => void;
 const pokerRooms = new Map<string, PokerRoom>();
@@ -131,13 +131,14 @@ function createPin(): string {
   return pin;
 }
 
-function publishChat(room: PokerRoom, member: RoomMember, text: string): { message?: ChatMessage; retryAfterMs?: number } {
-  const allowed = room.chatLimiter.check(member.id);
-  if (!allowed.ok) return { retryAfterMs: allowed.retryAfterMs };
+function publishChat(room: PokerRoom, member: RoomMember, text: string): { message?: ChatMessage; retryAfterMs?: number; reason?: 'table_lock' | 'rate_limit' } {
+  const allowed = acceptChat(room.chatLock, room.chatLimiter, member.id, Boolean(member.isBot));
+  if (!allowed.ok) return { reason: allowed.reason, retryAfterMs: allowed.retryAfterMs };
   const message: ChatMessage = { id: `${room.pin}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, tableId: room.pin, senderId: member.id, senderName: member.name, avatarId: member.id, text, ts: Date.now(), type: 'chat' };
   room.chatHistory.push(message);
   if (room.chatHistory.length > 50) room.chatHistory.shift();
   io.to(room.pin).emit('chat:message', message);
+  if (allowed.remainingMs > 0) io.to(room.pin).emit('chat:lock', { tableId: room.pin, remainingMs: allowed.remainingMs });
   return { message };
 }
 
@@ -210,7 +211,7 @@ io.on('connection', (socket) => {
     const maxPlayers = Number(payload?.maxPlayers);
     if (!allowedSizes.includes(maxPlayers)) return reply({ ok: false, error: 'INVALID TABLE SIZE.' });
     const pin = createPin();
-    const room: PokerRoom = { pin, maxPlayers, started: false, members: [{ id: socket.id, name: cleanName(payload?.name), isHost: true }], chatHistory: [], chatLimiter: new ChatRateLimiter() };
+    const room: PokerRoom = { pin, maxPlayers, started: false, members: [{ id: socket.id, name: cleanName(payload?.name), isHost: true }], chatHistory: [], chatLimiter: new ChatRateLimiter(), chatLock: new ChatTableLock() };
     pokerRooms.set(pin, room);
     void socket.join(pin);
     reply({ ok: true, room });
@@ -291,7 +292,7 @@ io.on('connection', (socket) => {
     const pin = typeof payload?.pin === 'string' ? payload.pin : '';
     const room = pokerRooms.get(pin);
     if (!room?.members.some((member) => member.id === socket.id)) return;
-    socket.emit('chat:history', room.chatHistory);
+    socket.emit('chat:history', room.chatHistory, { tableId: room.pin, remainingMs: room.chatLock.remainingMs(), lockDurationMs: CHAT_TABLE_LOCK_MS });
   });
 
   socket.on('chat:send', (payload: { pin?: unknown; text?: unknown }) => {
@@ -302,7 +303,7 @@ io.on('connection', (socket) => {
     const content = validateChatText(payload?.text);
     if (!content.ok) return;
     const result = publishChat(room, member, content.text);
-    if (!result.message) socket.emit('chat:rate_limited', { retryAfterMs: result.retryAfterMs ?? 1_000 });
+    if (!result.message) socket.emit('chat:rate_limited', { retryAfterMs: result.retryAfterMs ?? 1_000, reason: result.reason });
   });
 
   socket.on('room:leave', (payload: { pin?: unknown }) => removeSocketFromRoom(socket.id, typeof payload?.pin === 'string' ? payload.pin : undefined));
