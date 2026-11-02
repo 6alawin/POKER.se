@@ -84,13 +84,13 @@ export default function PlayroomPage() {
 
       <main className="table-area">
         <div className="poker-table">
-          <div className="phase-badge">{gameState.phase.toUpperCase()}</div>
-          <div className="community-cards">
+          <div className="phase-badge" data-chat-keepclear>{gameState.phase.toUpperCase()}</div>
+          <div className="community-cards" data-chat-keepclear>
             {gameState.communityCards.map((card: Card, index: number) => <PlayingCard key={`${card.suit}-${card.rank}-${index}`} card={card} />)}
             {Array.from({ length: 5 - gameState.communityCards.length }).map((_, index) => <PlayingCard key={`empty-${index}`} hidden />)}
           </div>
-          <div className="pot-info"><span className="chip-stack" aria-hidden="true">●</span> POT ${gameState.pot.toLocaleString()}</div>
-          <p className={`turn-message ${gameState.resultMessage ? 'result' : ''}`}>
+          <div className="pot-info" data-chat-keepclear><span className="chip-stack" aria-hidden="true">●</span> POT ${gameState.pot.toLocaleString()}</div>
+          <p className={`turn-message ${gameState.resultMessage ? 'result' : ''}`} data-chat-keepclear>
             {gameState.resultMessage || (isMyTurn ? 'YOUR TURN' : `${activePlayer?.name || 'PLAYER'} IS THINKING...`)}
           </p>
 

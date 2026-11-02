@@ -17,5 +17,5 @@ export const chatFixtureMessages: ChatMessage[] = [
   { id: 'fixture-1', tableId: 'BOT', senderId: 'bot4', senderName: 'VaporJim', avatarId: 'bot4', text: 'Good luck everyone!', ts: 1, type: 'chat' },
   { id: 'fixture-2', tableId: 'BOT', senderId: 'bot3', senderName: 'PixelQueen', avatarId: 'bot3', text: 'May the best hand win ✨', ts: 2, type: 'chat' },
   { id: 'fixture-3', tableId: 'BOT', senderId: 'bot1', senderName: 'NeonJack', avatarId: 'bot1', text: 'ไม้เด็ดอยู่นี่นะ 😎', ts: 3, type: 'chat' },
-  { id: 'fixture-4', tableId: 'BOT', senderId: 'player1', senderName: 'JORCH', avatarId: 'player1', text: 'ขอเบาๆ ได้มั้ยเนี่ย ♧', ts: 4, type: 'chat' },
+  { id: 'fixture-4', tableId: 'BOT', senderId: 'player1', senderName: 'JORCH', avatarId: 'player1', text: 'จัดมาเลย ไฟ', ts: 4, type: 'chat' },
 ]

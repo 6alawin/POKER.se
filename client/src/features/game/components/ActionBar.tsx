@@ -37,8 +37,8 @@ const ActionBar: React.FC<ActionBarProps> = ({
   };
 
   return (
-    <div className="action-bar">
-      <div className="hole-cards">
+    <div className="action-bar" data-chat-keepclear>
+      <div className="hole-cards" data-chat-keepclear>
         {holeCards.length === 2 ? (
           <>
             <PlayingCard card={holeCards[0]} className="large" />
@@ -52,7 +52,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
         )}
       </div>
 
-      <div className="action-buttons">
+      <div className="action-buttons" data-chat-keepclear>
         <button className="action-btn btn-fold" onClick={onFold} disabled={!isMyTurn}>
           FOLD
         </button>
@@ -64,7 +64,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
         </button>
       </div>
 
-      <div className="raise-slider-container">
+      <div className="raise-slider-container" data-chat-keepclear>
         <input 
           type="range" 
           min={minRaise} 

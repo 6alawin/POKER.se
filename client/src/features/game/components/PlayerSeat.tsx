@@ -38,17 +38,18 @@ const PlayerSeat: React.FC<PlayerSeatProps> = ({ player, isActive, isFolded, sea
     <div 
       className={`player-seat ${seatIndex === 0 ? 'player-seat-self' : ''} ${isActive ? 'active' : ''} ${isFolded ? 'folded' : ''}`}
       style={positionStyle as React.CSSProperties}
+      data-chat-keepclear
     >
       <div className="seat-avatar">
         <img src={player.avatar || fallbackAvatar} alt="" onError={(event) => { event.currentTarget.src = fallbackAvatar }} />
         {isDealer && <span className="dealer-chip">D</span>}
       </div>
-      <div className="seat-info">
+      <div className="seat-info" data-chat-keepclear>
         <div className="seat-name">{player.name}</div>
         <div className="seat-chips">${player.chips.toLocaleString()}</div>
       </div>
-      {(lastAction || currentBet > 0) && <div className="seat-action">{lastAction || `BET $${currentBet}`}</div>}
-      {showCards && <div className="opponent-cards" aria-label={`${player.name}'s cards`}>
+      {(lastAction || currentBet > 0) && <div className="seat-action" data-chat-keepclear>{lastAction || `BET $${currentBet}`}</div>}
+      {showCards && <div className="opponent-cards" data-chat-keepclear aria-label={`${player.name}'s cards`}>
         {holeCards.map((card, index) => <PlayingCard key={`${card.suit}-${card.rank}-${index}`} card={card} />)}
       </div>}
     </div>

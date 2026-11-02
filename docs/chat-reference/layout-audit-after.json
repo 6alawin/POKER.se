@@ -1,0 +1,3721 @@
+{
+  "expanded": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 114.59375,
+        "width": 1280,
+        "height": 479.40625,
+        "top": 114.59375,
+        "right": 1280,
+        "bottom": 594,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "table": {
+        "x": 128,
+        "y": 141.890625,
+        "width": 1024,
+        "height": 424.796875,
+        "top": 141.890625,
+        "right": 1152,
+        "bottom": 566.6875,
+        "left": 128,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 114.59375,
+        "top": 0,
+        "right": 1280,
+        "bottom": 114.59375,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "actionBar": {
+        "x": 0,
+        "y": 594,
+        "width": 1280,
+        "height": 126,
+        "top": 594,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "chat": {
+        "x": 862.703125,
+        "y": 126.59375,
+        "width": 405.296875,
+        "height": 455.40625,
+        "top": 126.59375,
+        "right": 1268,
+        "bottom": 582,
+        "left": 862.703125,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+      },
+      "chatFonts": {
+        "header": "16px",
+        "message": "12.8048px",
+        "input": "12.2481px"
+      },
+      "chatScale": 0.5567313569682152,
+      "ownMessage": {
+        "text": "จัดมาเลย ไฟ",
+        "sender": ": JORCH",
+        "hasBall": false,
+        "hasBubble": false,
+        "hasEmojiPicker": true
+      },
+      "tableScale": 0.9752380952380952,
+      "freeHeight": 479.40625,
+      "intersectsKeepClear": [
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 958.640625,
+            "y": 350.5546875,
+            "width": 105,
+            "height": 142.390625,
+            "top": 350.5546875,
+            "right": 1063.640625,
+            "bottom": 492.9453125,
+            "left": 958.640625,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 958.640625,
+            "y": 425.9453125,
+            "width": 105,
+            "height": 42,
+            "top": 425.9453125,
+            "right": 1063.640625,
+            "bottom": 467.9453125,
+            "left": 958.640625,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 977.734375,
+            "y": 472.9453125,
+            "width": 66.8125,
+            "height": 20,
+            "top": 472.9453125,
+            "right": 1044.546875,
+            "bottom": 492.9453125,
+            "left": 977.734375,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        },
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 958.640625,
+            "y": 215.6171875,
+            "width": 105,
+            "height": 142.390625,
+            "top": 215.6171875,
+            "right": 1063.640625,
+            "bottom": 358.0078125,
+            "left": 958.640625,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 958.640625,
+            "y": 291.0078125,
+            "width": 105,
+            "height": 42,
+            "top": 291.0078125,
+            "right": 1063.640625,
+            "bottom": 333.0078125,
+            "left": 958.640625,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 982.53125,
+            "y": 338.0078125,
+            "width": 57.203125,
+            "height": 20,
+            "top": 338.0078125,
+            "right": 1039.734375,
+            "bottom": 358.0078125,
+            "left": 982.53125,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        }
+      ],
+      "elements": {
+        ".playroom-header": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 114.59375,
+            "top": 0,
+            "right": 1280,
+            "bottom": 114.59375,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".table-area": [
+          {
+            "x": 0,
+            "y": 114.59375,
+            "width": 1280,
+            "height": 479.40625,
+            "top": 114.59375,
+            "right": 1280,
+            "bottom": 594,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".poker-table": [
+          {
+            "x": 128,
+            "y": 141.890625,
+            "width": 1024,
+            "height": 424.796875,
+            "top": 141.890625,
+            "right": 1152,
+            "bottom": 566.6875,
+            "left": 128,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".community-cards": [
+          {
+            "x": 492.03125,
+            "y": 280.0625,
+            "width": 295.9375,
+            "height": 72.953125,
+            "top": 280.0625,
+            "right": 787.96875,
+            "bottom": 353.015625,
+            "left": 492.03125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".pot-info": [
+          {
+            "x": 545,
+            "y": 373.015625,
+            "width": 190,
+            "height": 55.5,
+            "top": 373.015625,
+            "right": 735,
+            "bottom": 428.515625,
+            "left": 545,
+            "fontSize": "13px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".player-seat": [
+          {
+            "x": 587.5,
+            "y": 441.7578125,
+            "width": 105,
+            "height": 117.390625,
+            "top": 441.7578125,
+            "right": 692.5,
+            "bottom": 559.1484375,
+            "left": 587.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 958.640625,
+            "y": 350.5546875,
+            "width": 105,
+            "height": 142.390625,
+            "top": 350.5546875,
+            "right": 1063.640625,
+            "bottom": 492.9453125,
+            "left": 958.640625,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 958.640625,
+            "y": 215.6171875,
+            "width": 105,
+            "height": 142.390625,
+            "top": 215.6171875,
+            "right": 1063.640625,
+            "bottom": 358.0078125,
+            "left": 958.640625,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 586,
+            "y": 160.6640625,
+            "width": 108,
+            "height": 117.390625,
+            "top": 160.6640625,
+            "right": 694,
+            "bottom": 278.0546875,
+            "left": 586,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 216.34375,
+            "y": 228.1171875,
+            "width": 105,
+            "height": 117.390625,
+            "top": 228.1171875,
+            "right": 321.34375,
+            "bottom": 345.5078125,
+            "left": 216.34375,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 216.34375,
+            "y": 363.0546875,
+            "width": 105,
+            "height": 117.390625,
+            "top": 363.0546875,
+            "right": 321.34375,
+            "bottom": 480.4453125,
+            "left": 216.34375,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-info": [
+          {
+            "x": 587.5,
+            "y": 517.1484375,
+            "width": 105,
+            "height": 42,
+            "top": 517.1484375,
+            "right": 692.5,
+            "bottom": 559.1484375,
+            "left": 587.5,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 958.640625,
+            "y": 425.9453125,
+            "width": 105,
+            "height": 42,
+            "top": 425.9453125,
+            "right": 1063.640625,
+            "bottom": 467.9453125,
+            "left": 958.640625,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 958.640625,
+            "y": 291.0078125,
+            "width": 105,
+            "height": 42,
+            "top": 291.0078125,
+            "right": 1063.640625,
+            "bottom": 333.0078125,
+            "left": 958.640625,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 586,
+            "y": 236.0546875,
+            "width": 108,
+            "height": 42,
+            "top": 236.0546875,
+            "right": 694,
+            "bottom": 278.0546875,
+            "left": 586,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 216.34375,
+            "y": 303.5078125,
+            "width": 105,
+            "height": 42,
+            "top": 303.5078125,
+            "right": 321.34375,
+            "bottom": 345.5078125,
+            "left": 216.34375,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 216.34375,
+            "y": 438.4453125,
+            "width": 105,
+            "height": 42,
+            "top": 438.4453125,
+            "right": 321.34375,
+            "bottom": 480.4453125,
+            "left": 216.34375,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-action": [
+          {
+            "x": 977.734375,
+            "y": 472.9453125,
+            "width": 66.8125,
+            "height": 20,
+            "top": 472.9453125,
+            "right": 1044.546875,
+            "bottom": 492.9453125,
+            "left": 977.734375,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          },
+          {
+            "x": 982.53125,
+            "y": 338.0078125,
+            "width": 57.203125,
+            "height": 20,
+            "top": 338.0078125,
+            "right": 1039.734375,
+            "bottom": 358.0078125,
+            "left": 982.53125,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        ],
+        ".opponent-cards": [],
+        ".action-bar": [
+          {
+            "x": 0,
+            "y": 594,
+            "width": 1280,
+            "height": 126,
+            "top": 594,
+            "right": 1280,
+            "bottom": 720,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".hole-cards": [
+          {
+            "x": 23.638883590698242,
+            "y": 608.2962036132812,
+            "width": 148.72222900390625,
+            "height": 101.4075927734375,
+            "top": 608.2962036132812,
+            "right": 172.3611125946045,
+            "bottom": 709.7037963867188,
+            "left": 23.638883590698242,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".action-buttons": [
+          {
+            "x": 190,
+            "y": 626.25,
+            "width": 809,
+            "height": 65.5,
+            "top": 626.25,
+            "right": 999,
+            "bottom": 691.75,
+            "left": 190,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".raise-slider-container": [
+          {
+            "x": 1019,
+            "y": 634,
+            "width": 235,
+            "height": 50,
+            "top": 634,
+            "right": 1254,
+            "bottom": 684,
+            "left": 1019,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".chat-panel": [
+          {
+            "x": 862.703125,
+            "y": 126.59375,
+            "width": 405.296875,
+            "height": 455.40625,
+            "top": 126.59375,
+            "right": 1268,
+            "bottom": 582,
+            "left": 862.703125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-header": [
+          {
+            "x": 863.703125,
+            "y": 127.59375,
+            "width": 403.296875,
+            "height": 51.21875,
+            "top": 127.59375,
+            "right": 1267,
+            "bottom": 178.8125,
+            "left": 863.703125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-list": [
+          {
+            "x": 863.703125,
+            "y": 178.8125,
+            "width": 403.296875,
+            "height": 315.90625,
+            "top": 178.8125,
+            "right": 1267,
+            "bottom": 494.71875,
+            "left": 863.703125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-compose": [
+          {
+            "x": 863.703125,
+            "y": 494.71875,
+            "width": 403.296875,
+            "height": 86.28125,
+            "top": 494.71875,
+            "right": 1267,
+            "bottom": 581,
+            "left": 863.703125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "stage": {
+        "x": 0,
+        "y": 117,
+        "width": 1366,
+        "height": 525,
+        "top": 117,
+        "right": 1366,
+        "bottom": 642,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "table": {
+        "x": 158,
+        "y": 152.9375,
+        "width": 1050,
+        "height": 453.109375,
+        "top": 152.9375,
+        "right": 1208,
+        "bottom": 606.046875,
+        "left": 158,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1366,
+        "height": 117,
+        "top": 0,
+        "right": 1366,
+        "bottom": 117,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "actionBar": {
+        "x": 0,
+        "y": 642,
+        "width": 1366,
+        "height": 126,
+        "top": 642,
+        "right": 1366,
+        "bottom": 768,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "chat": {
+        "x": 908.125,
+        "y": 129,
+        "width": 445.875,
+        "height": 501,
+        "top": 129,
+        "right": 1354,
+        "bottom": 630,
+        "left": 908.125,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+      },
+      "chatFonts": {
+        "header": "16px",
+        "message": "14.0868px",
+        "input": "13.4743px"
+      },
+      "chatScale": 0.6124694376528117,
+      "ownMessage": {
+        "text": "จัดมาเลย ไฟ",
+        "sender": ": JORCH",
+        "hasBall": false,
+        "hasBubble": false,
+        "hasEmojiPicker": true
+      },
+      "tableScale": 1,
+      "freeHeight": 525,
+      "intersectsKeepClear": [
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 1010.78125,
+            "y": 379.6875,
+            "width": 105,
+            "height": 144,
+            "top": 379.6875,
+            "right": 1115.78125,
+            "bottom": 523.6875,
+            "left": 1010.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 1010.78125,
+            "y": 456.6875,
+            "width": 105,
+            "height": 42,
+            "top": 456.6875,
+            "right": 1115.78125,
+            "bottom": 498.6875,
+            "left": 1010.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 1029.875,
+            "y": 503.6875,
+            "width": 66.8125,
+            "height": 20,
+            "top": 503.6875,
+            "right": 1096.6875,
+            "bottom": 523.6875,
+            "left": 1029.875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        },
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 1010.78125,
+            "y": 235.28125,
+            "width": 105,
+            "height": 144,
+            "top": 235.28125,
+            "right": 1115.78125,
+            "bottom": 379.28125,
+            "left": 1010.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 1010.78125,
+            "y": 312.28125,
+            "width": 105,
+            "height": 42,
+            "top": 312.28125,
+            "right": 1115.78125,
+            "bottom": 354.28125,
+            "left": 1010.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 1034.671875,
+            "y": 359.28125,
+            "width": 57.203125,
+            "height": 20,
+            "top": 359.28125,
+            "right": 1091.875,
+            "bottom": 379.28125,
+            "left": 1034.671875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        }
+      ],
+      "elements": {
+        ".playroom-header": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 1366,
+            "height": 117,
+            "top": 0,
+            "right": 1366,
+            "bottom": 117,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".table-area": [
+          {
+            "x": 0,
+            "y": 117,
+            "width": 1366,
+            "height": 525,
+            "top": 117,
+            "right": 1366,
+            "bottom": 642,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".poker-table": [
+          {
+            "x": 158,
+            "y": 152.9375,
+            "width": 1050,
+            "height": 453.109375,
+            "top": 152.9375,
+            "right": 1208,
+            "bottom": 606.046875,
+            "left": 158,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".community-cards": [
+          {
+            "x": 526.4375,
+            "y": 302.8125,
+            "width": 313.125,
+            "height": 77.859375,
+            "top": 302.8125,
+            "right": 839.5625,
+            "bottom": 380.671875,
+            "left": 526.4375,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".pot-info": [
+          {
+            "x": 588,
+            "y": 400.671875,
+            "width": 190,
+            "height": 55.5,
+            "top": 400.671875,
+            "right": 778,
+            "bottom": 456.171875,
+            "left": 588,
+            "fontSize": "13px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".player-seat": [
+          {
+            "x": 630.5,
+            "y": 476.421875,
+            "width": 105,
+            "height": 119,
+            "top": 476.421875,
+            "right": 735.5,
+            "bottom": 595.421875,
+            "left": 630.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1010.78125,
+            "y": 379.6875,
+            "width": 105,
+            "height": 144,
+            "top": 379.6875,
+            "right": 1115.78125,
+            "bottom": 523.6875,
+            "left": 1010.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1010.78125,
+            "y": 235.28125,
+            "width": 105,
+            "height": 144,
+            "top": 235.28125,
+            "right": 1115.78125,
+            "bottom": 379.28125,
+            "left": 1010.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 629,
+            "y": 175.578125,
+            "width": 108,
+            "height": 119,
+            "top": 175.578125,
+            "right": 737,
+            "bottom": 294.578125,
+            "left": 629,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 250.203125,
+            "y": 247.78125,
+            "width": 105,
+            "height": 119,
+            "top": 247.78125,
+            "right": 355.203125,
+            "bottom": 366.78125,
+            "left": 250.203125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 250.203125,
+            "y": 392.1875,
+            "width": 105,
+            "height": 119,
+            "top": 392.1875,
+            "right": 355.203125,
+            "bottom": 511.1875,
+            "left": 250.203125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-info": [
+          {
+            "x": 630.5,
+            "y": 553.421875,
+            "width": 105,
+            "height": 42,
+            "top": 553.421875,
+            "right": 735.5,
+            "bottom": 595.421875,
+            "left": 630.5,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1010.78125,
+            "y": 456.6875,
+            "width": 105,
+            "height": 42,
+            "top": 456.6875,
+            "right": 1115.78125,
+            "bottom": 498.6875,
+            "left": 1010.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1010.78125,
+            "y": 312.28125,
+            "width": 105,
+            "height": 42,
+            "top": 312.28125,
+            "right": 1115.78125,
+            "bottom": 354.28125,
+            "left": 1010.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 629,
+            "y": 252.578125,
+            "width": 108,
+            "height": 42,
+            "top": 252.578125,
+            "right": 737,
+            "bottom": 294.578125,
+            "left": 629,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 250.203125,
+            "y": 324.78125,
+            "width": 105,
+            "height": 42,
+            "top": 324.78125,
+            "right": 355.203125,
+            "bottom": 366.78125,
+            "left": 250.203125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 250.203125,
+            "y": 469.1875,
+            "width": 105,
+            "height": 42,
+            "top": 469.1875,
+            "right": 355.203125,
+            "bottom": 511.1875,
+            "left": 250.203125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-action": [
+          {
+            "x": 1029.875,
+            "y": 503.6875,
+            "width": 66.8125,
+            "height": 20,
+            "top": 503.6875,
+            "right": 1096.6875,
+            "bottom": 523.6875,
+            "left": 1029.875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          },
+          {
+            "x": 1034.671875,
+            "y": 359.28125,
+            "width": 57.203125,
+            "height": 20,
+            "top": 359.28125,
+            "right": 1091.875,
+            "bottom": 379.28125,
+            "left": 1034.671875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        ],
+        ".opponent-cards": [],
+        ".action-bar": [
+          {
+            "x": 0,
+            "y": 642,
+            "width": 1366,
+            "height": 126,
+            "top": 642,
+            "right": 1366,
+            "bottom": 768,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".hole-cards": [
+          {
+            "x": 23.638883590698242,
+            "y": 656.2962036132812,
+            "width": 148.72222900390625,
+            "height": 101.4075927734375,
+            "top": 656.2962036132812,
+            "right": 172.3611125946045,
+            "bottom": 757.7037963867188,
+            "left": 23.638883590698242,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".action-buttons": [
+          {
+            "x": 190,
+            "y": 674.25,
+            "width": 895,
+            "height": 65.5,
+            "top": 674.25,
+            "right": 1085,
+            "bottom": 739.75,
+            "left": 190,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".raise-slider-container": [
+          {
+            "x": 1105,
+            "y": 682,
+            "width": 235,
+            "height": 50,
+            "top": 682,
+            "right": 1340,
+            "bottom": 732,
+            "left": 1105,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".chat-panel": [
+          {
+            "x": 908.125,
+            "y": 129,
+            "width": 445.875,
+            "height": 501,
+            "top": 129,
+            "right": 1354,
+            "bottom": 630,
+            "left": 908.125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-header": [
+          {
+            "x": 909.125,
+            "y": 130,
+            "width": 443.875,
+            "height": 56.34375,
+            "top": 130,
+            "right": 1353,
+            "bottom": 186.34375,
+            "left": 909.125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-list": [
+          {
+            "x": 909.125,
+            "y": 186.34375,
+            "width": 443.875,
+            "height": 347.734375,
+            "top": 186.34375,
+            "right": 1353,
+            "bottom": 534.078125,
+            "left": 909.125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-compose": [
+          {
+            "x": 909.125,
+            "y": 534.078125,
+            "width": 443.875,
+            "height": 94.921875,
+            "top": 534.078125,
+            "right": 1353,
+            "bottom": 629,
+            "left": 909.125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 1536,
+        "height": 864
+      },
+      "stage": {
+        "x": 0,
+        "y": 117,
+        "width": 1536,
+        "height": 621,
+        "top": 117,
+        "right": 1536,
+        "bottom": 738,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "table": {
+        "x": 243,
+        "y": 172.625,
+        "width": 1050,
+        "height": 509.75,
+        "top": 172.625,
+        "right": 1293,
+        "bottom": 682.375,
+        "left": 243,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1536,
+        "height": 117,
+        "top": 0,
+        "right": 1536,
+        "bottom": 117,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "actionBar": {
+        "x": 0,
+        "y": 738,
+        "width": 1536,
+        "height": 126,
+        "top": 738,
+        "right": 1536,
+        "bottom": 864,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "chat": {
+        "x": 992.6875,
+        "y": 129,
+        "width": 531.3125,
+        "height": 597,
+        "top": 129,
+        "right": 1524,
+        "bottom": 726,
+        "left": 992.6875,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+      },
+      "chatFonts": {
+        "header": "16px",
+        "message": "16.7861px",
+        "input": "16.0562px"
+      },
+      "chatScale": 0.7298288508557457,
+      "ownMessage": {
+        "text": "จัดมาเลย ไฟ",
+        "sender": ": JORCH",
+        "hasBall": false,
+        "hasBubble": false,
+        "hasEmojiPicker": true
+      },
+      "tableScale": 1,
+      "freeHeight": 621,
+      "intersectsKeepClear": [
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 1095.78125,
+            "y": 437.890625,
+            "width": 105,
+            "height": 144,
+            "top": 437.890625,
+            "right": 1200.78125,
+            "bottom": 581.890625,
+            "left": 1095.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 1095.78125,
+            "y": 514.890625,
+            "width": 105,
+            "height": 42,
+            "top": 514.890625,
+            "right": 1200.78125,
+            "bottom": 556.890625,
+            "left": 1095.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 1114.875,
+            "y": 561.890625,
+            "width": 66.8125,
+            "height": 20,
+            "top": 561.890625,
+            "right": 1181.6875,
+            "bottom": 581.890625,
+            "left": 1114.875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        },
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 1095.78125,
+            "y": 273.09375,
+            "width": 105,
+            "height": 144,
+            "top": 273.09375,
+            "right": 1200.78125,
+            "bottom": 417.09375,
+            "left": 1095.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 1095.78125,
+            "y": 350.09375,
+            "width": 105,
+            "height": 42,
+            "top": 350.09375,
+            "right": 1200.78125,
+            "bottom": 392.09375,
+            "left": 1095.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 1119.671875,
+            "y": 397.09375,
+            "width": 57.203125,
+            "height": 20,
+            "top": 397.09375,
+            "right": 1176.875,
+            "bottom": 417.09375,
+            "left": 1119.671875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        }
+      ],
+      "elements": {
+        ".playroom-header": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 1536,
+            "height": 117,
+            "top": 0,
+            "right": 1536,
+            "bottom": 117,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".table-area": [
+          {
+            "x": 0,
+            "y": 117,
+            "width": 1536,
+            "height": 621,
+            "top": 117,
+            "right": 1536,
+            "bottom": 738,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".poker-table": [
+          {
+            "x": 243,
+            "y": 172.625,
+            "width": 1050,
+            "height": 509.75,
+            "top": 172.625,
+            "right": 1293,
+            "bottom": 682.375,
+            "left": 243,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".community-cards": [
+          {
+            "x": 603,
+            "y": 348.75,
+            "width": 330,
+            "height": 82,
+            "top": 348.75,
+            "right": 933,
+            "bottom": 430.75,
+            "left": 603,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".pot-info": [
+          {
+            "x": 673,
+            "y": 450.75,
+            "width": 190,
+            "height": 55.5,
+            "top": 450.75,
+            "right": 863,
+            "bottom": 506.25,
+            "left": 673,
+            "fontSize": "13px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".player-seat": [
+          {
+            "x": 715.5,
+            "y": 546.515625,
+            "width": 105,
+            "height": 119,
+            "top": 546.515625,
+            "right": 820.5,
+            "bottom": 665.515625,
+            "left": 715.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1095.78125,
+            "y": 437.890625,
+            "width": 105,
+            "height": 144,
+            "top": 437.890625,
+            "right": 1200.78125,
+            "bottom": 581.890625,
+            "left": 1095.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1095.78125,
+            "y": 273.09375,
+            "width": 105,
+            "height": 144,
+            "top": 273.09375,
+            "right": 1200.78125,
+            "bottom": 417.09375,
+            "left": 1095.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 714,
+            "y": 203.203125,
+            "width": 108,
+            "height": 119,
+            "top": 203.203125,
+            "right": 822,
+            "bottom": 322.203125,
+            "left": 714,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 335.203125,
+            "y": 285.59375,
+            "width": 105,
+            "height": 119,
+            "top": 285.59375,
+            "right": 440.203125,
+            "bottom": 404.59375,
+            "left": 335.203125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 335.203125,
+            "y": 450.390625,
+            "width": 105,
+            "height": 119,
+            "top": 450.390625,
+            "right": 440.203125,
+            "bottom": 569.390625,
+            "left": 335.203125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-info": [
+          {
+            "x": 715.5,
+            "y": 623.515625,
+            "width": 105,
+            "height": 42,
+            "top": 623.515625,
+            "right": 820.5,
+            "bottom": 665.515625,
+            "left": 715.5,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1095.78125,
+            "y": 514.890625,
+            "width": 105,
+            "height": 42,
+            "top": 514.890625,
+            "right": 1200.78125,
+            "bottom": 556.890625,
+            "left": 1095.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1095.78125,
+            "y": 350.09375,
+            "width": 105,
+            "height": 42,
+            "top": 350.09375,
+            "right": 1200.78125,
+            "bottom": 392.09375,
+            "left": 1095.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 714,
+            "y": 280.203125,
+            "width": 108,
+            "height": 42,
+            "top": 280.203125,
+            "right": 822,
+            "bottom": 322.203125,
+            "left": 714,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 335.203125,
+            "y": 362.59375,
+            "width": 105,
+            "height": 42,
+            "top": 362.59375,
+            "right": 440.203125,
+            "bottom": 404.59375,
+            "left": 335.203125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 335.203125,
+            "y": 527.390625,
+            "width": 105,
+            "height": 42,
+            "top": 527.390625,
+            "right": 440.203125,
+            "bottom": 569.390625,
+            "left": 335.203125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-action": [
+          {
+            "x": 1114.875,
+            "y": 561.890625,
+            "width": 66.8125,
+            "height": 20,
+            "top": 561.890625,
+            "right": 1181.6875,
+            "bottom": 581.890625,
+            "left": 1114.875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          },
+          {
+            "x": 1119.671875,
+            "y": 397.09375,
+            "width": 57.203125,
+            "height": 20,
+            "top": 397.09375,
+            "right": 1176.875,
+            "bottom": 417.09375,
+            "left": 1119.671875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        ],
+        ".opponent-cards": [],
+        ".action-bar": [
+          {
+            "x": 0,
+            "y": 738,
+            "width": 1536,
+            "height": 126,
+            "top": 738,
+            "right": 1536,
+            "bottom": 864,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".hole-cards": [
+          {
+            "x": 23.638883590698242,
+            "y": 752.2962036132812,
+            "width": 148.72222900390625,
+            "height": 101.4075927734375,
+            "top": 752.2962036132812,
+            "right": 172.3611125946045,
+            "bottom": 853.7037963867188,
+            "left": 23.638883590698242,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".action-buttons": [
+          {
+            "x": 190,
+            "y": 770.25,
+            "width": 1065,
+            "height": 65.5,
+            "top": 770.25,
+            "right": 1255,
+            "bottom": 835.75,
+            "left": 190,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".raise-slider-container": [
+          {
+            "x": 1275,
+            "y": 778,
+            "width": 235,
+            "height": 50,
+            "top": 778,
+            "right": 1510,
+            "bottom": 828,
+            "left": 1275,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".chat-panel": [
+          {
+            "x": 992.6875,
+            "y": 129,
+            "width": 531.3125,
+            "height": 597,
+            "top": 129,
+            "right": 1524,
+            "bottom": 726,
+            "left": 992.6875,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-header": [
+          {
+            "x": 994.6875,
+            "y": 131,
+            "width": 527.3125,
+            "height": 67.140625,
+            "top": 131,
+            "right": 1522,
+            "bottom": 198.140625,
+            "left": 994.6875,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-list": [
+          {
+            "x": 994.6875,
+            "y": 198.140625,
+            "width": 527.3125,
+            "height": 412.75,
+            "top": 198.140625,
+            "right": 1522,
+            "bottom": 610.890625,
+            "left": 994.6875,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-compose": [
+          {
+            "x": 994.6875,
+            "y": 610.890625,
+            "width": 527.3125,
+            "height": 113.109375,
+            "top": 610.890625,
+            "right": 1522,
+            "bottom": 724,
+            "left": 994.6875,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 1707,
+        "height": 960
+      },
+      "stage": {
+        "x": 0,
+        "y": 117,
+        "width": 1707,
+        "height": 717,
+        "top": 117,
+        "right": 1707,
+        "bottom": 834,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "table": {
+        "x": 328.5,
+        "y": 220.5,
+        "width": 1050,
+        "height": 510,
+        "top": 220.5,
+        "right": 1378.5,
+        "bottom": 730.5,
+        "left": 328.5,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1707,
+        "height": 117,
+        "top": 0,
+        "right": 1707,
+        "bottom": 117,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "actionBar": {
+        "x": 0,
+        "y": 834,
+        "width": 1707,
+        "height": 126,
+        "top": 834,
+        "right": 1707,
+        "bottom": 960,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "chat": {
+        "x": 1078.25,
+        "y": 129,
+        "width": 616.75,
+        "height": 693,
+        "top": 129,
+        "right": 1695,
+        "bottom": 822,
+        "left": 1078.25,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+      },
+      "chatFonts": {
+        "header": "16px",
+        "message": "19.4853px",
+        "input": "18.6381px"
+      },
+      "chatScale": 0.8471882640586798,
+      "ownMessage": {
+        "text": "จัดมาเลย ไฟ",
+        "sender": ": JORCH",
+        "hasBall": false,
+        "hasBubble": false,
+        "hasEmojiPicker": true
+      },
+      "tableScale": 1,
+      "freeHeight": 717,
+      "intersectsKeepClear": [
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 1181.28125,
+            "y": 485.9375,
+            "width": 105,
+            "height": 144,
+            "top": 485.9375,
+            "right": 1286.28125,
+            "bottom": 629.9375,
+            "left": 1181.28125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 1181.28125,
+            "y": 562.9375,
+            "width": 105,
+            "height": 42,
+            "top": 562.9375,
+            "right": 1286.28125,
+            "bottom": 604.9375,
+            "left": 1181.28125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 1200.375,
+            "y": 609.9375,
+            "width": 66.8125,
+            "height": 20,
+            "top": 609.9375,
+            "right": 1267.1875,
+            "bottom": 629.9375,
+            "left": 1200.375,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        },
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 1181.28125,
+            "y": 321.046875,
+            "width": 105,
+            "height": 144,
+            "top": 321.046875,
+            "right": 1286.28125,
+            "bottom": 465.046875,
+            "left": 1181.28125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 1181.28125,
+            "y": 398.046875,
+            "width": 105,
+            "height": 42,
+            "top": 398.046875,
+            "right": 1286.28125,
+            "bottom": 440.046875,
+            "left": 1181.28125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 1205.171875,
+            "y": 445.046875,
+            "width": 57.203125,
+            "height": 20,
+            "top": 445.046875,
+            "right": 1262.375,
+            "bottom": 465.046875,
+            "left": 1205.171875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        }
+      ],
+      "elements": {
+        ".playroom-header": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 1707,
+            "height": 117,
+            "top": 0,
+            "right": 1707,
+            "bottom": 117,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".table-area": [
+          {
+            "x": 0,
+            "y": 117,
+            "width": 1707,
+            "height": 717,
+            "top": 117,
+            "right": 1707,
+            "bottom": 834,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".poker-table": [
+          {
+            "x": 328.5,
+            "y": 220.5,
+            "width": 1050,
+            "height": 510,
+            "top": 220.5,
+            "right": 1378.5,
+            "bottom": 730.5,
+            "left": 328.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".community-cards": [
+          {
+            "x": 688.5,
+            "y": 396.75,
+            "width": 330,
+            "height": 82,
+            "top": 396.75,
+            "right": 1018.5,
+            "bottom": 478.75,
+            "left": 688.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".pot-info": [
+          {
+            "x": 758.5,
+            "y": 498.75,
+            "width": 190,
+            "height": 55.5,
+            "top": 498.75,
+            "right": 948.5,
+            "bottom": 554.25,
+            "left": 758.5,
+            "fontSize": "13px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".player-seat": [
+          {
+            "x": 801,
+            "y": 594.609375,
+            "width": 105,
+            "height": 119,
+            "top": 594.609375,
+            "right": 906,
+            "bottom": 713.609375,
+            "left": 801,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1181.28125,
+            "y": 485.9375,
+            "width": 105,
+            "height": 144,
+            "top": 485.9375,
+            "right": 1286.28125,
+            "bottom": 629.9375,
+            "left": 1181.28125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1181.28125,
+            "y": 321.046875,
+            "width": 105,
+            "height": 144,
+            "top": 321.046875,
+            "right": 1286.28125,
+            "bottom": 465.046875,
+            "left": 1181.28125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 799.5,
+            "y": 251.109375,
+            "width": 108,
+            "height": 119,
+            "top": 251.109375,
+            "right": 907.5,
+            "bottom": 370.109375,
+            "left": 799.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 420.703125,
+            "y": 333.546875,
+            "width": 105,
+            "height": 119,
+            "top": 333.546875,
+            "right": 525.703125,
+            "bottom": 452.546875,
+            "left": 420.703125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 420.703125,
+            "y": 498.4375,
+            "width": 105,
+            "height": 119,
+            "top": 498.4375,
+            "right": 525.703125,
+            "bottom": 617.4375,
+            "left": 420.703125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-info": [
+          {
+            "x": 801,
+            "y": 671.609375,
+            "width": 105,
+            "height": 42,
+            "top": 671.609375,
+            "right": 906,
+            "bottom": 713.609375,
+            "left": 801,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1181.28125,
+            "y": 562.9375,
+            "width": 105,
+            "height": 42,
+            "top": 562.9375,
+            "right": 1286.28125,
+            "bottom": 604.9375,
+            "left": 1181.28125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1181.28125,
+            "y": 398.046875,
+            "width": 105,
+            "height": 42,
+            "top": 398.046875,
+            "right": 1286.28125,
+            "bottom": 440.046875,
+            "left": 1181.28125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 799.5,
+            "y": 328.109375,
+            "width": 108,
+            "height": 42,
+            "top": 328.109375,
+            "right": 907.5,
+            "bottom": 370.109375,
+            "left": 799.5,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 420.703125,
+            "y": 410.546875,
+            "width": 105,
+            "height": 42,
+            "top": 410.546875,
+            "right": 525.703125,
+            "bottom": 452.546875,
+            "left": 420.703125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 420.703125,
+            "y": 575.4375,
+            "width": 105,
+            "height": 42,
+            "top": 575.4375,
+            "right": 525.703125,
+            "bottom": 617.4375,
+            "left": 420.703125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-action": [
+          {
+            "x": 1200.375,
+            "y": 609.9375,
+            "width": 66.8125,
+            "height": 20,
+            "top": 609.9375,
+            "right": 1267.1875,
+            "bottom": 629.9375,
+            "left": 1200.375,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          },
+          {
+            "x": 1205.171875,
+            "y": 445.046875,
+            "width": 57.203125,
+            "height": 20,
+            "top": 445.046875,
+            "right": 1262.375,
+            "bottom": 465.046875,
+            "left": 1205.171875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        ],
+        ".opponent-cards": [],
+        ".action-bar": [
+          {
+            "x": 0,
+            "y": 834,
+            "width": 1707,
+            "height": 126,
+            "top": 834,
+            "right": 1707,
+            "bottom": 960,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".hole-cards": [
+          {
+            "x": 23.638883590698242,
+            "y": 848.2962036132812,
+            "width": 148.72222900390625,
+            "height": 101.4075927734375,
+            "top": 848.2962036132812,
+            "right": 172.3611125946045,
+            "bottom": 949.7037963867188,
+            "left": 23.638883590698242,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".action-buttons": [
+          {
+            "x": 190,
+            "y": 866.25,
+            "width": 1236,
+            "height": 65.5,
+            "top": 866.25,
+            "right": 1426,
+            "bottom": 931.75,
+            "left": 190,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".raise-slider-container": [
+          {
+            "x": 1446,
+            "y": 874,
+            "width": 235,
+            "height": 50,
+            "top": 874,
+            "right": 1681,
+            "bottom": 924,
+            "left": 1446,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".chat-panel": [
+          {
+            "x": 1078.25,
+            "y": 129,
+            "width": 616.75,
+            "height": 693,
+            "top": 129,
+            "right": 1695,
+            "bottom": 822,
+            "left": 1078.25,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-header": [
+          {
+            "x": 1080.25,
+            "y": 131,
+            "width": 612.75,
+            "height": 77.9375,
+            "top": 131,
+            "right": 1693,
+            "bottom": 208.9375,
+            "left": 1080.25,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-list": [
+          {
+            "x": 1080.25,
+            "y": 208.9375,
+            "width": 612.75,
+            "height": 479.75,
+            "top": 208.9375,
+            "right": 1693,
+            "bottom": 688.6875,
+            "left": 1080.25,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-compose": [
+          {
+            "x": 1080.25,
+            "y": 688.6875,
+            "width": 612.75,
+            "height": 131.3125,
+            "top": 688.6875,
+            "right": 1693,
+            "bottom": 820,
+            "left": 1080.25,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 117,
+        "width": 1920,
+        "height": 837,
+        "top": 117,
+        "right": 1920,
+        "bottom": 954,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "table": {
+        "x": 435,
+        "y": 280.5,
+        "width": 1050,
+        "height": 510,
+        "top": 280.5,
+        "right": 1485,
+        "bottom": 790.5,
+        "left": 435,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 117,
+        "top": 0,
+        "right": 1920,
+        "bottom": 117,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "actionBar": {
+        "x": 0,
+        "y": 954,
+        "width": 1920,
+        "height": 126,
+        "top": 954,
+        "right": 1920,
+        "bottom": 1080,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "chat": {
+        "x": 1184.453125,
+        "y": 129,
+        "width": 723.546875,
+        "height": 813,
+        "top": 129,
+        "right": 1908,
+        "bottom": 942,
+        "left": 1184.453125,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+      },
+      "chatFonts": {
+        "header": "16px",
+        "message": "22.8594px",
+        "input": "21.8655px"
+      },
+      "chatScale": 0.9938875305623472,
+      "ownMessage": {
+        "text": "จัดมาเลย ไฟ",
+        "sender": ": JORCH",
+        "hasBall": false,
+        "hasBubble": false,
+        "hasEmojiPicker": true
+      },
+      "tableScale": 1,
+      "freeHeight": 837,
+      "intersectsKeepClear": [
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 1287.78125,
+            "y": 545.9375,
+            "width": 105,
+            "height": 144,
+            "top": 545.9375,
+            "right": 1392.78125,
+            "bottom": 689.9375,
+            "left": 1287.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 1287.78125,
+            "y": 622.9375,
+            "width": 105,
+            "height": 42,
+            "top": 622.9375,
+            "right": 1392.78125,
+            "bottom": 664.9375,
+            "left": 1287.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 1306.875,
+            "y": 669.9375,
+            "width": 66.8125,
+            "height": 20,
+            "top": 669.9375,
+            "right": 1373.6875,
+            "bottom": 689.9375,
+            "left": 1306.875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        },
+        {
+          "selector": "player-seat   ",
+          "rect": {
+            "x": 1287.78125,
+            "y": 381.046875,
+            "width": 105,
+            "height": 144,
+            "top": 381.046875,
+            "right": 1392.78125,
+            "bottom": 525.046875,
+            "left": 1287.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-info",
+          "rect": {
+            "x": 1287.78125,
+            "y": 458.046875,
+            "width": 105,
+            "height": 42,
+            "top": 458.046875,
+            "right": 1392.78125,
+            "bottom": 500.046875,
+            "left": 1287.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        },
+        {
+          "selector": "seat-action",
+          "rect": {
+            "x": 1311.671875,
+            "y": 505.046875,
+            "width": 57.203125,
+            "height": 20,
+            "top": 505.046875,
+            "right": 1368.875,
+            "bottom": 525.046875,
+            "left": 1311.671875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        }
+      ],
+      "elements": {
+        ".playroom-header": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 117,
+            "top": 0,
+            "right": 1920,
+            "bottom": 117,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".table-area": [
+          {
+            "x": 0,
+            "y": 117,
+            "width": 1920,
+            "height": 837,
+            "top": 117,
+            "right": 1920,
+            "bottom": 954,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".poker-table": [
+          {
+            "x": 435,
+            "y": 280.5,
+            "width": 1050,
+            "height": 510,
+            "top": 280.5,
+            "right": 1485,
+            "bottom": 790.5,
+            "left": 435,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".community-cards": [
+          {
+            "x": 795,
+            "y": 456.75,
+            "width": 330,
+            "height": 82,
+            "top": 456.75,
+            "right": 1125,
+            "bottom": 538.75,
+            "left": 795,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".pot-info": [
+          {
+            "x": 865,
+            "y": 558.75,
+            "width": 190,
+            "height": 55.5,
+            "top": 558.75,
+            "right": 1055,
+            "bottom": 614.25,
+            "left": 865,
+            "fontSize": "13px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".player-seat": [
+          {
+            "x": 907.5,
+            "y": 654.609375,
+            "width": 105,
+            "height": 119,
+            "top": 654.609375,
+            "right": 1012.5,
+            "bottom": 773.609375,
+            "left": 907.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1287.78125,
+            "y": 545.9375,
+            "width": 105,
+            "height": 144,
+            "top": 545.9375,
+            "right": 1392.78125,
+            "bottom": 689.9375,
+            "left": 1287.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1287.78125,
+            "y": 381.046875,
+            "width": 105,
+            "height": 144,
+            "top": 381.046875,
+            "right": 1392.78125,
+            "bottom": 525.046875,
+            "left": 1287.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 906,
+            "y": 311.109375,
+            "width": 108,
+            "height": 119,
+            "top": 311.109375,
+            "right": 1014,
+            "bottom": 430.109375,
+            "left": 906,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 527.203125,
+            "y": 393.546875,
+            "width": 105,
+            "height": 119,
+            "top": 393.546875,
+            "right": 632.203125,
+            "bottom": 512.546875,
+            "left": 527.203125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 527.203125,
+            "y": 558.4375,
+            "width": 105,
+            "height": 119,
+            "top": 558.4375,
+            "right": 632.203125,
+            "bottom": 677.4375,
+            "left": 527.203125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-info": [
+          {
+            "x": 907.5,
+            "y": 731.609375,
+            "width": 105,
+            "height": 42,
+            "top": 731.609375,
+            "right": 1012.5,
+            "bottom": 773.609375,
+            "left": 907.5,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1287.78125,
+            "y": 622.9375,
+            "width": 105,
+            "height": 42,
+            "top": 622.9375,
+            "right": 1392.78125,
+            "bottom": 664.9375,
+            "left": 1287.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1287.78125,
+            "y": 458.046875,
+            "width": 105,
+            "height": 42,
+            "top": 458.046875,
+            "right": 1392.78125,
+            "bottom": 500.046875,
+            "left": 1287.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 906,
+            "y": 388.109375,
+            "width": 108,
+            "height": 42,
+            "top": 388.109375,
+            "right": 1014,
+            "bottom": 430.109375,
+            "left": 906,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 527.203125,
+            "y": 470.546875,
+            "width": 105,
+            "height": 42,
+            "top": 470.546875,
+            "right": 632.203125,
+            "bottom": 512.546875,
+            "left": 527.203125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 527.203125,
+            "y": 635.4375,
+            "width": 105,
+            "height": 42,
+            "top": 635.4375,
+            "right": 632.203125,
+            "bottom": 677.4375,
+            "left": 527.203125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-action": [
+          {
+            "x": 1306.875,
+            "y": 669.9375,
+            "width": 66.8125,
+            "height": 20,
+            "top": 669.9375,
+            "right": 1373.6875,
+            "bottom": 689.9375,
+            "left": 1306.875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          },
+          {
+            "x": 1311.671875,
+            "y": 505.046875,
+            "width": 57.203125,
+            "height": 20,
+            "top": 505.046875,
+            "right": 1368.875,
+            "bottom": 525.046875,
+            "left": 1311.671875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        ],
+        ".opponent-cards": [],
+        ".action-bar": [
+          {
+            "x": 0,
+            "y": 954,
+            "width": 1920,
+            "height": 126,
+            "top": 954,
+            "right": 1920,
+            "bottom": 1080,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".hole-cards": [
+          {
+            "x": 23.638883590698242,
+            "y": 968.2962036132812,
+            "width": 148.72222900390625,
+            "height": 101.40753173828125,
+            "top": 968.2962036132812,
+            "right": 172.3611125946045,
+            "bottom": 1069.7037353515625,
+            "left": 23.638883590698242,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".action-buttons": [
+          {
+            "x": 190,
+            "y": 986.25,
+            "width": 1449,
+            "height": 65.5,
+            "top": 986.25,
+            "right": 1639,
+            "bottom": 1051.75,
+            "left": 190,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".raise-slider-container": [
+          {
+            "x": 1659,
+            "y": 994,
+            "width": 235,
+            "height": 50,
+            "top": 994,
+            "right": 1894,
+            "bottom": 1044,
+            "left": 1659,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".chat-panel": [
+          {
+            "x": 1184.453125,
+            "y": 129,
+            "width": 723.546875,
+            "height": 813,
+            "top": 129,
+            "right": 1908,
+            "bottom": 942,
+            "left": 1184.453125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-header": [
+          {
+            "x": 1186.453125,
+            "y": 131,
+            "width": 719.546875,
+            "height": 91.4375,
+            "top": 131,
+            "right": 1906,
+            "bottom": 222.4375,
+            "left": 1186.453125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-list": [
+          {
+            "x": 1186.453125,
+            "y": 222.4375,
+            "width": 719.546875,
+            "height": 563.515625,
+            "top": 222.4375,
+            "right": 1906,
+            "bottom": 785.953125,
+            "left": 1186.453125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-compose": [
+          {
+            "x": 1186.453125,
+            "y": 785.953125,
+            "width": 719.546875,
+            "height": 154.046875,
+            "top": 785.953125,
+            "right": 1906,
+            "bottom": 940,
+            "left": 1186.453125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "stage": {
+        "x": 0,
+        "y": 117,
+        "width": 2560,
+        "height": 1197,
+        "top": 117,
+        "right": 2560,
+        "bottom": 1314,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "table": {
+        "x": 755,
+        "y": 460.5,
+        "width": 1050,
+        "height": 510,
+        "top": 460.5,
+        "right": 1805,
+        "bottom": 970.5,
+        "left": 755,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 2560,
+        "height": 117,
+        "top": 0,
+        "right": 2560,
+        "bottom": 117,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "actionBar": {
+        "x": 0,
+        "y": 1314,
+        "width": 2560,
+        "height": 126,
+        "top": 1314,
+        "right": 2560,
+        "bottom": 1440,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "chat": {
+        "x": 1820,
+        "y": 484,
+        "width": 728,
+        "height": 818,
+        "top": 484,
+        "right": 2548,
+        "bottom": 1302,
+        "left": 1820,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+      },
+      "chatFonts": {
+        "header": "16px",
+        "message": "23px",
+        "input": "22px"
+      },
+      "chatScale": 1,
+      "ownMessage": {
+        "text": "จัดมาเลย ไฟ",
+        "sender": ": JORCH",
+        "hasBall": false,
+        "hasBubble": false,
+        "hasEmojiPicker": true
+      },
+      "tableScale": 1,
+      "freeHeight": 1197,
+      "intersectsKeepClear": [],
+      "elements": {
+        ".playroom-header": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 2560,
+            "height": 117,
+            "top": 0,
+            "right": 2560,
+            "bottom": 117,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".table-area": [
+          {
+            "x": 0,
+            "y": 117,
+            "width": 2560,
+            "height": 1197,
+            "top": 117,
+            "right": 2560,
+            "bottom": 1314,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".poker-table": [
+          {
+            "x": 755,
+            "y": 460.5,
+            "width": 1050,
+            "height": 510,
+            "top": 460.5,
+            "right": 1805,
+            "bottom": 970.5,
+            "left": 755,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".community-cards": [
+          {
+            "x": 1115,
+            "y": 636.75,
+            "width": 330,
+            "height": 82,
+            "top": 636.75,
+            "right": 1445,
+            "bottom": 718.75,
+            "left": 1115,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".pot-info": [
+          {
+            "x": 1185,
+            "y": 738.75,
+            "width": 190,
+            "height": 55.5,
+            "top": 738.75,
+            "right": 1375,
+            "bottom": 794.25,
+            "left": 1185,
+            "fontSize": "13px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".player-seat": [
+          {
+            "x": 1227.5,
+            "y": 834.609375,
+            "width": 105,
+            "height": 119,
+            "top": 834.609375,
+            "right": 1332.5,
+            "bottom": 953.609375,
+            "left": 1227.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1607.78125,
+            "y": 725.9375,
+            "width": 105,
+            "height": 144,
+            "top": 725.9375,
+            "right": 1712.78125,
+            "bottom": 869.9375,
+            "left": 1607.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1607.78125,
+            "y": 561.046875,
+            "width": 105,
+            "height": 144,
+            "top": 561.046875,
+            "right": 1712.78125,
+            "bottom": 705.046875,
+            "left": 1607.78125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1226,
+            "y": 478.609375,
+            "width": 108,
+            "height": 144,
+            "top": 478.609375,
+            "right": 1334,
+            "bottom": 622.609375,
+            "left": 1226,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 847.203125,
+            "y": 573.546875,
+            "width": 105,
+            "height": 119,
+            "top": 573.546875,
+            "right": 952.203125,
+            "bottom": 692.546875,
+            "left": 847.203125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 847.203125,
+            "y": 738.4375,
+            "width": 105,
+            "height": 119,
+            "top": 738.4375,
+            "right": 952.203125,
+            "bottom": 857.4375,
+            "left": 847.203125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-info": [
+          {
+            "x": 1227.5,
+            "y": 911.609375,
+            "width": 105,
+            "height": 42,
+            "top": 911.609375,
+            "right": 1332.5,
+            "bottom": 953.609375,
+            "left": 1227.5,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1607.78125,
+            "y": 802.9375,
+            "width": 105,
+            "height": 42,
+            "top": 802.9375,
+            "right": 1712.78125,
+            "bottom": 844.9375,
+            "left": 1607.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1607.78125,
+            "y": 638.046875,
+            "width": 105,
+            "height": 42,
+            "top": 638.046875,
+            "right": 1712.78125,
+            "bottom": 680.046875,
+            "left": 1607.78125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1226,
+            "y": 555.609375,
+            "width": 108,
+            "height": 42,
+            "top": 555.609375,
+            "right": 1334,
+            "bottom": 597.609375,
+            "left": 1226,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 847.203125,
+            "y": 650.546875,
+            "width": 105,
+            "height": 42,
+            "top": 650.546875,
+            "right": 952.203125,
+            "bottom": 692.546875,
+            "left": 847.203125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 847.203125,
+            "y": 815.4375,
+            "width": 105,
+            "height": 42,
+            "top": 815.4375,
+            "right": 952.203125,
+            "bottom": 857.4375,
+            "left": 847.203125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-action": [
+          {
+            "x": 1626.875,
+            "y": 849.9375,
+            "width": 66.8125,
+            "height": 20,
+            "top": 849.9375,
+            "right": 1693.6875,
+            "bottom": 869.9375,
+            "left": 1626.875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          },
+          {
+            "x": 1631.671875,
+            "y": 685.046875,
+            "width": 57.203125,
+            "height": 20,
+            "top": 685.046875,
+            "right": 1688.875,
+            "bottom": 705.046875,
+            "left": 1631.671875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          },
+          {
+            "x": 1253.796875,
+            "y": 602.609375,
+            "width": 52.40625,
+            "height": 20,
+            "top": 602.609375,
+            "right": 1306.203125,
+            "bottom": 622.609375,
+            "left": 1253.796875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        ],
+        ".opponent-cards": [],
+        ".action-bar": [
+          {
+            "x": 0,
+            "y": 1314,
+            "width": 2560,
+            "height": 126,
+            "top": 1314,
+            "right": 2560,
+            "bottom": 1440,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".hole-cards": [
+          {
+            "x": 23.638883590698242,
+            "y": 1328.2962646484375,
+            "width": 148.72222900390625,
+            "height": 101.407470703125,
+            "top": 1328.2962646484375,
+            "right": 172.3611125946045,
+            "bottom": 1429.7037353515625,
+            "left": 23.638883590698242,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".action-buttons": [
+          {
+            "x": 190,
+            "y": 1346.25,
+            "width": 2089,
+            "height": 65.5,
+            "top": 1346.25,
+            "right": 2279,
+            "bottom": 1411.75,
+            "left": 190,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".raise-slider-container": [
+          {
+            "x": 2299,
+            "y": 1354,
+            "width": 235,
+            "height": 50,
+            "top": 1354,
+            "right": 2534,
+            "bottom": 1404,
+            "left": 2299,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".chat-panel": [
+          {
+            "x": 1820,
+            "y": 484,
+            "width": 728,
+            "height": 818,
+            "top": 484,
+            "right": 2548,
+            "bottom": 1302,
+            "left": 1820,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-header": [
+          {
+            "x": 1823,
+            "y": 487,
+            "width": 722,
+            "height": 92,
+            "top": 487,
+            "right": 2545,
+            "bottom": 579,
+            "left": 1823,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-list": [
+          {
+            "x": 1823,
+            "y": 579,
+            "width": 722,
+            "height": 565,
+            "top": 579,
+            "right": 2545,
+            "bottom": 1144,
+            "left": 1823,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-compose": [
+          {
+            "x": 1823,
+            "y": 1144,
+            "width": 722,
+            "height": 155,
+            "top": 1144,
+            "right": 2545,
+            "bottom": 1299,
+            "left": 1823,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 3413,
+        "height": 1920
+      },
+      "stage": {
+        "x": 0,
+        "y": 117,
+        "width": 3413,
+        "height": 1677,
+        "top": 117,
+        "right": 3413,
+        "bottom": 1794,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "table": {
+        "x": 1181.5,
+        "y": 700.5,
+        "width": 1050,
+        "height": 510,
+        "top": 700.5,
+        "right": 2231.5,
+        "bottom": 1210.5,
+        "left": 1181.5,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 3413,
+        "height": 117,
+        "top": 0,
+        "right": 3413,
+        "bottom": 117,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "actionBar": {
+        "x": 0,
+        "y": 1794,
+        "width": 3413,
+        "height": 126,
+        "top": 1794,
+        "right": 3413,
+        "bottom": 1920,
+        "left": 0,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace"
+      },
+      "chat": {
+        "x": 2673,
+        "y": 964,
+        "width": 728,
+        "height": 818,
+        "top": 964,
+        "right": 3401,
+        "bottom": 1782,
+        "left": 2673,
+        "fontSize": "16px",
+        "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+      },
+      "chatFonts": {
+        "header": "16px",
+        "message": "23px",
+        "input": "22px"
+      },
+      "chatScale": 1,
+      "ownMessage": {
+        "text": "จัดมาเลย ไฟ",
+        "sender": ": JORCH",
+        "hasBall": false,
+        "hasBubble": false,
+        "hasEmojiPicker": true
+      },
+      "tableScale": 1,
+      "freeHeight": 1677,
+      "intersectsKeepClear": [],
+      "elements": {
+        ".playroom-header": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 3413,
+            "height": 117,
+            "top": 0,
+            "right": 3413,
+            "bottom": 117,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".table-area": [
+          {
+            "x": 0,
+            "y": 117,
+            "width": 3413,
+            "height": 1677,
+            "top": 117,
+            "right": 3413,
+            "bottom": 1794,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".poker-table": [
+          {
+            "x": 1181.5,
+            "y": 700.5,
+            "width": 1050,
+            "height": 510,
+            "top": 700.5,
+            "right": 2231.5,
+            "bottom": 1210.5,
+            "left": 1181.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".community-cards": [
+          {
+            "x": 1541.5,
+            "y": 876.75,
+            "width": 330,
+            "height": 82,
+            "top": 876.75,
+            "right": 1871.5,
+            "bottom": 958.75,
+            "left": 1541.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".pot-info": [
+          {
+            "x": 1611.5,
+            "y": 978.75,
+            "width": 190,
+            "height": 55.5,
+            "top": 978.75,
+            "right": 1801.5,
+            "bottom": 1034.25,
+            "left": 1611.5,
+            "fontSize": "13px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".player-seat": [
+          {
+            "x": 1654,
+            "y": 1074.609375,
+            "width": 105,
+            "height": 119,
+            "top": 1074.609375,
+            "right": 1759,
+            "bottom": 1193.609375,
+            "left": 1654,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 2034.28125,
+            "y": 965.9375,
+            "width": 105,
+            "height": 144,
+            "top": 965.9375,
+            "right": 2139.28125,
+            "bottom": 1109.9375,
+            "left": 2034.28125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 2034.28125,
+            "y": 801.046875,
+            "width": 105,
+            "height": 144,
+            "top": 801.046875,
+            "right": 2139.28125,
+            "bottom": 945.046875,
+            "left": 2034.28125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1652.5,
+            "y": 718.609375,
+            "width": 108,
+            "height": 144,
+            "top": 718.609375,
+            "right": 1760.5,
+            "bottom": 862.609375,
+            "left": 1652.5,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1273.703125,
+            "y": 813.546875,
+            "width": 105,
+            "height": 119,
+            "top": 813.546875,
+            "right": 1378.703125,
+            "bottom": 932.546875,
+            "left": 1273.703125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1273.703125,
+            "y": 978.4375,
+            "width": 105,
+            "height": 119,
+            "top": 978.4375,
+            "right": 1378.703125,
+            "bottom": 1097.4375,
+            "left": 1273.703125,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-info": [
+          {
+            "x": 1654,
+            "y": 1151.609375,
+            "width": 105,
+            "height": 42,
+            "top": 1151.609375,
+            "right": 1759,
+            "bottom": 1193.609375,
+            "left": 1654,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 2034.28125,
+            "y": 1042.9375,
+            "width": 105,
+            "height": 42,
+            "top": 1042.9375,
+            "right": 2139.28125,
+            "bottom": 1084.9375,
+            "left": 2034.28125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 2034.28125,
+            "y": 878.046875,
+            "width": 105,
+            "height": 42,
+            "top": 878.046875,
+            "right": 2139.28125,
+            "bottom": 920.046875,
+            "left": 2034.28125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1652.5,
+            "y": 795.609375,
+            "width": 108,
+            "height": 42,
+            "top": 795.609375,
+            "right": 1760.5,
+            "bottom": 837.609375,
+            "left": 1652.5,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1273.703125,
+            "y": 890.546875,
+            "width": 105,
+            "height": 42,
+            "top": 890.546875,
+            "right": 1378.703125,
+            "bottom": 932.546875,
+            "left": 1273.703125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          },
+          {
+            "x": 1273.703125,
+            "y": 1055.4375,
+            "width": 105,
+            "height": 42,
+            "top": 1055.4375,
+            "right": 1378.703125,
+            "bottom": 1097.4375,
+            "left": 1273.703125,
+            "fontSize": "8px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".seat-action": [
+          {
+            "x": 2053.375,
+            "y": 1089.9375,
+            "width": 66.8125,
+            "height": 20,
+            "top": 1089.9375,
+            "right": 2120.1875,
+            "bottom": 1109.9375,
+            "left": 2053.375,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          },
+          {
+            "x": 2058.171875,
+            "y": 925.046875,
+            "width": 57.203125,
+            "height": 20,
+            "top": 925.046875,
+            "right": 2115.375,
+            "bottom": 945.046875,
+            "left": 2058.171875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          },
+          {
+            "x": 1670.6875,
+            "y": 842.609375,
+            "width": 71.609375,
+            "height": 20,
+            "top": 842.609375,
+            "right": 1742.296875,
+            "bottom": 862.609375,
+            "left": 1670.6875,
+            "fontSize": "12px",
+            "fontFamily": "VT323, monospace"
+          }
+        ],
+        ".opponent-cards": [],
+        ".action-bar": [
+          {
+            "x": 0,
+            "y": 1794,
+            "width": 3413,
+            "height": 126,
+            "top": 1794,
+            "right": 3413,
+            "bottom": 1920,
+            "left": 0,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".hole-cards": [
+          {
+            "x": 23.638883590698242,
+            "y": 1808.2962646484375,
+            "width": 148.72222900390625,
+            "height": 101.407470703125,
+            "top": 1808.2962646484375,
+            "right": 172.3611125946045,
+            "bottom": 1909.7037353515625,
+            "left": 23.638883590698242,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".action-buttons": [
+          {
+            "x": 190,
+            "y": 1826.25,
+            "width": 2942,
+            "height": 65.5,
+            "top": 1826.25,
+            "right": 3132,
+            "bottom": 1891.75,
+            "left": 190,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".raise-slider-container": [
+          {
+            "x": 3152,
+            "y": 1834,
+            "width": 235,
+            "height": 50,
+            "top": 1834,
+            "right": 3387,
+            "bottom": 1884,
+            "left": 3152,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace"
+          }
+        ],
+        ".chat-panel": [
+          {
+            "x": 2673,
+            "y": 964,
+            "width": 728,
+            "height": 818,
+            "top": 964,
+            "right": 3401,
+            "bottom": 1782,
+            "left": 2673,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-header": [
+          {
+            "x": 2676,
+            "y": 967,
+            "width": 722,
+            "height": 92,
+            "top": 967,
+            "right": 3398,
+            "bottom": 1059,
+            "left": 2676,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-list": [
+          {
+            "x": 2676,
+            "y": 1059,
+            "width": 722,
+            "height": 565,
+            "top": 1059,
+            "right": 3398,
+            "bottom": 1624,
+            "left": 2676,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ],
+        ".chat-compose": [
+          {
+            "x": 2676,
+            "y": 1624,
+            "width": 722,
+            "height": 155,
+            "top": 1624,
+            "right": 3398,
+            "bottom": 1779,
+            "left": 2676,
+            "fontSize": "16px",
+            "fontFamily": "\"Press Start 2P\", monospace, \"Leelawadee UI\", Tahoma, sans-serif"
+          }
+        ]
+      }
+    }
+  ],
+  "collapsed": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "chat": {
+        "x": 1114.21875,
+        "y": 553.5,
+        "width": 153.78125,
+        "height": 28.5
+      },
+      "actionTop": 594
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "chat": {
+        "x": 1174.625,
+        "y": 596.75,
+        "width": 179.375,
+        "height": 33.25
+      },
+      "actionTop": 642
+    },
+    {
+      "viewport": {
+        "width": 1536,
+        "height": 864
+      },
+      "chat": {
+        "x": 1319,
+        "y": 688,
+        "width": 205,
+        "height": 38
+      },
+      "actionTop": 738
+    },
+    {
+      "viewport": {
+        "width": 1707,
+        "height": 960
+      },
+      "chat": {
+        "x": 1490,
+        "y": 784,
+        "width": 205,
+        "height": 38
+      },
+      "actionTop": 834
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "chat": {
+        "x": 1703,
+        "y": 904,
+        "width": 205,
+        "height": 38
+      },
+      "actionTop": 954
+    },
+    {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "chat": {
+        "x": 2343,
+        "y": 1264,
+        "width": 205,
+        "height": 38
+      },
+      "actionTop": 1314
+    },
+    {
+      "viewport": {
+        "width": 3413,
+        "height": 1920
+      },
+      "chat": {
+        "x": 3196,
+        "y": 1744,
+        "width": 205,
+        "height": 38
+      },
+      "actionTop": 1794
+    }
+  ],
+  "emojiInsertion": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "insertedText": "a😎bc",
+      "characterCount": "4/120"
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "insertedText": "a😎bc",
+      "characterCount": "4/120"
+    },
+    {
+      "viewport": {
+        "width": 1536,
+        "height": 864
+      },
+      "insertedText": "a😎bc",
+      "characterCount": "4/120"
+    },
+    {
+      "viewport": {
+        "width": 1707,
+        "height": 960
+      },
+      "insertedText": "a😎bc",
+      "characterCount": "4/120"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "insertedText": "a😎bc",
+      "characterCount": "4/120"
+    },
+    {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "insertedText": "a😎bc",
+      "characterCount": "4/120"
+    },
+    {
+      "viewport": {
+        "width": 3413,
+        "height": 1920
+      },
+      "insertedText": "a😎bc",
+      "characterCount": "4/120"
+    }
+  ]
+}

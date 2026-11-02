@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent } from 'react'
 import type { Socket } from 'socket.io-client'
 import { CHAT_MAX_LENGTH, countCodePoints, nextUnreadCount } from './chatState'
 import { chatFixtureMessages } from './chatFixtures'
@@ -12,6 +12,13 @@ type Props = { tableId: string; myId: string; participants: ChatParticipant[]; s
 
 const nameColors = ['#f5b82e', '#ff6e9f', '#f29f38', '#8fe59b', '#c99bff']
 const sessionKey = (tableId: string) => `poker:chat:${tableId}:expanded`
+const CHAT_BASE_WIDTH = 265
+const CHAT_BASE_HEIGHT = 285
+const CHAT_EXPANDED_WIDTH = 728
+const CHAT_EXPANDED_HEIGHT = 818
+const CHAT_MIN_SCALE = 0.75
+const CHAT_MAX_SCALE = 1.25
+const CHAT_EMOJIS = ['😎', '😄', '😂', '❤️', '👍', '✨', '🔥', '🎉', '🙏', '😭', '😉', '🃏']
 
 function colorFor(id: string) {
   let total = 0
@@ -26,6 +33,7 @@ export default function TableChat({ tableId, myId, participants, socket, spectat
   const [expanded, setExpanded] = useState(() => demo ? demo === 'expanded' : sessionStorage.getItem(sessionKey(tableId)) === 'true')
   const [messages, setMessages] = useState<ChatMessage[]>(fixture ? chatFixtureMessages : [])
   const [text, setText] = useState('')
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
   const [unread, setUnread] = useState(demo === 'collapsed' ? 3 : 0)
   const [cooldown, setCooldown] = useState(0)
   const [lockRemainingMs, setLockRemainingMs] = useState(0)
@@ -34,8 +42,15 @@ export default function TableChat({ tableId, myId, participants, socket, spectat
   const pendingTextRef = useRef('')
   const listRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const emojiPickerRef = useRef<HTMLDivElement>(null)
+  const cursorPositionRef = useRef<{ start: number; end: number }>({ start: 0, end: 0 })
   const tickerTimer = useRef<number | undefined>(undefined)
   const expandedRef = useRef(expanded)
+  const manualOpenRef = useRef(false)
+  const stickToBottomRef = useRef(true)
+  const [layout, setLayout] = useState<{ scale: number; left: number | null; right: number; bottom: number; height: number; fits: boolean; expandedScale: number; expandedHeight: number; expandedFits: boolean } | null>(null)
+  const [debugRects, setDebugRects] = useState<Array<{ left: number; top: number; width: number; height: number; label: string }>>([])
+  const debug = import.meta.env.DEV && new URLSearchParams(window.location.search).get('chatDebug') === '1'
   const [ticker, setTicker] = useState<ChatMessage | null>(fixture && demo === 'collapsed' ? chatFixtureMessages[2] : null)
   const people = useMemo(() => new Map(participants.map((person) => [person.id, person])), [participants])
 
@@ -49,9 +64,108 @@ export default function TableChat({ tableId, myId, participants, socket, spectat
 
   useEffect(() => {
     if (lockRemainingMs <= 0) return
-    const timer = window.setInterval(() => setLockRemainingMs(Math.max(0, lockDeadlineRef.current - performance.now())), 200)
+    const timer = window.setInterval(() => {
+      setLockRemainingMs(Math.max(0, lockDeadlineRef.current - performance.now()))
+    }, 200)
     return () => window.clearInterval(timer)
   }, [lockRemainingMs > 0]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!emojiPickerOpen) return
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (!emojiPickerRef.current?.contains(event.target as Node)) setEmojiPickerOpen(false)
+    }
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setEmojiPickerOpen(false)
+    }
+    document.addEventListener('pointerdown', closeOnOutsidePointer)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsidePointer)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [emojiPickerOpen])
+
+  const measureLayout = useCallback(() => {
+    const stage = document.querySelector<HTMLElement>('.table-area')
+    const table = document.querySelector<HTMLElement>('.poker-table')
+    const actionBar = document.querySelector<HTMLElement>('.action-bar')
+    if (!stage || !table || !actionBar) return
+
+    const stageRect = stage.getBoundingClientRect()
+    const tableRect = table.getBoundingClientRect()
+    const actionRect = actionBar.getBoundingClientRect()
+    const gap = 12
+    const freeHeight = Math.max(0, actionRect.top - stageRect.top - gap * 2)
+    const tableScale = tableRect.width / 1050
+    const expandedScale = Math.min(CHAT_MAX_SCALE, tableScale, (window.innerWidth - gap * 2) / CHAT_EXPANDED_WIDTH, freeHeight / CHAT_EXPANDED_HEIGHT)
+    const expandedFits = expandedScale >= 0.5
+    const expandedHeight = Math.min(CHAT_EXPANDED_HEIGHT * Math.max(0, expandedScale), freeHeight)
+    const maxScale = Math.min(CHAT_MAX_SCALE, tableScale, (window.innerWidth - gap * 2) / CHAT_BASE_WIDTH, freeHeight / CHAT_BASE_HEIGHT)
+    const candidates = [...document.querySelectorAll<HTMLElement>('[data-chat-keepclear]')].map((element) => element.getBoundingClientRect()).filter((rect) => rect.width > 0 && rect.height > 0)
+    let best: { scale: number; left: number | null; right: number; bottom: number } | null = null
+    for (let scale = Math.min(maxScale, CHAT_MAX_SCALE); scale >= CHAT_MIN_SCALE; scale -= 0.025) {
+      const width = CHAT_BASE_WIDTH * scale
+      const height = CHAT_BASE_HEIGHT * scale
+      const y = actionRect.top - gap - height
+      const xOptions = [window.innerWidth - gap - width, gap]
+      for (const x of xOptions) {
+        const overlaps = candidates.some((rect) => x < rect.right && x + width > rect.left && y < rect.bottom && y + height > rect.top)
+        if (!overlaps) {
+          best = { scale, left: x === gap ? x : null, right: x === gap ? 0 : gap, bottom: window.innerHeight - actionRect.top + gap }
+          break
+        }
+      }
+      if (best) break
+    }
+    const fits = Boolean(best)
+    const scale = best?.scale ?? Math.min(CHAT_MAX_SCALE, Math.max(CHAT_MIN_SCALE, tableScale))
+    const right = best?.right ?? gap
+    const left = best?.left ?? null
+    const bottom = best?.bottom ?? window.innerHeight - actionRect.top + gap
+    const height = fits ? CHAT_BASE_HEIGHT * scale : Math.max(0, freeHeight)
+    setLayout((previous) => {
+      const next = { scale, left, right, bottom, height, fits, expandedScale, expandedHeight, expandedFits }
+      return previous && Object.keys(next).every((key) => Math.abs((previous as any)[key] - (next as any)[key]) < 0.5) ? previous : next
+    })
+    if (debug) {
+      setDebugRects([
+        ...candidates.map((rect) => ({ left: rect.left, top: rect.top, width: rect.width, height: rect.height, label: 'keep-clear' })),
+        { left: window.innerWidth - gap - CHAT_EXPANDED_WIDTH * expandedScale, top: actionRect.top - gap - expandedHeight, width: CHAT_EXPANDED_WIDTH * expandedScale, height: expandedHeight, label: `chat ${expandedScale.toFixed(2)}x` },
+      ])
+    }
+    if (!expandedFits && expandedRef.current && !fixture && !manualOpenRef.current) {
+      setExpanded(false)
+      sessionStorage.setItem(sessionKey(tableId), 'false')
+    }
+  }, [debug, fixture, tableId])
+
+  useEffect(() => {
+    let frame = 0
+    const schedule = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(measureLayout)
+    }
+    const observer = new ResizeObserver(schedule)
+    for (const selector of ['.table-area', '.poker-table', '.action-bar']) {
+      const element = document.querySelector(selector)
+      if (element) observer.observe(element)
+    }
+    document.querySelectorAll('[data-chat-keepclear]').forEach((element) => observer.observe(element))
+    const table = document.querySelector('.poker-table')
+    const mutations = new MutationObserver(schedule)
+    if (table) mutations.observe(table, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] })
+    window.addEventListener('resize', schedule)
+    window.visualViewport?.addEventListener('resize', schedule)
+    schedule()
+    return () => {
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+      mutations.disconnect()
+      window.removeEventListener('resize', schedule)
+      window.visualViewport?.removeEventListener('resize', schedule)
+    }
+  }, [measureLayout])
 
   useEffect(() => {
     if (!socket || fixture) return
@@ -102,10 +216,9 @@ export default function TableChat({ tableId, myId, participants, socket, spectat
   }, [socket, tableId, myId, fixture, applyLock])
 
   useEffect(() => {
-    if (!expanded || !listRef.current) return
-    const list = listRef.current
-    if (list.scrollHeight - list.scrollTop - list.clientHeight < 24) list.scrollTop = list.scrollHeight
-  }, [messages, expanded])
+    if (!expanded || !listRef.current || !stickToBottomRef.current) return
+    listRef.current.scrollTop = listRef.current.scrollHeight
+  }, [messages, expanded, layout])
 
   useEffect(() => {
     if (!cooldown) return
@@ -113,12 +226,30 @@ export default function TableChat({ tableId, myId, participants, socket, spectat
     return () => window.clearInterval(timer)
   }, [cooldown])
 
-  const open = () => { setExpanded(true); setUnread(0); if (!fixture) sessionStorage.setItem(sessionKey(tableId), 'true') }
-  const minimize = () => { setExpanded(false); if (!fixture) sessionStorage.setItem(sessionKey(tableId), 'false') }
+  const open = () => { manualOpenRef.current = true; stickToBottomRef.current = true; setExpanded(true); setUnread(0); if (!fixture) sessionStorage.setItem(sessionKey(tableId), 'true') }
+  const minimize = () => { manualOpenRef.current = false; setEmojiPickerOpen(false); setExpanded(false); if (!fixture) sessionStorage.setItem(sessionKey(tableId), 'false') }
+  const insertEmoji = (emoji: string) => {
+    const start = cursorPositionRef.current.start
+    const end = cursorPositionRef.current.end
+    const nextText = `${text.slice(0, start)}${emoji}${text.slice(end)}`
+    if (countCodePoints(nextText) > CHAT_MAX_LENGTH) return
+    setText(nextText)
+    setEmojiPickerOpen(false)
+    requestAnimationFrame(() => {
+      const input = inputRef.current
+      if (!input) return
+      input.focus()
+      const cursor = start + emoji.length
+      input.setSelectionRange(cursor, cursor)
+      cursorPositionRef.current = { start: cursor, end: cursor }
+    })
+  }
   const send = (event: FormEvent) => {
     event.preventDefault()
     const clean = text.trim()
     if (!clean || countCodePoints(clean) > CHAT_MAX_LENGTH || cooldown || lockRemainingMs > 0 || spectator) return
+    setEmojiPickerOpen(false)
+    cursorPositionRef.current = { start: 0, end: 0 }
     if (fixture) { setText(''); return }
     applyLock(lockDurationRef.current)
     if (socket) {
@@ -136,22 +267,57 @@ export default function TableChat({ tableId, myId, participants, socket, spectat
   const lockSeconds = Math.ceil(lockRemainingMs / 1000)
   const showLock = lockSeconds > cooldown
   const blocked = lockSeconds > 0 || cooldown > 0
-  return <aside className={`table-chat ${fixture ? 'is-fixture' : ''} ${expanded ? 'is-expanded' : 'is-collapsed'}`} style={fixture ? { opacity: 1 } : undefined} aria-label="Match chat">
+  const chatStyle: CSSProperties = layout ? {
+    '--chat-scale': layout.scale,
+    '--chat-expanded-scale': layout.expandedScale,
+    '--chat-left': expanded ? 'auto' : layout.left === null ? 'auto' : `${layout.left}px`,
+    '--chat-right': `${expanded ? 12 : layout.right}px`,
+    '--chat-bottom': `${expanded ? layout.bottom : layout.bottom}px`,
+    '--chat-panel-height': `${layout.expandedHeight}px`,
+  } as CSSProperties : {}
+  return <>
+  <aside className={`table-chat ${fixture ? 'is-fixture' : ''} ${expanded ? 'is-expanded' : 'is-collapsed'}`} style={{ ...chatStyle, ...(fixture ? { opacity: 1 } : {}) }} aria-label="Match chat">
     {expanded ? <section className="chat-panel">
       <header className="chat-header"><span className="chat-title"><span className="eight-ball">8</span>MATCH CHAT</span><button type="button" onClick={minimize} aria-label="Minimize chat">−</button></header>
-      <div className="chat-list" ref={listRef}>
+      <div className="chat-list" ref={listRef} onScroll={(event) => { const list = event.currentTarget; stickToBottomRef.current = list.scrollHeight - list.scrollTop - list.clientHeight < 24 }}>
         {messages.map((message) => {
           const own = message.senderId === myId
           const person = people.get(message.senderId)
           return <article className={`chat-message ${own ? 'mine' : ''}`} key={message.id}>
             {!own && <img className="chat-avatar" style={{ borderColor: colorFor(message.senderId) }} src={person?.avatar} alt="" />}
-            <div className="chat-copy"><span className="chat-sender" style={{ color: own ? '#22e6e6' : colorFor(message.senderId) }}>{message.senderName}{own ? ' (YOU)' : ''}:</span><span className="chat-text"> {message.text}</span></div>
+            {own ? <div className="chat-copy mine-copy"><span className="chat-text">{message.text}</span><span className="chat-sender">: {message.senderName}</span></div> : <div className="chat-copy"><span className="chat-sender" style={{ color: '#ffc331' }}>{message.senderName}:</span><span className="chat-text"> {message.text}</span></div>}
             {own && <img className="chat-avatar" style={{ borderColor: '#22e6e6' }} src={person?.avatar} alt="" />}
           </article>
         })}
       </div>
       <form className="chat-compose" onSubmit={send}>
-        <div className="chat-input-row"><input ref={inputRef} value={text} onChange={(event) => { if (countCodePoints(event.target.value) <= CHAT_MAX_LENGTH) setText(event.target.value) }} onKeyDown={(event) => { if (event.key === 'Enter' && blocked) event.preventDefault(); if (event.key === 'Escape') event.currentTarget.blur() }} readOnly={lockSeconds > 0} disabled={spectator || Boolean(cooldown) && lockSeconds === 0} placeholder={spectator ? 'SPECTATORS CAN READ ONLY' : lockSeconds > 0 ? 'รอคิวพิมพ์...' : 'Type message to table...'} aria-label="Message to table" /><button type="submit" disabled={spectator || blocked || !text.trim()}>SEND</button></div>
+        <div className="chat-input-row">
+          <input
+            ref={inputRef}
+            value={text}
+            onChange={(event) => {
+              cursorPositionRef.current = { start: event.currentTarget.selectionStart ?? event.currentTarget.value.length, end: event.currentTarget.selectionEnd ?? event.currentTarget.value.length }
+              if (countCodePoints(event.target.value) <= CHAT_MAX_LENGTH) setText(event.target.value)
+            }}
+            onSelect={(event) => { cursorPositionRef.current = { start: event.currentTarget.selectionStart ?? 0, end: event.currentTarget.selectionEnd ?? 0 } }}
+            onBlur={(event) => { cursorPositionRef.current = { start: event.currentTarget.selectionStart ?? text.length, end: event.currentTarget.selectionEnd ?? text.length } }}
+            onKeyDown={(event) => { if (event.key === 'Enter' && blocked) event.preventDefault(); if (event.key === 'Escape') event.currentTarget.blur() }}
+            readOnly={lockSeconds > 0}
+            disabled={spectator || Boolean(cooldown) && lockSeconds === 0}
+            placeholder={spectator ? 'SPECTATORS CAN READ ONLY' : lockSeconds > 0 ? 'รอคิวพิมพ์...' : 'Type message to table...'}
+            aria-label="Message to table"
+          />
+          <div className="chat-emoji-tools" ref={emojiPickerRef}>
+            <button type="button" className="chat-emoji-toggle" aria-label="Choose emoji" aria-expanded={emojiPickerOpen} disabled={spectator || blocked} onPointerDown={() => {
+              const input = inputRef.current
+              if (input) cursorPositionRef.current = { start: input.selectionStart ?? text.length, end: input.selectionEnd ?? text.length }
+            }} onClick={() => setEmojiPickerOpen((open) => !open)}>☺</button>
+            {emojiPickerOpen && <div className="chat-emoji-picker" role="dialog" aria-label="Choose an emoji">
+              {CHAT_EMOJIS.map((emoji) => <button key={emoji} type="button" className="chat-emoji-choice" aria-label={`Insert ${emoji}`} onPointerDown={(event) => event.preventDefault()} onClick={() => insertEmoji(emoji)}>{emoji}</button>)}
+            </div>}
+          </div>
+          <button type="submit" disabled={spectator || blocked}>SEND</button>
+        </div>
         <small>{showLock ? <span className="chat-lock-hint">รอ <em>{lockSeconds}</em> วิ พิมพ์ต่อ</span> : cooldown ? `SLOW DOWN! ${cooldown}s` : 'PRESS ENTER ↵'}<b className={count > 110 ? 'warning' : ''}>{count}/{CHAT_MAX_LENGTH}</b></small>
       </form>
     </section> : <div className="chat-collapsed-row">
@@ -159,4 +325,6 @@ export default function TableChat({ tableId, myId, participants, socket, spectat
       <button type="button" className="chat-toggle" onClick={open} aria-label="Open match chat"><BubbleIcon />{unread > 0 && <b className="chat-unread">{unread > 9 ? '9+' : unread}</b>}</button>
     </div>}
   </aside>
+  {debug && <div className="chat-debug-overlay" aria-hidden="true">{debugRects.map((rect, index) => <i key={`${rect.label}-${index}`} className={rect.label.startsWith('chat') ? 'chat-debug-chat' : ''} style={{ left: rect.left, top: rect.top, width: rect.width, height: rect.height }} />)}<output>{layout ? `--u ${layout.expandedScale.toFixed(2)} · ${layout.expandedFits ? 'fits' : 'no fit'}` : 'measuring'}</output></div>}
+  </>
 }
